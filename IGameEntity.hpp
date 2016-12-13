@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IGameEntity.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 14:39:26 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/10 15:55:47 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/13 17:47:00 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ class GameEntity {
     private:
         
         //unsigned int    _size;//size bigger than 1?
-        std::string     _type;
+        std::string     _type; //useless
         unsigned int    _hp;
-        unsigned int    _dmg;
-        double          _rateOfFire;
+        unsigned int    _dmg; //move into weapon class
+        double          _rateOfFire; //move into weapon class
 
-        char            _fireSymbol;
+        char            _fireSymbol; //move into weapon class
         char            _shipSymbol;//or std::string _shipSymbol; (if ships bigger than size = 1)
         
     public:

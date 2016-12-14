@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/13 18:04:34 by jfortin          ###   ########.fr       */
+/*   Updated: 2016/12/14 17:31:43 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <string>
+#include <ncurses.h>
 
 typedef struct	s_coord
 {
@@ -29,16 +30,18 @@ class	AEntity{
 
 public:
 	AEntity(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
+	AEntity(AEntity const &src);
 	~AEntity();
 
 	void	equipWeapon();
 	void	move(char direction);
 	Missile *shoot();
 	void	takeDamage(AEntity const &attacker);
+	void	displaySkin() const;
 
-	AEntity	&operator=(AEntity const &src);
+	AEntity	&operator=(AEntity const &rhs);
 
-private:
+protected:
 	AEntity();
 	
 	unsigned int	hp;
@@ -46,7 +49,6 @@ private:
 	std::string		skin;
 	AWeapon			*weapon;
 	t_coord			coord;
-
 
 };
 

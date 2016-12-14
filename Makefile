@@ -4,7 +4,10 @@ CLANG = clang++
 
 FLAG = -Wall -Wextra -Werror
 
-SRC = main.cpp
+SRC = Player.cpp \
+	  main.cpp \
+	  AEntity.cpp \
+	  AWeapon.cpp \
 
 OBJ = $(SRC:.cpp=.o)
 
@@ -12,10 +15,10 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(CLANG) $(FLAG) -o $@ $^ -lncurses
+	@echo "\033[92m[ft_retro] compilation SUCESS"
 
 %.o:%.cpp
 	@$(CLANG) $(FLAG) -c -o $@ $<
-	@echo "\033[92m[ft_retro] compilation SUCESS"
 
 clean:
 	@rm -f $(OBJ)

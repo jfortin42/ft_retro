@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:01:52 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/15 14:49:29 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 15:12:59 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ AEntity	&AEntity::operator=(AEntity const &rhs)
 		coord = rhs.coord;
 	}
 	return (*this);
+}
+
+void	AEntity::equipWeapon(AWeapon *weapon)
+{
+	this->weapon = weapon;
 }
 
 void	AEntity::move(int key)

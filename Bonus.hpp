@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bonus.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 13:35:21 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/14 15:12:42 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 15:18:51 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ class Bonus {
     private:
         Bonus();
 
+        t_coord         coord;
         std::string     skin;//retirer?
         unsigned int    timer;
         AWeapon         *weapon;
-        t_coord         coord;
 
 };
 

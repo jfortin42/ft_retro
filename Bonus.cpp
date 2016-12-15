@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Bonus.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 14:51:56 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/14 17:13:09 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 15:19:16 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bonus.hpp"
+#include "Bonus.hpp"
 
 Bonus::Bonus(t_coord coord, std::string skin, unsigned int timer, AWeapon *weapon) : coord(coord), skin(skin), timer(timer), weapon(weapon)
 {}
@@ -35,12 +35,12 @@ Bonus           &Bonus::operator=(Bonus const &rhs)
     return (*this);
 }
 
-bool            Bonus::cmpCoord(AEntity *entity) const
-{
+// bool            Bonus::cmpCoord(AEntity *entity) const
+// {
     //comparer les coordonnees du bonus avec la hitbox de l'entite
     //return TRUE or FALSE
     //if TRUE => delete bonus
-}
+// }
 
 void            Bonus::giveWeapon(AEntity *entity) const
 {

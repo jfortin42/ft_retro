@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/14 14:51:56 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/15 15:14:24 by fsidler          ###   ########.fr       */
+/*   Created: 2016/12/15 18:52:16 by fsidler           #+#    #+#             */
+/*   Updated: 2016/12/15 18:52:27 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ Bonus           &Bonus::operator=(Bonus const &rhs)
     return (*this);
 }
 
-bool            Bonus::cmpCoord(AEntity *entity) const
-{
+// bool            Bonus::cmpCoord(AEntity *entity) const
+// {
     //comparer les coordonnees du bonus avec la hitbox de l'entite
     //return TRUE or FALSE
     //if TRUE => delete bonus
-}
+// }
 
 void            Bonus::giveWeapon(AEntity *entity) const
 {

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/12 17:01:52 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/15 16:11:29 by fsidler          ###   ########.fr       */
+/*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
+/*   Updated: 2016/12/15 18:51:50 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ AEntity	&AEntity::operator=(AEntity const &rhs)
 		coord = rhs.coord;
 	}
 	return (*this);
+}
+
+void	AEntity::equipWeapon(AWeapon *weapon)
+{
+	this->weapon = weapon;
 }
 
 void	AEntity::move(int key)
@@ -93,4 +98,9 @@ void	AEntity::displaySkin() const
 		y++;
 	}
 	wattroff(stdscr, COLOR_PAIR(3));
+}
+
+t_coord	AEntity::getCoord() const
+{
+	return (this->coord);
 }

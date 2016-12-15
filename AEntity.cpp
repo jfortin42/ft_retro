@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:01:52 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/15 15:12:59 by jfortin          ###   ########.fr       */
+/*   Updated: 2016/12/15 16:48:38 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,9 @@ void	AEntity::displaySkin() const
 		y++;
 	}
 	wattroff(stdscr, COLOR_PAIR(3));
+}
+
+t_coord	AEntity::getCoord() const
+{
+	return (this->coord);
 }

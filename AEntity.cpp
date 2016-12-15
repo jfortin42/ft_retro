@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:01:52 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/14 18:16:01 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 14:49:29 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,22 @@ AEntity	&AEntity::operator=(AEntity const &rhs)
 	return (*this);
 }
 
-void	AEntity::move(char direction)
+void	AEntity::move(int key)
 {
-	if (direction == 'N')
-		this->coord.y -= this->speed;
-	else if (direction == 'S')
-		this->coord.y += this->speed;
-	else if (direction == 'E')
-		this->coord.x -= this->speed;
-	else if (direction == 'W')
-		this->coord.x += this->speed;
+	unsigned int	height;
+	unsigned int	width;
+	
+	getmaxyx(stdscr, height, width);
+	//if (coord.y < height / 2)
+	//	coord.y = height - 6;
+	if (key == KEY_UP)
+		this->coord.y -= (this->coord.y > /*(height / 2) + */(this->speed / 2)) ? (this->speed / 2) : 0;
+	else if (key == KEY_DOWN)
+		this->coord.y += (this->coord.y < height - (this->speed / 2) - 3) ? (this->speed / 2) : 0;
+	else if (key == KEY_LEFT)
+		this->coord.x -= (this->coord.x > this->speed) ? this->speed : 0;
+	else if (key == KEY_RIGHT)
+		this->coord.x += (this->coord.x < width - this->speed - 6.5) ? this->speed : 0;
 }
 
 /*Missile	*AEntity::shoot()

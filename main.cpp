@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:35:38 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/14 18:16:58 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 14:51:23 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,8 @@ void    print_env(std::string bkgd)
 void    init_display(int timer, int height, int width)
 {
     t_coord coord;
+    int     ch;
 
-    coord.y = 10;
-    coord.x = 30;
     srand(time(NULL));
 	initscr();
 	noecho();
@@ -107,19 +106,22 @@ void    init_display(int timer, int height, int width)
     bkgdset(COLOR_PAIR(1));
     getmaxyx(stdscr, height, width);
     fill_background(height, width);
-    print_env(read_skin("env/background.env"));
-    AEntity *player = new Player(3, 1, read_skin("env/playership.env"), NULL, coord);
-    player->displaySkin(); 
-	while (wgetch(stdscr) != 27 && timer > 0)
+    print_env(read_skin("env/background.env"));//vvvv
+    coord.y = height - 6;
+    coord.x = (width / 2) - 1;
+    AEntity *player = new Player(3, 4, read_skin("env/playership.env"), NULL, coord);
+    player->displaySkin();//vv
+    while ((ch = wgetch(stdscr)) != 27 && timer > 0)
 	{
         print_env(read_skin("env/background.env"));
+        player->move(ch);
         player->displaySkin();
         //spawn_bonus(height, width);
         mvwprintw(stdscr, 1, 7, "%i", timer);
         wrefresh(stdscr);
-        werase(stdscr);
-        timer--;
-        sleep(1);
+        //werase(stdscr);
+        //timer--;
+        //sleep(1);
 	}
 }
 

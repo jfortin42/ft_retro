@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/14 17:31:43 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 14:40:35 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ public:
 	~AEntity();
 
 	void	equipWeapon();
-	void	move(char direction);
+	void	move(int key);
 	Missile *shoot();
 	void	takeDamage(AEntity const &attacker);
 	void	displaySkin() const;

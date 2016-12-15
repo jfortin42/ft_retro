@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:35:38 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/15 16:45:26 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 19:38:45 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void    init_display(int timer, int height, int width)
         player->move(ch);
         player->displaySkin();
         //spawn_bonus(height, width);
-        mvwprintw(stdscr, 1, 7, "%i", timer);
+        //mvwprintw(stdscr, 1, 7, "%i", timer);
         wrefresh(stdscr);
         //werase(stdscr);
         //timer--;

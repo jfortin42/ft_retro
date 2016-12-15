@@ -6,11 +6,11 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 14:51:56 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/14 17:13:09 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 15:14:24 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bonus.hpp"
+#include "Bonus.hpp"
 
 Bonus::Bonus(t_coord coord, std::string skin, unsigned int timer, AWeapon *weapon) : coord(coord), skin(skin), timer(timer), weapon(weapon)
 {}

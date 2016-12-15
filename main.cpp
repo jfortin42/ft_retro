@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:35:38 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/15 14:51:23 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 16:45:26 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void    init_display(int timer, int height, int width)
     srand(time(NULL));
 	initscr();
 	noecho();
-	cbreak(); /* Line buffering disabled. pass on everything */
+	cbreak();
 	keypad(stdscr, TRUE);
 	nodelay(stdscr, TRUE);
     start_color();

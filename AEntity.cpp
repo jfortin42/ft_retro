@@ -6,18 +6,18 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:01:52 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/15 14:49:29 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/15 16:11:29 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
 
 AEntity::AEntity(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
-	: hp(hp), speed(speed), skin(skin), weapon(NULL), coord(coord)
+	: hp(hp), speed(speed), skin(skin), weapon(weapon), coord(coord)
 {
 	//temporaire (retirer plus tard)
 	(void)weapon;
-	//temporaire	
+	//temporaire
 }
 
 AEntity::AEntity(AEntity const &src)

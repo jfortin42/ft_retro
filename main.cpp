@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:35:38 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/15 19:38:45 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/19 19:45:00 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <sstream>
 #include <time.h>
 
+#include "Game.hpp"
 #include "AEntity.hpp"
 #include "AWeapon.hpp"
 #include "Player.hpp"
@@ -24,7 +25,7 @@
 #define HEIGHT height
 #define WIDTH width
 
-void    fill_background(int height, int width)
+/*void    fill_background(int height, int width)
 {
     int             i;
     int             size = height * width;
@@ -66,7 +67,7 @@ void    print_env(std::string bkgd)
 	wmove(stdscr, 2, 10);
 	waddch(stdscr, ACS_LRCORNER);
     wrefresh(stdscr);
-}
+}*/
 
 /*void    spawn_bonus(int height, int width)
 {
@@ -84,7 +85,7 @@ void    print_env(std::string bkgd)
     while (timer)
 }*/
 
-void    init_display(int timer, int height, int width)
+/*void    init_display(int timer, int height, int width)
 {
     t_coord coord;
     int     ch;
@@ -123,13 +124,25 @@ void    init_display(int timer, int height, int width)
         //timer--;
         //sleep(1);
 	}
-}
+}*/
 
 int main()
 {
-    init_display(120, 0, 0);
+    srand(time(NULL));
+    /*init_display(120, 0, 0);
     wclear(stdscr);
 	//wrefresh(stdscr);
-	endwin();
+	endwin();*/
+    //try
+    //{
+        //initscr();
+        Game     *play = new Game();
+        play->launch();
+        delete play;
+    //}
+    //catch (std::exception &e)
+    //{
+    //    std::cout << e.what() << std::endl;
+    //}
 	return 0;
 }

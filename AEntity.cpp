@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/15 18:51:50 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/19 19:51:45 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,8 @@ void	AEntity::equipWeapon(AWeapon *weapon)
 	this->weapon = weapon;
 }
 
-void	AEntity::move(int key)
+void	AEntity::move(unsigned int height, unsigned int width, int key)
 {
-	unsigned int	height;
-	unsigned int	width;
-	
-	getmaxyx(stdscr, height, width);
 	//if (coord.y < height / 2)
 	//	coord.y = height - 6;
 	if (key == KEY_UP)
@@ -80,7 +76,7 @@ void	AEntity::move(int key)
 	
 }*/
 
-void	AEntity::displaySkin() const
+void	AEntity::displaySkin(WINDOW *win) const
 {
 	int	x;
 	int	y;
@@ -88,12 +84,12 @@ void	AEntity::displaySkin() const
 
 	i = 0;
 	y = this->coord.y;
-	wattron(stdscr, COLOR_PAIR(3));
+	wattron(win, COLOR_PAIR(3));
 	while (skin.c_str()[i])
 	{
 		x = 0;
 		while (skin.c_str()[i] && skin.c_str()[i] != '\n')
-			mvwaddch(stdscr, y, coord.x + (x++), skin.c_str()[i++]);
+			mvwaddch(win, y, coord.x + (x++), skin.c_str()[i++]);
 		i++;
 		y++;
 	}

@@ -4,8 +4,9 @@ CLANG = clang++
 
 FLAG = -Wall -Wextra -Werror
 
-SRC = Player.cpp \
-	  main.cpp \
+SRC = main.cpp \
+	  Game.cpp \
+	  Player.cpp \
 	  AEntity.cpp \
 	  AWeapon.cpp \
 

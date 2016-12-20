@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/20 18:41:22 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 19:57:20 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ public:
 	virtual ~AEntity();
 
 	void	equipWeapon(AWeapon *weapon);
-	virtual void	move(unsigned int height, unsigned int width, int key) = 0;
+	virtual bool	move(unsigned int height, unsigned int width, int key) = 0;
 	//Missile *shoot();
 	virtual AEntity	*shoot() = 0;
 	void	takeDamage(AEntity const &attacker);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 19:13:00 by jfortin          ###   ########.fr       */
+/*   Updated: 2016/12/20 20:04:46 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,21 @@ Player          &Player::operator=(Player const &rhs)
     return (*this);
 }
 
-void	Player::move(unsigned int height, unsigned int width, int key)
+bool            Player::move(unsigned int height, unsigned int width, int key)
 {
 	//if (coord.y < height / 2)
 	//	coord.y = height - 6;
-	if (key == KEY_UP)
-		this->coord.y -= (this->coord.y > /*(height / 2) + */(this->speed / 2)) ? (this->speed / 2) : 0;
-	else if (key == KEY_DOWN)
-		this->coord.y += (this->coord.y < height - (this->speed / 2) - 3) ? (this->speed / 2) : 0;
-	else if (key == KEY_LEFT)
-		this->coord.x -= (this->coord.x > this->speed) ? this->speed : 0;
-	else if (key == KEY_RIGHT)
-		this->coord.x += (this->coord.x < width - this->speed - 6.5) ? this->speed : 0;
+	if (key == KEY_UP && this->coord.y > this->speed / 2)
+        this->coord.y -= (this->speed / 2);
+	else if (key == KEY_DOWN && this->coord.y < height - (this->speed / 2) - 3)
+        this->coord.y += (this->speed / 2);
+	else if (key == KEY_LEFT && this->coord.x > this->speed)
+        this->coord.x -= this->speed;
+	else if (key == KEY_RIGHT && this->coord.x < width - this->speed - 6.5)
+        this->coord.x += this->speed;
+    else
+        return (false);
+    return (true);
 }
 
 AEntity         *Player::shoot()
@@ -75,5 +78,5 @@ AEntity         *Player::shoot()
     length_max /= 2;
     coordShoot.x = this->coord.x + length_max;
     coordShoot.y = this->coord.y - 1;
-    return (new Missile(1, 1, "|", NULL, coordShoot, *this, 'N'));
+    return (new Missile(1, 2, "|", NULL, coordShoot, *this, 'N'));
 }

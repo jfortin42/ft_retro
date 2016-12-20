@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 18:37:42 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 19:44:51 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,18 @@ class Game {
 
         void            _initGame();
         void            _gameLoop();
-        void            _refreshBottomWin();
         void            _endGame();
         
-        void            _pushInList(AEntity *tmp, t_entityList *list);
-        void            _freeEnemyList();
+        void            _displayEntities() const;
+        void            _moveEntities(int key) const;
 
-        void            _printEnv();
-        void            _fillBackground() const;
+        t_entityList    *_pushInList(t_entityList *list, AEntity *entity);
+        void            _freeEntityList(t_entityList *list);
+
+        void            _refreshMainWin(std::string bkgd);
+        void            _refreshBottomWin(std::string bkgd);
+        
+        std::string     _fillBackground() const;
         std::string     _readSkin(std::string nameOfFile) const;
 
         WINDOW          *_main_win;

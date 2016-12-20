@@ -6,32 +6,33 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 18:23:10 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 20:25:44 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 
-Game::Game() : _timer(120), _score(0), _player(NULL), _enemyList(NULL){ return ; }
+Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0),
+_player(NULL), _enemyList(NULL), _missileList(NULL) { return ; }
 
-Game::Game(Game const &src)
+Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL),
+_timer(src._timer), _score(src._score), _enemyList(NULL), _missileList(NULL)
 {
-    this->_enemyList = NULL;
-    //fonction pour remplir this->_enemyList (DEEP COPY!)
+    //fonction pour remplir this->_enemyList (DEEP COPY!)    
+    //fonction pour remplir this->_missileList (DEEP COPY!)
     //this->_player = new Player(*(src._player));
     //this->_main_win = new WINDOW(src._main_win);//a verifier
     //this->_bottom_win = new WINDOW(src._bottom_win);//a verifier
-    this->_timer = src._timer;
-    this->_score = src._score;
 }
 
 Game::~Game()
 {
     delete _player;
-    _freeEnemyList();
+    _freeEntityList(_enemyList);
+    _freeEntityList(_missileList);
 }
 
-Game        &Game::operator=(Game const &rhs)
+Game            &Game::operator=(Game const &rhs)
 {
     if (this != &rhs)
     {
@@ -39,8 +40,10 @@ Game        &Game::operator=(Game const &rhs)
         wclear(this->_bottom_win);
         delwin(this->_main_win);
         delwin(this->_bottom_win);
-        _freeEnemyList();
+        _freeEntityList(_enemyList);
+        _freeEntityList(_missileList);
         //fonction pour remplir this->_enemyList (DEEP COPY!)
+        //fonction pour remplir this->_entityList (DEEP COPY!)
         delete this->_player;
         //this->_player = new Player(*(rhs._player));
         //this->_main_win = new WINDOW(rhs._main_win);//a verifier
@@ -51,41 +54,102 @@ Game        &Game::operator=(Game const &rhs)
     return (*this);
 }
 
-void        Game::launch()
+void            Game::_displayEntities() const
+{
+    t_entityList    *enemy_tmp = _enemyList;
+    t_entityList    *missile_tmp = _missileList;
+
+    _player->displaySkin(_main_win);
+    while (missile_tmp)
+    {
+        missile_tmp->entity->displaySkin(_main_win);
+        missile_tmp = missile_tmp->next;
+    }
+    while (enemy_tmp)
+    {
+        enemy_tmp->entity->displaySkin(_main_win);
+        enemy_tmp = enemy_tmp->next;
+    }
+}
+
+void            Game::_moveEntities(int key) const
+{
+    //t_entityList    *missile_tmp_next;// = new t_entityList();
+    t_entityList    *enemy_tmp = _enemyList;
+    t_entityList    *missile_tmp = _missileList;
+
+    _player->move(LINES - BOT_WIN_H, COLS, key);
+    while (missile_tmp)
+    {
+        if (missile_tmp->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
+        {
+            //fix this part
+            ;/*missile_tmp_next = missile_tmp->next;
+            delete missile_tmp->entity;
+            delete missile_tmp;
+            missile_tmp = NULL;
+            missile_tmp = missile_tmp_next;*/
+            //fix this part
+        }
+        missile_tmp = missile_tmp->next;
+    }
+    while (enemy_tmp)
+    {
+        if (enemy_tmp->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
+            ;
+        enemy_tmp = enemy_tmp->next;
+    }
+}
+
+void            Game::launch()
 {
     _initGame();
     _gameLoop();
     _endGame();
 }
 
-void        Game::_printEnv()
+void            Game::_refreshMainWin(std::string bkgd)
 {
     wattron(_main_win, COLOR_PAIR(2));
-    mvwprintw(_main_win, 1, 10, _readSkin("env/background.env").c_str());
+    mvwprintw(_main_win, 1, 10, bkgd.c_str());
     wattroff(_main_win, COLOR_PAIR(2));
     box(_main_win, 0, 0);
 }
 
-void        Game::_fillBackground() const
+void            Game::_refreshBottomWin(std::string bkgd)
 {
-    int             i;
-    unsigned int    size = (LINES - BOT_WIN_H) * COLS;
-    std::ofstream   file("env/background.env");
+    wattron(_bottom_win, COLOR_PAIR(2));
+    mvwprintw(_bottom_win, 1, 1, bkgd.c_str());
+    wattroff(_bottom_win, COLOR_PAIR(2));
+    box(_bottom_win, 0, 0);
+    mvwprintw(_bottom_win, 2, 2, "time:");
+    mvwprintw(_bottom_win, 2, 8, "%i", _timer);
+    mvwvline(_bottom_win, 1, 16, ACS_VLINE, 3);
+    wrefresh(_bottom_win);
+    werase(_bottom_win);
+    //_timer--;
+}
+
+std::string     Game::_fillBackground() const
+{
+    int                 i;
+    unsigned int        size = (LINES - BOT_WIN_H) * COLS;
+    std::stringstream   bkgd;
     
     while (size--)
     {
         i = rand() % 100;
         if (i < 2)
-            file << '+';
+            bkgd << '+';
         else if (i > 98)
-            file << '.';
+            bkgd << '.';
         else
-            file << ' ';
+            bkgd << ' ';
     }
-    file.close();
+    return (bkgd.str());
 }
 
-std::string Game::_readSkin(std::string nameOfFile) const
+std::string     Game::_readSkin(std::string nameOfFile) const
 {
     std::ifstream       file(nameOfFile);
     std::stringstream   read;
@@ -95,7 +159,7 @@ std::string Game::_readSkin(std::string nameOfFile) const
     return (read.str());
 }
 
-void        Game::_initGame()
+void            Game::_initGame()
 {
     t_coord playerCoord;
 
@@ -122,31 +186,35 @@ void        Game::_initGame()
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     wbkgdset(_main_win, COLOR_PAIR(1));
     wbkgdset(_bottom_win, COLOR_PAIR(1));
-    _fillBackground();
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
     _player = new Player(3, 4, _readSkin("env/playership.env"), NULL, playerCoord);
     //init enemy list
 }
 
-void        Game::_gameLoop()
+void            Game::_gameLoop()
 {
-    int ch;
+    int key;
+    std::string bkgd;
 
-    while ((ch = wgetch(_main_win)) != KEY_ESC)
+    bkgd = _fillBackground();
+    while ((key = wgetch(_main_win)) != KEY_ESC)
     {
-        _printEnv();
-        if (ch == KEY_SPC)
-            _player->shoot()->displaySkin(_main_win);
-        _player->move(LINES - BOT_WIN_H, COLS, ch);
-        _player->displaySkin(_main_win);
+        _refreshMainWin(bkgd);
+        if (key == KEY_SPC)
+            _missileList = _pushInList(_missileList, _player->shoot());
+        _displayEntities();
+        _moveEntities(key);
+        //fonction pour tout DISPLAY (player, enemy, missile);
+        //fonction pour tout les moves(envoyer ch) qui detecte aussi les collisions;
+        //fonction pour tous les tirs;
         wrefresh(_main_win);
-        _refreshBottomWin();
+        _refreshBottomWin(bkgd);
         usleep(10000);
     }
 }
 
-void        Game::_endGame()
+void            Game::_endGame()
 {
     wclear(_main_win);
     wclear(_bottom_win);
@@ -155,23 +223,40 @@ void        Game::_endGame()
     endwin();
 }
 
-void        Game::_refreshBottomWin()
+//copy creation and operator= must send a clone of entity to Game::_pushInList (cf. d04/ex02/Squad.cpp)
+
+t_entityList    *Game::_pushInList(t_entityList *list, AEntity *entity)
 {
-    wattron(_bottom_win, COLOR_PAIR(2));
-    mvwprintw(_bottom_win, 1, 1, _readSkin("env/background.env").c_str());
-    wattroff(_bottom_win, COLOR_PAIR(2));
-    box(_bottom_win, 0, 0);
-    mvwprintw(_bottom_win, 2, 2, "time:");
-    mvwprintw(_bottom_win, 2, 8, "%i", _timer);
-    mvwvline(_bottom_win, 1, 16, ACS_VLINE, 3);
-    wrefresh(_bottom_win);
-    werase(_bottom_win);
-    //_timer--;
+    t_entityList    *tmp = list;
+    t_entityList    *newEntity = new t_entityList();
+
+    newEntity->entity = entity;
+    newEntity->next = NULL;
+    if (!list)
+    {
+        list = newEntity;
+        return (list);
+    }
+    while (list->next)
+        list = list->next;
+    list->next = newEntity;
+    return (tmp);
 }
 
-void        Game::_freeEnemyList()
+void            Game::_freeEntityList(t_entityList *list)
 {
-    ;
+    t_entityList    *first;
+    t_entityList    *tmp;
+
+    first = list;
+    while (first != NULL)
+    {
+        tmp = first->next;
+        delete first->entity;
+        delete first;
+        first = tmp;
+    }
+    list = NULL;
 }
 
 Game::WindowDimensionsInvalidException::WindowDimensionsInvalidException() { return ; }

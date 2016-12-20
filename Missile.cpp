@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/20 19:21:30 by jfortin          ###   ########.fr       */
+/*   Updated: 2016/12/20 20:06:20 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,22 @@ Missile	&Missile::operator=(Missile const &rhs)
 	return (*this);
 }
 
-void	Missile::move(unsigned int height, unsigned int width, int key)
+bool	Missile::move(unsigned int height, unsigned int width, int key)
 {
 	//if (coord.y < height / 2)
 	//	coord.y = height - 6;
-	key = 0;
-	if (this->direction == 'N')
-		this->coord.y -= (this->coord.y > /*(height / 2) + */(this->speed / 2)) ? (this->speed / 2) : 0;
-	else if (this->direction == 'S')
-		this->coord.y += (this->coord.y < height - (this->speed / 2) - 3) ? (this->speed / 2) : 0;
-	else if (this->direction == 'E')
-		this->coord.x -= (this->coord.x > this->speed) ? this->speed : 0;
-	else if (this->direction == 'W')
-		this->coord.x += (this->coord.x < width - this->speed - 6.5) ? this->speed : 0;
+	(void)key;// = 0;
+	if (this->direction == 'N' && this->coord.y > this->speed / 2)
+		this->coord.y -= (this->speed / 2);
+	else if (this->direction == 'S' && this->coord.y < height - (this->speed / 2) - 3)
+		this->coord.y += (this->speed / 2);
+	else if (this->direction == 'E' && this->coord.x > this->speed)
+		this->coord.x -= this->speed;
+	else if (this->direction == 'W' && this->coord.x < width - this->speed - 6.5)
+		this->coord.x += this->speed;
+	else
+		return (false);
+	return (true);
 }
 
 AEntity	*Missile::shoot()

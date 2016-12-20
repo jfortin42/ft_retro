@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 16:56:48 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 18:44:29 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 19:57:08 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Player : public AEntity {
 
         Player      &operator=(Player const &rhs);
 
-        void        move(unsigned int height, unsigned int width, int key);
+        bool        move(unsigned int height, unsigned int width, int key);
         AEntity     *shoot();
         
     private:

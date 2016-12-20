@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 18:49:00 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 19:13:00 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,5 @@ AEntity         *Player::shoot()
     length_max /= 2;
     coordShoot.x = this->coord.x + length_max;
     coordShoot.y = this->coord.y - 1;
-    return (new Missile(1, 1, "|", NULL, coordShoot, *this));
+    return (new Missile(1, 1, "|", NULL, coordShoot, *this, 'N'));
 }

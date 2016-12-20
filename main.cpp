@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:35:38 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/19 19:45:00 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 15:26:55 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,20 +129,15 @@ void    print_env(std::string bkgd)
 int main()
 {
     srand(time(NULL));
-    /*init_display(120, 0, 0);
-    wclear(stdscr);
-	//wrefresh(stdscr);
-	endwin();*/
-    //try
-    //{
-        //initscr();
-        Game     *play = new Game();
+    Game    *play = new Game();
+    try
+    {
         play->launch();
-        delete play;
-    //}
-    //catch (std::exception &e)
-    //{
-    //    std::cout << e.what() << std::endl;
-    //}
+    }
+    catch (std::exception &e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    delete play;
 	return 0;
 }

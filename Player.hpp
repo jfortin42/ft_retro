@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 16:56:48 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/14 17:04:13 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 18:44:29 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # define PLAYER_HPP
 
 # include "AEntity.hpp"
-# include "AWeapon.hpp"
+# include "Missile.hpp"
 
+class Missile;
 class AEntity;
-class AWeapon;
 
 class Player : public AEntity {
 
@@ -27,6 +27,10 @@ class Player : public AEntity {
         ~Player();
 
         Player      &operator=(Player const &rhs);
+
+        void        move(unsigned int height, unsigned int width, int key);
+        AEntity     *shoot();
+        
     private:
         Player();
 };

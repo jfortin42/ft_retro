@@ -9,6 +9,7 @@ SRC = main.cpp \
 	  Player.cpp \
 	  AEntity.cpp \
 	  AWeapon.cpp \
+	  Missile.cpp \
 
 OBJ = $(SRC:.cpp=.o)
 

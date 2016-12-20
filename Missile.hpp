@@ -3,31 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:15:44 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/20 18:29:13 by jfortin          ###   ########.fr       */
+/*   Updated: 2016/12/20 18:35:51 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AEntity.hpp"
-#include "AWeapon.hpp"
+#ifndef MISSILE_HPP
+# define MISSILE_HPP
 
-class	AEntity;
-class	AWeapon;
+# include "AEntity.hpp"
+# include "AWeapon.hpp"
 
-class	Missile : public AEntity{
+class AEntity;
+class AWeapon;
 
-public:
-	Missile(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, AEntity const &shooter);
-	Missile(Missile const &src);
-	~Missile();
+class Missile : public AEntity {
 
-	Missile		&operator=(Missile const &rhs);
+	public:
+		Missile(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, AEntity const &shooter);
+		Missile(Missile const &src);
+		~Missile();
 
-private:
-	Missile();
+		Missile		&operator=(Missile const &rhs);
 
-	AEntity	const &shooter;
+		void        move(unsigned int height, unsigned int width, int key);
+        AEntity     *shoot();
 
+	private:
+		Missile();
+
+		AEntity	const &shooter;
 };
+
+#endif

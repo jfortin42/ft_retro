@@ -6,21 +6,13 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/19 20:18:10 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 18:23:10 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 
-Game::Game() : _timer(120), _score(0), _player(NULL), _enemyList(NULL)
-{
-    initscr();
-    getmaxyx(stdscr, _stdscrHeight, _stdscrWidth);
-    if (_stdscrHeight < MAIN_WIN_HMIN || _stdscrWidth < MAIN_WIN_WMIN)
-        ;//throw (Game::WindowDimensionsInvalidException());
-    _main_win = newwin(_stdscrHeight - BOT_WIN_H, _stdscrWidth, 0, 0);
-    _bottom_win = newwin(BOT_WIN_H, _stdscrWidth, _stdscrHeight - BOT_WIN_H, 0);
-}
+Game::Game() : _timer(120), _score(0), _player(NULL), _enemyList(NULL){ return ; }
 
 Game::Game(Game const &src)
 {
@@ -66,10 +58,18 @@ void        Game::launch()
     _endGame();
 }
 
-void        Game::_fillBackground(unsigned int height, unsigned int width) const
+void        Game::_printEnv()
+{
+    wattron(_main_win, COLOR_PAIR(2));
+    mvwprintw(_main_win, 1, 10, _readSkin("env/background.env").c_str());
+    wattroff(_main_win, COLOR_PAIR(2));
+    box(_main_win, 0, 0);
+}
+
+void        Game::_fillBackground() const
 {
     int             i;
-    unsigned int    size = height * width;
+    unsigned int    size = (LINES - BOT_WIN_H) * COLS;
     std::ofstream   file("env/background.env");
     
     while (size--)
@@ -99,8 +99,17 @@ void        Game::_initGame()
 {
     t_coord playerCoord;
 
+    initscr();
+    if (LINES < MAIN_WIN_HMIN || COLS < MAIN_WIN_WMIN)
+    {
+        endwin();
+        throw (Game::WindowDimensionsInvalidException());
+    }
+    _main_win = newwin(LINES - BOT_WIN_H, COLS, 0, 0);
+    _bottom_win = newwin(BOT_WIN_H, COLS, LINES - BOT_WIN_H, 0);
 	noecho();
 	cbreak();
+    curs_set(0);
 	keypad(_main_win, TRUE);
 	nodelay(_main_win, TRUE);
     start_color();
@@ -108,16 +117,14 @@ void        Game::_initGame()
     init_color(COLOR_WHITE, 1000, 700, 300);
     init_color(COLOR_BLACK, 0, 0, 0);
 	init_color(COLOR_YELLOW, 220, 180, 120);
-	//init_color(COLOR_YELLOW, 150, 200, 250);
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	//init_pair(1, COLOR_BLUE, COLOR_BLACK);    
 	init_pair(2, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     wbkgdset(_main_win, COLOR_PAIR(1));
     wbkgdset(_bottom_win, COLOR_PAIR(1));
-    _fillBackground(_stdscrHeight - BOT_WIN_H, _stdscrWidth);
-    playerCoord.y = _stdscrHeight - (6 + BOT_WIN_H);
-    playerCoord.x = (_stdscrWidth / 2) - 1;
+    _fillBackground();
+    playerCoord.y = LINES - (6 + BOT_WIN_H);
+    playerCoord.x = (COLS / 2) - 1;
     _player = new Player(3, 4, _readSkin("env/playership.env"), NULL, playerCoord);
     //init enemy list
 }
@@ -126,20 +133,12 @@ void        Game::_gameLoop()
 {
     int ch;
 
-    while ((ch = wgetch(_main_win)) != KEY_ESC)// && _timer > 0)
+    while ((ch = wgetch(_main_win)) != KEY_ESC)
     {
-        //print_env (start)
-        wattron(_main_win, COLOR_PAIR(2));
-        mvwprintw(_main_win, 1, 10, _readSkin("env/background.env").c_str());
-        wattroff(_main_win, COLOR_PAIR(2));
-        box(_main_win, 0, 0);
-        mvwprintw(_main_win, 1, 1, "time:");
-        mvwprintw(_main_win, 1, 10, "|");
-        mvwprintw(_main_win, 2, 1, "---------");
-        wmove(_main_win, 2, 10);
-        waddch(_main_win, ACS_LRCORNER);
-        //print_env (end)
-        _player->move(_stdscrHeight - BOT_WIN_H, _stdscrWidth, ch);
+        _printEnv();
+        if (ch == KEY_SPC)
+            _player->shoot()->displaySkin(_main_win);
+        _player->move(LINES - BOT_WIN_H, COLS, ch);
         _player->displaySkin(_main_win);
         wrefresh(_main_win);
         _refreshBottomWin();
@@ -162,10 +161,32 @@ void        Game::_refreshBottomWin()
     mvwprintw(_bottom_win, 1, 1, _readSkin("env/background.env").c_str());
     wattroff(_bottom_win, COLOR_PAIR(2));
     box(_bottom_win, 0, 0);
+    mvwprintw(_bottom_win, 2, 2, "time:");
+    mvwprintw(_bottom_win, 2, 8, "%i", _timer);
+    mvwvline(_bottom_win, 1, 16, ACS_VLINE, 3);
     wrefresh(_bottom_win);
+    werase(_bottom_win);
+    //_timer--;
 }
 
 void        Game::_freeEnemyList()
 {
     ;
+}
+
+Game::WindowDimensionsInvalidException::WindowDimensionsInvalidException() { return ; }
+
+Game::WindowDimensionsInvalidException::WindowDimensionsInvalidException(WindowDimensionsInvalidException const &src) { *this = src; }
+
+Game::WindowDimensionsInvalidException::~WindowDimensionsInvalidException() throw() { return ; }
+
+Game::WindowDimensionsInvalidException  &Game::WindowDimensionsInvalidException::operator=(Game::WindowDimensionsInvalidException const &rhs)
+{
+    (void)rhs;
+    return (*this);
+}
+
+char const                              *Game::WindowDimensionsInvalidException::what(void) const throw()
+{
+    return ("Window dimensions are invalid");
 }

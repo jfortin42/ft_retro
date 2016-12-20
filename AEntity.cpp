@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/19 19:51:45 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 18:41:32 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,13 @@ void	AEntity::equipWeapon(AWeapon *weapon)
 	this->weapon = weapon;
 }
 
-void	AEntity::move(unsigned int height, unsigned int width, int key)
+AEntity	*AEntity::shoot()
 {
-	//if (coord.y < height / 2)
-	//	coord.y = height - 6;
-	if (key == KEY_UP)
-		this->coord.y -= (this->coord.y > /*(height / 2) + */(this->speed / 2)) ? (this->speed / 2) : 0;
-	else if (key == KEY_DOWN)
-		this->coord.y += (this->coord.y < height - (this->speed / 2) - 3) ? (this->speed / 2) : 0;
-	else if (key == KEY_LEFT)
-		this->coord.x -= (this->coord.x > this->speed) ? this->speed : 0;
-	else if (key == KEY_RIGHT)
-		this->coord.x += (this->coord.x < width - this->speed - 6.5) ? this->speed : 0;
-}
-
-/*Missile	*AEntity::shoot()
-{
-	if (this->weapon)
-		return (this->weapon->createMissile());
 	return (NULL);
-}*/
+	/*if (this->weapon)
+		return (this->weapon->createMissile());
+	return (NULL);*/
+}
 
 /*void	AEntity::takeDamage(AEntity const &attcker)
 {

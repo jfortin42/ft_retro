@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 20:25:44 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/21 15:49:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,27 +72,35 @@ void            Game::_displayEntities() const
     }
 }
 
-void            Game::_moveEntities(int key) const
+void            Game::_moveEntities(int key)
 {
-    //t_entityList    *missile_tmp_next;// = new t_entityList();
-    t_entityList    *enemy_tmp = _enemyList;
     t_entityList    *missile_tmp = _missileList;
+    t_entityList    *missile_tmp_next = NULL;// = new t_entityList();
 
     _player->move(LINES - BOT_WIN_H, COLS, key);
     while (missile_tmp)
     {
-        if (missile_tmp->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
+        if (missile_tmp == _missileList &&
+            missile_tmp->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
         {
-            //fix this part
-            ;/*missile_tmp_next = missile_tmp->next;
+            _missileList = missile_tmp->next;
             delete missile_tmp->entity;
             delete missile_tmp;
-            missile_tmp = NULL;
-            missile_tmp = missile_tmp_next;*/
-            //fix this part
+            missile_tmp->next = _missileList; // A revoir
+        }
+        else if (missile_tmp->next && 
+            missile_tmp->next->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
+        {
+            missile_tmp_next = missile_tmp->next->next;
+            delete missile_tmp->next->entity;
+            delete missile_tmp->next;
+            missile_tmp->next = missile_tmp_next;
         }
         missile_tmp = missile_tmp->next;
     }
+
+    t_entityList    *enemy_tmp = _enemyList;
+    
     while (enemy_tmp)
     {
         if (enemy_tmp->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
@@ -210,7 +218,7 @@ void            Game::_gameLoop()
         //fonction pour tous les tirs;
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
-        usleep(10000);
+        usleep(100000);
     }
 }
 

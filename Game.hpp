@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 19:44:51 by fsidler          ###   ########.fr       */
+/*   Updated: 2016/12/20 22:23:54 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class Game {
         void            _endGame();
         
         void            _displayEntities() const;
-        void            _moveEntities(int key) const;
+        void            _moveEntities(int key);
 
         t_entityList    *_pushInList(t_entityList *list, AEntity *entity);
         void            _freeEntityList(t_entityList *list);

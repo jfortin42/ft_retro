@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/21 15:49:25 by jfortin          ###   ########.fr       */
+/*   Updated: 2016/12/21 15:58:51 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void            Game::_moveEntities(int key)
             _missileList = missile_tmp->next;
             delete missile_tmp->entity;
             delete missile_tmp;
-            missile_tmp->next = _missileList; // A revoir
+            missile_tmp = NULL;
         }
         else if (missile_tmp->next && 
             missile_tmp->next->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
@@ -96,7 +96,7 @@ void            Game::_moveEntities(int key)
             delete missile_tmp->next;
             missile_tmp->next = missile_tmp_next;
         }
-        missile_tmp = missile_tmp->next;
+        missile_tmp = missile_tmp ? missile_tmp->next : _missileList;
     }
 
     t_entityList    *enemy_tmp = _enemyList;

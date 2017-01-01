@@ -6,14 +6,14 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/21 15:58:51 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/01 16:42:45 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 
 Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0),
-_player(NULL), _enemyList(NULL), _missileList(NULL) { return ; }
+_playerList(NULL), _enemyList(NULL), _missileList(NULL) { return ; }
 
 Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL),
 _timer(src._timer), _score(src._score), _enemyList(NULL), _missileList(NULL)
@@ -27,7 +27,8 @@ _timer(src._timer), _score(src._score), _enemyList(NULL), _missileList(NULL)
 
 Game::~Game()
 {
-    delete _player;
+    
+    _freeEntityList(_playerList);
     _freeEntityList(_enemyList);
     _freeEntityList(_missileList);
 }
@@ -44,7 +45,7 @@ Game            &Game::operator=(Game const &rhs)
         _freeEntityList(_missileList);
         //fonction pour remplir this->_enemyList (DEEP COPY!)
         //fonction pour remplir this->_entityList (DEEP COPY!)
-        delete this->_player;
+        _freeEntityList(_playerList);
         //this->_player = new Player(*(rhs._player));
         //this->_main_win = new WINDOW(rhs._main_win);//a verifier
         //this->_bottom_win = new WINDOW(rhs._bottom_win);//a verifier
@@ -54,59 +55,104 @@ Game            &Game::operator=(Game const &rhs)
     return (*this);
 }
 
-void            Game::_displayEntities() const
+void            Game::_displayEntities(t_entityList *list) const
 {
-    t_entityList    *enemy_tmp = _enemyList;
-    t_entityList    *missile_tmp = _missileList;
+    t_entityList    *list_tmp = list;
 
-    _player->displaySkin(_main_win);
-    while (missile_tmp)
+    while (list_tmp)
     {
-        missile_tmp->entity->displaySkin(_main_win);
-        missile_tmp = missile_tmp->next;
+        list_tmp->entity->displaySkin(_main_win);
+        list_tmp = list_tmp->next;
     }
-    while (enemy_tmp)
+}
+
+void            Game::_lstdelone(t_entityList *&begin, t_entityList *&current, char command)
+{
+    t_entityList    *tmp_next = NULL;
+
+    if (current == begin && command == 'F')
     {
-        enemy_tmp->entity->displaySkin(_main_win);
-        enemy_tmp = enemy_tmp->next;
+        begin = current->next;
+        delete current->entity;
+        delete current;
+        current = NULL;
+    }
+    else if (current->next)
+    {
+        tmp_next = current->next->next;
+        delete current->next->entity;
+        delete current->next;
+        current->next = tmp_next;
+    }
+}
+
+void            Game::_moveInList(t_entityList *&begin, int key)
+{
+    t_entityList    *entity_tmp = begin;
+
+    while (entity_tmp)
+    {
+        if (entity_tmp == begin && entity_tmp->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
+            _lstdelone(begin, entity_tmp, 'F');
+        else if (entity_tmp->next && entity_tmp->next->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
+            _lstdelone(begin, entity_tmp, 'N');
+        entity_tmp = entity_tmp ? entity_tmp->next : begin;
+    }
+}
+
+bool            Game::_hitbox(t_entityList *entity1, t_entityList *entity2)
+{
+    if (entity1->entity->getCoord().x + entity1->entity->getSizeSkin().x >= entity2->entity->getCoord().x
+        && entity1->entity->getCoord().x <= entity2->entity->getCoord().x + entity2->entity->getSizeSkin().x
+        && entity1->entity->getCoord().y + entity1->entity->getSizeSkin().y >= entity2->entity->getCoord().y
+        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->getSizeSkin().y)
+        return (true);
+    return (false);
+}
+
+void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
+{
+    t_entityList    *tmp1 = list1;
+
+    while (tmp1)
+    {
+        t_entityList    *tmp2 = list2;
+        while (tmp1 && tmp2)
+        {
+                if (tmp1->next && tmp2->next && _hitbox(tmp1->next, tmp2->next))
+            {
+                _lstdelone(list1, tmp1, 'N');
+                _lstdelone(list2, tmp2, 'N');
+            }
+                else if (tmp1->next && _hitbox(tmp1->next, tmp2))
+            {
+                _lstdelone(list1, tmp1, 'N');
+                _lstdelone(list2, tmp2, 'F');
+            }
+                else if (tmp2->next && _hitbox(tmp1, tmp2->next))
+            {
+                _lstdelone(list1, tmp1, 'F');
+                _lstdelone(list2, tmp2, 'N');
+            }
+                else if (_hitbox(tmp1, tmp2))
+            {
+                _lstdelone(list1, tmp1, 'F');
+                _lstdelone(list2, tmp2, 'F');
+            }
+            tmp2 = tmp2 ? tmp2->next : list2;
+        }
+        tmp1 = tmp1 ? tmp1->next : list1;
     }
 }
 
 void            Game::_moveEntities(int key)
 {
-    t_entityList    *missile_tmp = _missileList;
-    t_entityList    *missile_tmp_next = NULL;// = new t_entityList();
-
-    _player->move(LINES - BOT_WIN_H, COLS, key);
-    while (missile_tmp)
-    {
-        if (missile_tmp == _missileList &&
-            missile_tmp->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
-        {
-            _missileList = missile_tmp->next;
-            delete missile_tmp->entity;
-            delete missile_tmp;
-            missile_tmp = NULL;
-        }
-        else if (missile_tmp->next && 
-            missile_tmp->next->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
-        {
-            missile_tmp_next = missile_tmp->next->next;
-            delete missile_tmp->next->entity;
-            delete missile_tmp->next;
-            missile_tmp->next = missile_tmp_next;
-        }
-        missile_tmp = missile_tmp ? missile_tmp->next : _missileList;
-    }
-
-    t_entityList    *enemy_tmp = _enemyList;
-    
-    while (enemy_tmp)
-    {
-        if (enemy_tmp->entity->move(LINES - BOT_WIN_H, COLS, key) == false)
-            ;
-        enemy_tmp = enemy_tmp->next;
-    }
+    if (_playerList)
+        _playerList->entity->move(LINES - BOT_WIN_H, COLS, key);
+    _moveInList(_missileList, key);
+    _moveInList(_enemyList, key);
+    _collision(_missileList, _enemyList);
+    _collision(_playerList, _enemyList);
 }
 
 void            Game::launch()
@@ -119,7 +165,7 @@ void            Game::launch()
 void            Game::_refreshMainWin(std::string bkgd)
 {
     wattron(_main_win, COLOR_PAIR(2));
-    mvwprintw(_main_win, 1, 10, bkgd.c_str());
+    mvwprintw(_main_win, 1, 1, bkgd.c_str());
     wattroff(_main_win, COLOR_PAIR(2));
     box(_main_win, 0, 0);
 }
@@ -196,22 +242,31 @@ void            Game::_initGame()
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
-    _player = new Player(3, 4, _readSkin("env/playership.env"), NULL, playerCoord);
+    _pushInList(_playerList, new Player(3, 4, _readSkin("env/playership.env"), NULL, playerCoord));
     //init enemy list
 }
 
 void            Game::_gameLoop()
 {
-    int key;
+    int         i;
+    int         key;
     std::string bkgd;
+    std::string game_over;
+    // t_coord     enemyCoord = {50, 1};
 
     bkgd = _fillBackground();
-    while ((key = wgetch(_main_win)) != KEY_ESC)
+    game_over = _readSkin("env/gameover2.env");
+    while ((key = wgetch(_main_win)) != KEY_ESC && _playerList)
     {
         _refreshMainWin(bkgd);
-        if (key == KEY_SPC)
-            _missileList = _pushInList(_missileList, _player->shoot());
-        _displayEntities();
+        i = rand();
+        if (i % 100 < 10)
+            _pushInList(_enemyList, new Enemy(1, 3, _readSkin("env/enemy.env"), NULL, (t_coord){i % (COLS - 10) + 1, 1}));
+        if (key == KEY_SPC && _playerList)
+            _pushInList(_missileList, _playerList->entity->shoot());
+        _displayEntities(_playerList);
+        _displayEntities(_enemyList);
+        _displayEntities(_missileList);
         _moveEntities(key);
         //fonction pour tout DISPLAY (player, enemy, missile);
         //fonction pour tout les moves(envoyer ch) qui detecte aussi les collisions;
@@ -219,6 +274,13 @@ void            Game::_gameLoop()
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
         usleep(100000);
+    }
+    if (!_playerList)
+    {
+        werase(_main_win);
+        mvwprintw(_main_win, (LINES - BOT_WIN_H - 8) / 2, 1, game_over.c_str());
+        wrefresh(_main_win);
+        usleep(2000000);
     }
 }
 
@@ -233,36 +295,28 @@ void            Game::_endGame()
 
 //copy creation and operator= must send a clone of entity to Game::_pushInList (cf. d04/ex02/Squad.cpp)
 
-t_entityList    *Game::_pushInList(t_entityList *list, AEntity *entity)
+void            Game::_pushInList(t_entityList *&list, AEntity *entity)
 {
     t_entityList    *tmp = list;
     t_entityList    *newEntity = new t_entityList();
 
     newEntity->entity = entity;
     newEntity->next = NULL;
-    if (!list)
-    {
-        list = newEntity;
-        return (list);
-    }
-    while (list->next)
-        list = list->next;
-    list->next = newEntity;
-    return (tmp);
+    while (tmp && tmp->next)
+        tmp = tmp->next;
+    tmp ? tmp->next = newEntity : list = newEntity;
 }
 
-void            Game::_freeEntityList(t_entityList *list)
+void            Game::_freeEntityList(t_entityList *&list)
 {
-    t_entityList    *first;
     t_entityList    *tmp;
 
-    first = list;
-    while (first != NULL)
+    while (list)
     {
-        tmp = first->next;
-        delete first->entity;
-        delete first;
-        first = tmp;
+        tmp = list->next;
+        delete list->entity;
+        delete list;
+        list = tmp;
     }
     list = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/21 18:26:17 by jfortin          ###   ########.fr       */
+/*   Updated: 2016/12/29 17:55:32 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,11 @@ Enemy	&Enemy::operator=(Enemy const &rhs)
 
 bool            Enemy::move(unsigned int height, unsigned int width, int key)
 {
-	if (key == KEY_UP && this->coord.y > this->speed / 2)
-        this->coord.y -= (this->speed / 2);
-	else if (key == KEY_DOWN && this->coord.y < height - (this->speed / 2) - 3)
+    (void)height;
+    (void)width;
+    (void)key;
+	if (this->coord.y < height - (this->speed / 2) - sizeSkin.y)
         this->coord.y += (this->speed / 2);
-	else if (key == KEY_LEFT && this->coord.x > this->speed)
-        this->coord.x -= this->speed;
-	else if (key == KEY_RIGHT && this->coord.x < width - this->speed - 6.5)
-        this->coord.x += this->speed;
     else
         return (false);
     return (true);
@@ -58,27 +55,9 @@ bool            Enemy::move(unsigned int height, unsigned int width, int key)
 AEntity         *Enemy::shoot()
 {
     t_coord coordShoot;
-    std::size_t length_max;
-    std::size_t length_tmp;
-    std::size_t index;
-
-    index = 0;
-    length_max = 0;
-    length_tmp = 0;
-    while (index < this->skin.length() - 1)
-    {
-        index += length_tmp + 1;
-        if ((length_tmp = this->skin.find("\n", index + 1) - index) > this->skin.length())
-        {
-            length_tmp = this->skin.length() - index;
-            length_max = (length_max < length_tmp) ? length_tmp : length_max;        
-            break ;
-        }
-        length_max = (length_max < length_tmp) ? length_tmp : length_max;
-    }
-    length_max /= 2;
-    coordShoot.x = this->coord.x + length_max;
+    
+    coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
     coordShoot.y = this->coord.y - 1;
-    return (new Missile(1, 2, "|", NULL, coordShoot, *this, 'N'));
+    return (new Missile(1, 2, ":", NULL, coordShoot, *this, 'S'));
 }
 

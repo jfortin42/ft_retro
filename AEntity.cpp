@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 18:41:32 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/01 16:20:48 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 AEntity::AEntity(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
 	: hp(hp), speed(speed), skin(skin), weapon(weapon), coord(coord)
 {
+	this->sizeSkin = getSizeSkin();
 	//temporaire (retirer plus tard)
 	(void)weapon;
 	//temporaire
@@ -77,7 +78,7 @@ void	AEntity::displaySkin(WINDOW *win) const
 		x = 0;
 		while (skin.c_str()[i] && skin.c_str()[i] != '\n')
 			mvwaddch(win, y, coord.x + (x++), skin.c_str()[i++]);
-		i++;
+		i += skin.c_str()[i] ? 1 : 0;
 		y++;
 	}
 	wattroff(stdscr, COLOR_PAIR(3));
@@ -86,4 +87,30 @@ void	AEntity::displaySkin(WINDOW *win) const
 t_coord	AEntity::getCoord() const
 {
 	return (this->coord);
+}
+
+t_coord	AEntity::getSizeSkin() const
+{
+    std::size_t length_max;
+    std::size_t length_tmp;
+    std::size_t index;
+	std::size_t	height;
+
+    index = 0;
+    length_max = 0;
+    length_tmp = 0;
+	height = 0;
+    while (index < this->skin.length() - 1)
+    {
+		height++;
+        index += length_tmp + 1;
+        if ((length_tmp = this->skin.find("\n", index + 1) - index) > this->skin.length())
+        {
+            length_tmp = this->skin.length() - index;
+            length_max = (length_max < length_tmp) ? length_tmp : length_max;        
+            break ;
+        }
+        length_max = (length_max < length_tmp) ? length_tmp : length_max;
+    }
+	return (t_coord){length_max, height};
 }

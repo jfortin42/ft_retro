@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/01 16:20:08 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/03 00:06:51 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ protected:
 	AEntity();
 	
 	unsigned int	hp;
-	unsigned int	speed;
+	unsigned int	speed; // mmillisecond
+	unsigned int	cnt_move;
 	std::string		skin;
 	t_coord			sizeSkin;
 	AWeapon			*weapon;

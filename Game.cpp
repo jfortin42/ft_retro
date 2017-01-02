@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/01 16:42:45 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/03 00:19:27 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,12 +147,14 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
 
 void            Game::_moveEntities(int key)
 {
-    if (_playerList)
-        _playerList->entity->move(LINES - BOT_WIN_H, COLS, key);
-    _moveInList(_missileList, key);
-    _moveInList(_enemyList, key);
-    _collision(_missileList, _enemyList);
-    _collision(_playerList, _enemyList);
+            _moveInList(_playerList, key);
+        if (_checkTime(1))
+        {
+            _moveInList(_missileList, key);
+            _moveInList(_enemyList, key);
+            _collision(_missileList, _enemyList);
+            _collision(_playerList, _enemyList);
+        }
 }
 
 void            Game::launch()
@@ -182,6 +184,19 @@ void            Game::_refreshBottomWin(std::string bkgd)
     wrefresh(_bottom_win);
     werase(_bottom_win);
     //_timer--;
+}
+
+bool            Game::_checkTime(unsigned int mseconde)
+{
+    clock_t        now;
+    static clock_t last = 0;
+
+    if (((now = clock()) * 1000 - last * 1000) / CLOCKS_PER_SEC >= mseconde)
+    {
+        last = now;
+        return (true);
+    }
+    return (false);
 }
 
 std::string     Game::_fillBackground() const
@@ -230,6 +245,7 @@ void            Game::_initGame()
     curs_set(0);
 	keypad(_main_win, TRUE);
 	nodelay(_main_win, TRUE);
+    set_escdelay(0);
     start_color();
     init_color(COLOR_BLUE, 600, 800, 1000);
     init_color(COLOR_WHITE, 1000, 700, 300);
@@ -242,7 +258,7 @@ void            Game::_initGame()
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
-    _pushInList(_playerList, new Player(3, 4, _readSkin("env/playership.env"), NULL, playerCoord));
+    _pushInList(_playerList, new Player(3, 2, _readSkin("env/playership.env"), NULL, playerCoord));
     //init enemy list
 }
 
@@ -260,8 +276,8 @@ void            Game::_gameLoop()
     {
         _refreshMainWin(bkgd);
         i = rand();
-        if (i % 100 < 10)
-            _pushInList(_enemyList, new Enemy(1, 3, _readSkin("env/enemy.env"), NULL, (t_coord){i % (COLS - 10) + 1, 1}));
+        if (i % 5000 < 1)
+            _pushInList(_enemyList, new Enemy(1, 500, _readSkin("env/enemy.env"), NULL, (t_coord){i % (COLS - 10) + 1, 1}));
         if (key == KEY_SPC && _playerList)
             _pushInList(_missileList, _playerList->entity->shoot());
         _displayEntities(_playerList);
@@ -273,7 +289,6 @@ void            Game::_gameLoop()
         //fonction pour tous les tirs;
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
-        usleep(100000);
     }
     if (!_playerList)
     {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/20 20:06:20 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/02 17:14:26 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,21 @@ Missile	&Missile::operator=(Missile const &rhs)
 
 bool	Missile::move(unsigned int height, unsigned int width, int key)
 {
-	//if (coord.y < height / 2)
-	//	coord.y = height - 6;
-	(void)key;// = 0;
-	if (this->direction == 'N' && this->coord.y > this->speed / 2)
-		this->coord.y -= (this->speed / 2);
-	else if (this->direction == 'S' && this->coord.y < height - (this->speed / 2) - 3)
-		this->coord.y += (this->speed / 2);
-	else if (this->direction == 'E' && this->coord.x > this->speed)
-		this->coord.x -= this->speed;
-	else if (this->direction == 'W' && this->coord.x < width - this->speed - 6.5)
-		this->coord.x += this->speed;
-	else
-		return (false);
+	(void)key;
+    if (cnt_move++ >= speed)
+    {
+        cnt_move = 0;
+		if (this->direction == 'N' && this->coord.y > 1)
+			this->coord.y -= 1;
+		else if (this->direction == 'S' && this->coord.y < height - 1 - 3)
+			this->coord.y += 1;
+		else if (this->direction == 'E' && this->coord.x > 1)
+			this->coord.x -= 1;
+		else if (this->direction == 'W' && this->coord.x < width - 1 - 6.5)
+			this->coord.x += 1;
+		else
+			return (false);
+	}
 	return (true);
 }
 

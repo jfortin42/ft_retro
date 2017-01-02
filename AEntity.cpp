@@ -6,14 +6,14 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/01 16:20:48 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/02 16:37:07 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
 
 AEntity::AEntity(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
-	: hp(hp), speed(speed), skin(skin), weapon(weapon), coord(coord)
+	: hp(hp), speed(speed), cnt_move(0), skin(skin), weapon(weapon), coord(coord)
 {
 	this->sizeSkin = getSizeSkin();
 	//temporaire (retirer plus tard)

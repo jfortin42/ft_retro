@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/01 15:47:32 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/04 18:58:34 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class Game {
         };
 
         void            _initGame();
+        bool            _checkTime(unsigned int msecond);
         void            _gameLoop();
         void            _endGame();
         

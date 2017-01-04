@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/03 00:19:27 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/04 18:58:37 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,12 +186,12 @@ void            Game::_refreshBottomWin(std::string bkgd)
     //_timer--;
 }
 
-bool            Game::_checkTime(unsigned int mseconde)
+bool            Game::_checkTime(unsigned int msecond)
 {
     clock_t        now;
     static clock_t last = 0;
 
-    if (((now = clock()) * 1000 - last * 1000) / CLOCKS_PER_SEC >= mseconde)
+    if (((now = clock()) * 1000 - last * 1000) / CLOCKS_PER_SEC >= msecond)
     {
         last = now;
         return (true);

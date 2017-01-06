@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/05 19:33:49 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/06 17:33:03 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ Player          &Player::operator=(Player const &rhs)
 
 bool            Player::move(unsigned int height, unsigned int width, int key)
 {
-	//if (coord.y < height / 2)
-	//	coord.y = height - 6;
-
     // if (cnt_move++ >= speed)
     // {
     //     cnt_move = 0;

@@ -11,7 +11,8 @@ SRC = main.cpp \
 	  AWeapon.cpp \
 	  Missile.cpp \
 	  Enemy.cpp \
-	  Pioupiou.cpp
+	  Pioupiou.cpp \
+	  Laser.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

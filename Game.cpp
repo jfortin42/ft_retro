@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/06 14:37:58 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/06 17:33:59 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,8 +258,9 @@ void            Game::_initGame()
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
-    // AWeapon    *pioupiou = new Pioupiou();
-    _pushInList(_playerList, new Player(3, 2, _readSkin("env/playership.env"), NULL, playerCoord));
+    // AWeapon *pioupiou = new Pioupiou();
+    AWeapon *laser = new Laser();
+    _pushInList(_playerList, new Player(3, 2, _readSkin("env/playership.env"), laser, playerCoord));
     //init enemy list
 }
 
@@ -273,10 +274,8 @@ void            Game::_gameLoop()
 
     bkgd = _fillBackground();
     game_over = _readSkin("env/gameover2.env");
-    std::ofstream   file("log.log");
     while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0)
     {
-        file << key << std::endl;
         _refreshMainWin(bkgd);
         i = rand();
         if (i % 5000 < 1)
@@ -293,7 +292,6 @@ void            Game::_gameLoop()
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
     }
-    file.close();
     if (!_playerList)
     {
         werase(_main_win);

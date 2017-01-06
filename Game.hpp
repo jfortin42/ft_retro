@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/06 13:44:56 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/06 14:30:59 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ class Game {
         };
 
         void            _initGame();
-        bool            _checkTime(unsigned int msecond);
+        bool            _checkTime(unsigned int msecond, clock_t &last);
         void            _gameLoop();
         void            _endGame();
         
@@ -105,6 +105,9 @@ class Game {
         t_entityList    *_playerList;
         t_entityList    *_enemyList;
         t_entityList    *_missileList;
+
+        clock_t         _last_loop;
+        clock_t         _last_timer;
 
 };
 

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/06 14:30:59 by fsidler          ###   ########.fr       */
+/*   Created: 2017/01/06 18:07:04 by fsidler           #+#    #+#             */
+/*   Updated: 2017/01/06 18:07:05 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # include "Player.hpp"
 # include "Enemy.hpp"
 # include "Pioupiou.hpp"
+# include "Laser.hpp"
 
 # define MAIN_WIN_WMIN 130
 # define MAIN_WIN_HMIN 30

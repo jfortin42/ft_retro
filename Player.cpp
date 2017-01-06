@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/05 19:33:49 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/06 18:11:02 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ Player          &Player::operator=(Player const &rhs)
 
 bool            Player::move(unsigned int height, unsigned int width, int key)
 {
-	//if (coord.y < height / 2)
-	//	coord.y = height - 6;
-
     // if (cnt_move++ >= speed)
     // {
     //     cnt_move = 0;
@@ -59,6 +56,8 @@ bool            Player::move(unsigned int height, unsigned int width, int key)
 
 AEntity         *Player::shoot()
 {
+    if (!weapon)
+        throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
     // t_coord coordShoot;
     
     // coordShoot.x = this->coord.x + this->sizeSkin.x / 2;

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/06 14:37:58 by fsidler          ###   ########.fr       */
+/*   Created: 2017/01/06 18:07:17 by fsidler           #+#    #+#             */
+/*   Updated: 2017/01/06 18:24:27 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,8 @@ void            Game::_initGame()
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
-    // AWeapon    *pioupiou = new Pioupiou();
+    // AWeapon *pioupiou = new Pioupiou();
+    //AWeapon *laser = new Laser();
     _pushInList(_playerList, new Player(3, 2, _readSkin("env/playership.env"), NULL, playerCoord));
     //init enemy list
 }
@@ -273,16 +274,18 @@ void            Game::_gameLoop()
 
     bkgd = _fillBackground();
     game_over = _readSkin("env/gameover2.env");
-    std::ofstream   file("log.log");
     while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0)
     {
-        file << key << std::endl;
         _refreshMainWin(bkgd);
         i = rand();
         if (i % 5000 < 1)
             _pushInList(_enemyList, new Enemy(1, 500, _readSkin("env/enemy.env"), NULL, (t_coord){i % (COLS - 10) + 1, 1}));
         if (key == KEY_SPC && _playerList)
+        try
+        {
             _pushInList(_missileList, _playerList->entity->shoot());
+        }
+        catch (std::exception &e) {}
         _displayEntities(_playerList);
         _displayEntities(_enemyList);
         _displayEntities(_missileList);
@@ -293,7 +296,6 @@ void            Game::_gameLoop()
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
     }
-    file.close();
     if (!_playerList)
     {
         werase(_main_win);

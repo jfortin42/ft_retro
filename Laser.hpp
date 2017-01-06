@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AWeapon.hpp                                        :+:      :+:    :+:   */
+/*   Laser.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/06 16:32:49 by jfortin          ###   ########.fr       */
+/*   Created: 2017/01/06 15:00:56 by jfortin           #+#    #+#             */
+/*   Updated: 2017/01/06 15:32:20 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AWEAPON_HPP
-# define AWEAPON_HPP
+#ifndef LASER_HPP
+# define LASER_HPP
 
-#include "Missile.hpp"
-// #include "AEntity.hpp"
-// class   AEntity;
-// class   AWeapon;
-// class   Missile;
-// # include "Game.hpp"
-#include "AEntity.hpp"
-// class	Missile;
-// class	AEntity;
+# include "Game.hpp"
 
-class	AWeapon{
+class	Laser : public AWeapon{
 
 public:
-	AWeapon();
-	~AWeapon();
-	AWeapon(AWeapon const &src);
+	Laser();
+	Laser(Laser const &src);
+	~Laser();
 
-	virtual AEntity	*createMissile(AEntity const &shooter);
+	AEntity	*createMissile(AEntity const &shooter);
 
-	AWeapon	&operator=(AWeapon const &rhs);
+	Laser	&operator=(Laser const &rhs);
 
 private:
 

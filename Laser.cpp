@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AWeapon.cpp                                        :+:      :+:    :+:   */
+/*   Laser.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/13 14:51:41 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/06 16:25:54 by jfortin          ###   ########.fr       */
+/*   Created: 2017/01/06 15:06:23 by jfortin           #+#    #+#             */
+/*   Updated: 2017/01/06 15:33:14 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AWeapon.hpp"
+#include "Laser.hpp"
 
-AWeapon::AWeapon()
+Laser::Laser()
 {}
 
-AWeapon::~AWeapon()
-{}
-
-AWeapon::AWeapon(AWeapon const &src)
+Laser::Laser(Laser const &src)
 {
 	*this = src;
 }
 
-AEntity	*AWeapon::createMissile(AEntity const &shooter)
+Laser::~Laser()
+{}
+
+AEntity		*Laser::createMissile(AEntity const &shooter)
 {
-    t_coord coordShoot;
+	t_coord coordShoot;
     
     coordShoot.x = shooter.getCoord().x + shooter.getSizeSkin().x / 2;
     coordShoot.y = shooter.getCoord().y - 1;
-
-	return (new Missile(1, 100, "D", NULL, coordShoot, 'N'));
+	return (new Missile(1, 10, "|", NULL, coordShoot, 'N'));
 }
 
-AWeapon	&AWeapon::operator=(AWeapon const &rhs)
+Laser	&Laser::operator=(Laser const &rhs)
 {
 	if (this != &rhs)
 	;
-	return (*this);
+	return (*this);	
 }

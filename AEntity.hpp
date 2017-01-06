@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/06 13:37:40 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/06 18:10:32 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,16 @@ public:
 	AEntity	&operator=(AEntity const &rhs);
 
 protected:
+	class	NoWeaponEquippedException : public std::exception {
+		public:
+			NoWeaponEquippedException();
+			NoWeaponEquippedException(NoWeaponEquippedException const &src);
+			~NoWeaponEquippedException() throw();
+
+			NoWeaponEquippedException	&operator=(NoWeaponEquippedException const &rhs);
+
+			char const					*what(void) const throw();
+	};
 	AEntity();
 	
 	unsigned int	hp;

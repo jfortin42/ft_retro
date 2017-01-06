@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/02 16:37:07 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/06 18:18:35 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,21 @@ t_coord	AEntity::getSizeSkin() const
         length_max = (length_max < length_tmp) ? length_tmp : length_max;
     }
 	return (t_coord){length_max, height};
+}
+
+AEntity::NoWeaponEquippedException::NoWeaponEquippedException() { return ; }
+
+AEntity::NoWeaponEquippedException::NoWeaponEquippedException(NoWeaponEquippedException const &src) { *this = src; }
+
+AEntity::NoWeaponEquippedException::~NoWeaponEquippedException() throw() { return ; }
+
+AEntity::NoWeaponEquippedException  &AEntity::NoWeaponEquippedException::operator=(AEntity::NoWeaponEquippedException const &rhs)
+{
+    (void)rhs;
+    return (*this);
+}
+
+char const                              *AEntity::NoWeaponEquippedException::what(void) const throw()
+{
+    return ("No Weapons Equipped");
 }

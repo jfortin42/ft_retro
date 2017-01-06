@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:15:44 by jfortin           #+#    #+#             */
-/*   Updated: 2016/12/20 19:56:12 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/06 13:49:22 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 
 # include "AEntity.hpp"
 # include "AWeapon.hpp"
-
-class AEntity;
-class AWeapon;
+// class   AEntity;
+// class   AWeapon;
+// class   Missile;
+// # include "Game.hpp"
+// class AEntity;
+// class AWeapon;
 
 class Missile : public AEntity {
 
 	public:
-		Missile(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, AEntity const &shooter, char direction);
+		Missile(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, char direction);
 		Missile(Missile const &src);
 		~Missile();
 
@@ -34,7 +37,7 @@ class Missile : public AEntity {
 	private:
 		Missile();
 
-		AEntity	const	&shooter;
+		// AEntity	const	&shooter;
 		char const		direction;
 };
 

@@ -6,17 +6,17 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/02 17:14:26 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/04 21:17:21 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Missile.hpp"
 
-Missile::Missile(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, AEntity const &shooter, char direction)
-	: AEntity(hp, speed, skin, weapon, coord), shooter(shooter), direction(direction)
+Missile::Missile(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, char direction)
+	: AEntity(hp, speed, skin, weapon, coord), direction(direction)
 { return ; }
 
-Missile::Missile(Missile const &src) : AEntity(src), shooter(src.shooter), direction(src.direction)
+Missile::Missile(Missile const &src) : AEntity(src), direction(src.direction)
 {
 	*this = src;
 }
@@ -62,5 +62,5 @@ AEntity	*Missile::shoot()
 
 	coordShoot.y = 0;
 	coordShoot.x = 0;
-	return (new Missile(1, 1, "o", NULL, coordShoot, *this, this->direction));
+	return (new Missile(1, 1, "o", NULL, coordShoot, this->direction));
 }

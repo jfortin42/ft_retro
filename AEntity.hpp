@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/04 18:59:07 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/06 13:37:40 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@
 # include <string>
 # include <ncurses.h>
 
-# include "AWeapon.hpp"
-//# include "Missile.hpp"
+// # include "AWeapon.hpp"
+// # include "Missile.hpp"
 
+// class   AEntity;
+class   AWeapon;
+// class   Missile;
+// # include "Game.hpp"
 typedef struct	s_coord
 {
 	unsigned int	x;
@@ -28,7 +32,7 @@ typedef struct	s_coord
 }				t_coord;
 
 //class	Missile;
-class	AWeapon;
+// class	AWeapon;
 
 class	AEntity{
 

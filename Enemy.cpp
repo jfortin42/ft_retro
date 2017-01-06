@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/03 00:14:12 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/04 21:17:38 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool            Enemy::move(unsigned int height, unsigned int width, int key)
     if (cnt_move++ >= speed)
     {
         cnt_move = 0;
-        if (this->coord.y < height - sizeSkin.y)
+        if (this->coord.y < height - sizeSkin.y - 1)
             this->coord.y += 1;
         else
             return (false);
@@ -61,6 +61,6 @@ AEntity         *Enemy::shoot()
     
     coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
     coordShoot.y = this->coord.y - 1;
-    return (new Missile(1, 2, ":", NULL, coordShoot, *this, 'S'));
+    return (new Missile(1, 2, ":", NULL, coordShoot, 'S'));
 }
 

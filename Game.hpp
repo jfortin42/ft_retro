@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/04 18:58:34 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/06 13:44:56 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,22 @@
 # include <fstream>
 # include <sstream>
 
+// typedef struct	s_coord
+// {
+// 	unsigned int	x;
+// 	unsigned int	y;
+// }				t_coord;
+
+// class   AEntity;
+// class   AWeapon;
+// class   Missile;
+// # include
+# include "AEntity.hpp"
+# include "AWeapon.hpp"
+# include "Missile.hpp"
 # include "Player.hpp"
 # include "Enemy.hpp"
+# include "Pioupiou.hpp"
 
 # define MAIN_WIN_WMIN 130
 # define MAIN_WIN_HMIN 30

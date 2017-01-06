@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   Player.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 16:56:48 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 19:57:08 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/05 23:04:31 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLAYER_HPP
 # define PLAYER_HPP
 
-# include "AEntity.hpp"
-# include "Missile.hpp"
-
-class Missile;
-class AEntity;
+// # include "AEntity.hpp"
+// # include "Missile.hpp"
+// class   AEntity;
+// class   AWeapon;
+// class   Missile;
+# include "Game.hpp"
+// class Missile;
+// class AEntity;
 
 class Player : public AEntity {
 

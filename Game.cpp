@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/04 18:58:37 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/05 22:47:41 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ bool            Game::_hitbox(t_entityList *entity1, t_entityList *entity2)
 {
     if (entity1->entity->getCoord().x + entity1->entity->getSizeSkin().x >= entity2->entity->getCoord().x
         && entity1->entity->getCoord().x <= entity2->entity->getCoord().x + entity2->entity->getSizeSkin().x
-        && entity1->entity->getCoord().y + entity1->entity->getSizeSkin().y >= entity2->entity->getCoord().y
-        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->getSizeSkin().y)
+        && entity1->entity->getCoord().y + entity1->entity->getSizeSkin().y - 1 >= entity2->entity->getCoord().y
+        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->getSizeSkin().y - 1)
         return (true);
     return (false);
 }
@@ -258,6 +258,7 @@ void            Game::_initGame()
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
+    // AWeapon    *pioupiou = new Pioupiou();
     _pushInList(_playerList, new Player(3, 2, _readSkin("env/playership.env"), NULL, playerCoord));
     //init enemy list
 }
@@ -272,8 +273,10 @@ void            Game::_gameLoop()
 
     bkgd = _fillBackground();
     game_over = _readSkin("env/gameover2.env");
+    std::ofstream   file("log.log");
     while ((key = wgetch(_main_win)) != KEY_ESC && _playerList)
     {
+        file << key << std::endl;
         _refreshMainWin(bkgd);
         i = rand();
         if (i % 5000 < 1)
@@ -290,6 +293,7 @@ void            Game::_gameLoop()
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
     }
+    file.close();
     if (!_playerList)
     {
         werase(_main_win);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:35:38 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/20 15:26:55 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/05 22:56:10 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 #include <time.h>
 
 #include "Game.hpp"
-#include "AEntity.hpp"
-#include "AWeapon.hpp"
-#include "Player.hpp"
+// #include "AEntity.hpp"
+// #include "AWeapon.hpp"
+// #include "Player.hpp"
 
 #define HEIGHT height
 #define WIDTH width

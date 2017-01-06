@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/03 00:13:54 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/05 19:33:49 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool            Player::move(unsigned int height, unsigned int width, int key)
         this->coord.y += this->speed / 2;
 	else if (key == KEY_LEFT && this->coord.x > this->speed / 2)
         this->coord.x -= this->speed;
-	else if (key == KEY_RIGHT && this->coord.x < width - this->speed / 2 - sizeSkin.x)
+	else if (key == KEY_RIGHT && this->coord.x < width - this->speed / 2 - sizeSkin.x - 1)
         this->coord.x += this->speed;
     // }
     return (true);
@@ -59,9 +59,10 @@ bool            Player::move(unsigned int height, unsigned int width, int key)
 
 AEntity         *Player::shoot()
 {
-    t_coord coordShoot;
+    // t_coord coordShoot;
     
-    coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
-    coordShoot.y = this->coord.y - 1;
-    return (new Missile(1, 100, "|", NULL, coordShoot, *this, 'N'));
+    // coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
+    // coordShoot.y = this->coord.y - 1;
+    // return (new Missile(1, 100, "|", NULL, coordShoot, 'N'));
+    return (weapon->createMissile(*this));
 }

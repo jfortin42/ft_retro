@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/05 22:47:41 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/06 14:37:58 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,14 +147,14 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
 
 void            Game::_moveEntities(int key)
 {
-            _moveInList(_playerList, key);
-        if (_checkTime(1))
-        {
-            _moveInList(_missileList, key);
-            _moveInList(_enemyList, key);
-            _collision(_missileList, _enemyList);
-            _collision(_playerList, _enemyList);
-        }
+    _moveInList(_playerList, key);
+    if (_checkTime(1, _last_loop))
+    {
+        _moveInList(_missileList, key);
+        _moveInList(_enemyList, key);
+        _collision(_missileList, _enemyList);
+        _collision(_playerList, _enemyList);
+    }
 }
 
 void            Game::launch()
@@ -181,15 +181,15 @@ void            Game::_refreshBottomWin(std::string bkgd)
     mvwprintw(_bottom_win, 2, 2, "time:");
     mvwprintw(_bottom_win, 2, 8, "%i", _timer);
     mvwvline(_bottom_win, 1, 16, ACS_VLINE, 3);
+    if (_checkTime(1000, _last_timer))
+        _timer--;
     wrefresh(_bottom_win);
     werase(_bottom_win);
-    //_timer--;
 }
 
-bool            Game::_checkTime(unsigned int msecond)
+bool            Game::_checkTime(unsigned int msecond, clock_t  &last)
 {
     clock_t        now;
-    static clock_t last = 0;
 
     if (((now = clock()) * 1000 - last * 1000) / CLOCKS_PER_SEC >= msecond)
     {
@@ -274,7 +274,7 @@ void            Game::_gameLoop()
     bkgd = _fillBackground();
     game_over = _readSkin("env/gameover2.env");
     std::ofstream   file("log.log");
-    while ((key = wgetch(_main_win)) != KEY_ESC && _playerList)
+    while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0)
     {
         file << key << std::endl;
         _refreshMainWin(bkgd);

@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/04 21:17:21 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/08 17:29:39 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ bool	Missile::move(unsigned int height, unsigned int width, int key)
         cnt_move = 0;
 		if (this->direction == 'N' && this->coord.y > 1)
 			this->coord.y -= 1;
-		else if (this->direction == 'S' && this->coord.y < height - 1 - 3)
+		else if (this->direction == 'S' && this->coord.y < height - 2)
 			this->coord.y += 1;
-		else if (this->direction == 'E' && this->coord.x > 1)
+		else if (this->direction == 'W' && this->coord.x > 1)
 			this->coord.x -= 1;
-		else if (this->direction == 'W' && this->coord.x < width - 1 - 6.5)
+		else if (this->direction == 'E' && this->coord.x < width - 2)
 			this->coord.x += 1;
 		else
 			return (false);

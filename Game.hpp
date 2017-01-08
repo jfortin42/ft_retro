@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/06 18:07:04 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/06 18:07:05 by fsidler          ###   ########.fr       */
+/*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
+/*   Updated: 2017/01/08 17:18:26 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,10 @@ class Game {
         
         void            _displayEntities(t_entityList *list) const;
     	void			_moveInList(t_entityList *&begin, int key);
+        void            _shootInList(t_entityList *list, t_entityList *&listOfMissile);
         void            _collision(t_entityList *&list1, t_entityList *&list2);
         bool            _hitbox(t_entityList *entity1, t_entityList *entity2);
-        void            _moveEntities(int key);
+        void            _gameCore(int key);
 
         void            _pushInList(t_entityList *&list, AEntity *entity);
         void            _lstdelone(t_entityList *&begin, t_entityList *&current, char command);
@@ -105,7 +106,8 @@ class Game {
 
         t_entityList    *_playerList;
         t_entityList    *_enemyList;
-        t_entityList    *_missileList;
+        t_entityList    *_missilePlayerList;
+        t_entityList    *_missileEnemyList;
 
         clock_t         _last_loop;
         clock_t         _last_timer;

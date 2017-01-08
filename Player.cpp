@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/06 18:11:02 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/07 20:55:22 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,11 @@ bool            Player::move(unsigned int height, unsigned int width, int key)
 
 AEntity         *Player::shoot()
 {
+    t_coord coordShoot;
+
     if (!weapon)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
-    // t_coord coordShoot;
-    
-    // coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
-    // coordShoot.y = this->coord.y - 1;
-    // return (new Missile(1, 100, "|", NULL, coordShoot, 'N'));
-    return (weapon->createMissile(*this));
+    coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
+    coordShoot.y = this->coord.y - 1;
+    return (weapon->createMissile(coordShoot, 'N'));
 }

@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/04 21:17:38 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/07 22:44:58 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ AEntity         *Enemy::shoot()
     t_coord coordShoot;
     
     coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
-    coordShoot.y = this->coord.y - 1;
-    return (new Missile(1, 2, ":", NULL, coordShoot, 'S'));
+    coordShoot.y = this->coord.y + this->sizeSkin.y + 1;
+    return (weapon->createMissile(coordShoot, 'S'));
 }
 

@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/06 18:07:17 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/06 18:24:27 by fsidler          ###   ########.fr       */
+/*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
+/*   Updated: 2017/01/08 17:20:05 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 
 Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0),
-_playerList(NULL), _enemyList(NULL), _missileList(NULL) { return ; }
+_playerList(NULL), _enemyList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL)
+{}
 
 Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL),
-_timer(src._timer), _score(src._score), _enemyList(NULL), _missileList(NULL)
+_timer(src._timer), _score(src._score), _enemyList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL)
 {
     //fonction pour remplir this->_enemyList (DEEP COPY!)    
     //fonction pour remplir this->_missileList (DEEP COPY!)
@@ -30,7 +31,8 @@ Game::~Game()
     
     _freeEntityList(_playerList);
     _freeEntityList(_enemyList);
-    _freeEntityList(_missileList);
+    _freeEntityList(_missilePlayerList);
+    _freeEntityList(_missileEnemyList);
 }
 
 Game            &Game::operator=(Game const &rhs)
@@ -42,7 +44,8 @@ Game            &Game::operator=(Game const &rhs)
         delwin(this->_main_win);
         delwin(this->_bottom_win);
         _freeEntityList(_enemyList);
-        _freeEntityList(_missileList);
+        _freeEntityList(_missilePlayerList);
+        _freeEntityList(_missileEnemyList);
         //fonction pour remplir this->_enemyList (DEEP COPY!)
         //fonction pour remplir this->_entityList (DEEP COPY!)
         _freeEntityList(_playerList);
@@ -145,15 +148,16 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
     }
 }
 
-void            Game::_moveEntities(int key)
+void            Game::_shootInList(t_entityList *list, t_entityList *&listOfMissile)
 {
-    _moveInList(_playerList, key);
-    if (_checkTime(1, _last_loop))
+    while (list)
     {
-        _moveInList(_missileList, key);
-        _moveInList(_enemyList, key);
-        _collision(_missileList, _enemyList);
-        _collision(_playerList, _enemyList);
+        try
+        {
+            _pushInList(listOfMissile, list->entity->shoot());
+        }
+        catch (std::exception &e) {}
+        list = list->next;
     }
 }
 
@@ -228,6 +232,25 @@ std::string     Game::_readSkin(std::string nameOfFile) const
     return (read.str());
 }
 
+void            Game::_gameCore(int key)
+{
+    _displayEntities(_playerList);
+    _displayEntities(_enemyList);
+    _displayEntities(_missilePlayerList);
+    _displayEntities(_missileEnemyList);
+    _moveInList(_playerList, key);
+    if (_checkTime(1, _last_loop))
+    {
+        _moveInList(_missilePlayerList, key);
+        _moveInList(_missileEnemyList, key);
+        _moveInList(_enemyList, key);
+        _collision(_missilePlayerList, _enemyList);
+        _collision(_playerList, _enemyList);
+        _collision(_playerList, _missileEnemyList);
+        _shootInList(_enemyList, _missileEnemyList);
+    }
+}
+
 void            Game::_initGame()
 {
     t_coord playerCoord;
@@ -259,8 +282,8 @@ void            Game::_initGame()
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
     // AWeapon *pioupiou = new Pioupiou();
-    //AWeapon *laser = new Laser();
-    _pushInList(_playerList, new Player(3, 2, _readSkin("env/playership.env"), NULL, playerCoord));
+    AWeapon *laser = new Laser(1, 30, 0);
+    _pushInList(_playerList, new Player(3, 2, _readSkin("env/playership.env"), laser, playerCoord));
     //init enemy list
 }
 
@@ -270,7 +293,7 @@ void            Game::_gameLoop()
     int         key;
     std::string bkgd;
     std::string game_over;
-    // t_coord     enemyCoord = {50, 1};
+    AWeapon *pioupiou = new Pioupiou(1, 50, 1000);
 
     bkgd = _fillBackground();
     game_over = _readSkin("env/gameover2.env");
@@ -279,17 +302,14 @@ void            Game::_gameLoop()
         _refreshMainWin(bkgd);
         i = rand();
         if (i % 5000 < 1)
-            _pushInList(_enemyList, new Enemy(1, 500, _readSkin("env/enemy.env"), NULL, (t_coord){i % (COLS - 10) + 1, 1}));
+            _pushInList(_enemyList, new Enemy(1, 500, _readSkin("env/enemy.env"), pioupiou, (t_coord){i % (COLS - 10) + 1, 1}));
         if (key == KEY_SPC && _playerList)
         try
         {
-            _pushInList(_missileList, _playerList->entity->shoot());
+            _pushInList(_missilePlayerList, _playerList->entity->shoot());
         }
         catch (std::exception &e) {}
-        _displayEntities(_playerList);
-        _displayEntities(_enemyList);
-        _displayEntities(_missileList);
-        _moveEntities(key);
+        _gameCore(key);
         //fonction pour tout DISPLAY (player, enemy, missile);
         //fonction pour tout les moves(envoyer ch) qui detecte aussi les collisions;
         //fonction pour tous les tirs;

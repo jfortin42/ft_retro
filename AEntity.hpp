@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/07 20:56:24 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 10:30:09 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct	s_coord
 class	AEntity{
 
 public:
-	AEntity(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
+	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
 	AEntity(AEntity const &src);
 	virtual ~AEntity();
 
@@ -45,10 +45,12 @@ public:
 	virtual bool	move(unsigned int height, unsigned int width, int key) = 0;
 	//Missile *shoot();
 	virtual AEntity	*shoot() = 0;
-	void			takeDamage(AEntity const &attacker);
+	unsigned int	takeDamage(AEntity const &attacker);
 	void			displaySkin(WINDOW *win) const;
 	t_coord			getCoord() const;
 	t_coord			getSizeSkin() const;
+	unsigned int	getHp() const;
+	unsigned int	getDamageDeal() const;
 
 	AEntity	&operator=(AEntity const &rhs);
 
@@ -66,6 +68,7 @@ protected:
 	AEntity();
 	
 	unsigned int	hp;
+	unsigned int	damageDeal;
 	unsigned int	speed; // millisecond
 	unsigned int	cnt_move;
 	std::string		skin;

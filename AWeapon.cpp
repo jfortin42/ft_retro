@@ -6,14 +6,14 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 14:51:41 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/08 17:23:43 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 16:02:53 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AWeapon.hpp"
 
-AWeapon::AWeapon(unsigned int hp_missile, unsigned int speed_missile, unsigned int rateOfFire) :
-	hp_missile(hp_missile), speed_missile(speed_missile), rateOfFire(rateOfFire), cnt_shoot(0)
+AWeapon::AWeapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, unsigned int rateOfFire) :
+	hp_missile(hp_missile), damageDeal(damageDeal), speed_missile(speed_missile), rateOfFire(rateOfFire), cnt_shoot(0)
 {}
 
 AWeapon::AWeapon()
@@ -32,7 +32,7 @@ AEntity	*AWeapon::createMissile(t_coord coord, char direction)
 	if (cnt_shoot++ < rateOfFire)
         throw(AWeapon::RateOfFireException::RateOfFireException());
 	cnt_shoot = 0;
-	return (new Missile(1, 100, "D", NULL, coord, direction));
+	return (new Missile(1, 1, 100, "D", NULL, coord, direction));
 }
 
 AWeapon	&AWeapon::operator=(AWeapon const &rhs)

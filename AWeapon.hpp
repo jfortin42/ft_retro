@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/07 22:35:29 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 16:01:31 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 class	AWeapon{
 
 public:
-	AWeapon(unsigned int hp_missile, unsigned int speed, unsigned int rateOfFire);
+	AWeapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed, unsigned int rateOfFire);
 	AWeapon(AWeapon const &src);
 	~AWeapon();
 
@@ -47,6 +47,7 @@ protected:
 	};
 	
 	unsigned int		hp_missile;
+	unsigned int		damageDeal;
 	unsigned int		speed_missile;
 	unsigned int		rateOfFire;
 	unsigned int		cnt_shoot;

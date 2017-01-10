@@ -6,14 +6,14 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/07 20:55:22 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 15:54:23 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Player.hpp"
 
-Player::Player(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord) : 
-AEntity(hp, speed, skin, weapon, coord)
+Player::Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord) : 
+AEntity(hp, damageDeal, speed, skin, weapon, coord)
 {}
 
 Player::Player(Player const &src)

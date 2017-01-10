@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 18:41:51 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/07 19:42:13 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 16:17:31 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 class Pioupiou : public AWeapon{
 
 public:
-	Pioupiou(unsigned int hp, unsigned int speed, unsigned int rateOfFire);
+	Pioupiou(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int rateOfFire);
 	Pioupiou(Pioupiou const &src);
 	~Pioupiou();
 

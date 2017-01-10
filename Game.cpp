@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/08 17:20:05 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 16:26:34 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ bool            Game::_hitbox(t_entityList *entity1, t_entityList *entity2)
 void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
 {
     t_entityList    *tmp1 = list1;
+    unsigned int    tmp1HP;
+    unsigned int    tmp2HP;
 
     while (tmp1)
     {
@@ -124,23 +126,39 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
         {
                 if (tmp1->next && tmp2->next && _hitbox(tmp1->next, tmp2->next))
             {
-                _lstdelone(list1, tmp1, 'N');
-                _lstdelone(list2, tmp2, 'N');
+                tmp1HP = tmp1->next->entity->takeDamage(*tmp2->next->entity);
+                tmp2HP = tmp2->next->entity->takeDamage(*tmp1->next->entity);
+                if (!tmp1HP) 
+                     _lstdelone(list1, tmp1, 'N');
+                if (!tmp2HP)
+                    _lstdelone(list2, tmp2, 'N');
             }
                 else if (tmp1->next && _hitbox(tmp1->next, tmp2))
             {
-                _lstdelone(list1, tmp1, 'N');
-                _lstdelone(list2, tmp2, 'F');
+                tmp1HP = tmp1->next->entity->takeDamage(*tmp2->entity);
+                tmp2HP = tmp2->entity->takeDamage(*tmp1->next->entity);
+                if (!tmp1HP)
+                    _lstdelone(list1, tmp1, 'N');
+                if (!tmp2HP)
+                    _lstdelone(list2, tmp2, 'F');
             }
                 else if (tmp2->next && _hitbox(tmp1, tmp2->next))
             {
-                _lstdelone(list1, tmp1, 'F');
-                _lstdelone(list2, tmp2, 'N');
+                tmp1HP = tmp1->entity->takeDamage(*tmp2->next->entity);
+                tmp2HP = tmp2->next->entity->takeDamage(*tmp1->entity);
+                if (!tmp1HP)
+                    _lstdelone(list1, tmp1, 'F');
+                if (!tmp2HP)
+                    _lstdelone(list2, tmp2, 'N');
             }
                 else if (_hitbox(tmp1, tmp2))
             {
-                _lstdelone(list1, tmp1, 'F');
-                _lstdelone(list2, tmp2, 'F');
+                tmp1HP = tmp1->entity->takeDamage(*tmp2->entity);
+                tmp2HP = tmp2->entity->takeDamage(*tmp1->entity);
+                if (!tmp1HP)
+                    _lstdelone(list1, tmp1, 'F');
+                if (!tmp2HP)
+                    _lstdelone(list2, tmp2, 'F');
             }
             tmp2 = tmp2 ? tmp2->next : list2;
         }
@@ -282,8 +300,8 @@ void            Game::_initGame()
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
     // AWeapon *pioupiou = new Pioupiou();
-    AWeapon *laser = new Laser(1, 30, 0);
-    _pushInList(_playerList, new Player(3, 2, _readSkin("env/playership.env"), laser, playerCoord));
+    AWeapon *laser = new Laser(1, 5, 30, 0);
+    _pushInList(_playerList, new Player(3, 1, 2, _readSkin("env/playership.env"), laser, playerCoord));
     //init enemy list
 }
 
@@ -293,7 +311,7 @@ void            Game::_gameLoop()
     int         key;
     std::string bkgd;
     std::string game_over;
-    AWeapon *pioupiou = new Pioupiou(1, 50, 1000);
+    AWeapon *pioupiou = new Pioupiou(1, 1, 50, 1000);
 
     bkgd = _fillBackground();
     game_over = _readSkin("env/gameover2.env");
@@ -302,7 +320,7 @@ void            Game::_gameLoop()
         _refreshMainWin(bkgd);
         i = rand();
         if (i % 5000 < 1)
-            _pushInList(_enemyList, new Enemy(1, 500, _readSkin("env/enemy.env"), pioupiou, (t_coord){i % (COLS - 10) + 1, 1}));
+            _pushInList(_enemyList, new Enemy(2, 1, 500, _readSkin("env/enemy.env"), pioupiou, (t_coord){i % (COLS - 10) + 1, 1}));
         if (key == KEY_SPC && _playerList)
         try
         {

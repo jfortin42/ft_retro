@@ -6,14 +6,14 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/07 20:56:46 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 10:31:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
 
-AEntity::AEntity(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
-	: hp(hp), speed(speed), cnt_move(0), skin(skin), weapon(weapon), coord(coord)
+AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
+	: hp(hp), damageDeal(damageDeal), speed(speed), cnt_move(0), skin(skin), weapon(weapon), coord(coord)
 {
 	this->sizeSkin = getSizeSkin();
 	//temporaire (retirer plus tard)
@@ -59,10 +59,16 @@ AEntity	*AEntity::shoot()
 	return (NULL);*/
 }
 
-/*void	AEntity::takeDamage(AEntity const &attcker)
+unsigned int	AEntity::getDamageDeal() const
 {
-	
-}*/
+	return (this->damageDeal);
+}
+
+unsigned int	AEntity::takeDamage(AEntity const &attacker)
+{
+	hp -= hp < attacker.getDamageDeal() ? hp : attacker.getDamageDeal();
+	return (hp);
+}
 
 void	AEntity::displaySkin(WINDOW *win) const
 {
@@ -113,6 +119,11 @@ t_coord	AEntity::getSizeSkin() const
         length_max = (length_max < length_tmp) ? length_tmp : length_max;
     }
 	return (t_coord){length_max, height};
+}
+
+unsigned int	AEntity::getHp() const
+{
+	return (this->hp);
 }
 
 AEntity::NoWeaponEquippedException::NoWeaponEquippedException() { return ; }

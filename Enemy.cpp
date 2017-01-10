@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/07 22:44:58 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 16:10:50 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 Enemy::Enemy()
 {}
 
-Enemy::Enemy(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
-	: AEntity(hp, speed, skin, weapon, coord)
+Enemy::Enemy(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
+	: AEntity(hp, damageDeal, speed, skin, weapon, coord)
 {}
 
 Enemy::Enemy(Enemy const &src)

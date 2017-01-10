@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 16:56:48 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/05 23:04:31 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/10 15:54:08 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 class Player : public AEntity {
 
     public:
-        Player(unsigned int hp, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
+        Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
         Player(Player const &src);
         ~Player();
 

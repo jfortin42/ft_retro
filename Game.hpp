@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/08 17:18:26 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 20:56:40 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,6 @@
 # include <fstream>
 # include <sstream>
 
-// typedef struct	s_coord
-// {
-// 	unsigned int	x;
-// 	unsigned int	y;
-// }				t_coord;
-
-// class   AEntity;
-// class   AWeapon;
-// class   Missile;
-// # include
 # include "AEntity.hpp"
 # include "AWeapon.hpp"
 # include "Missile.hpp"
@@ -49,10 +39,10 @@ class                   Player;
 typedef struct          s_entityList
 {
     AEntity             *entity;
-    struct s_entityList  *next;
+    struct s_entityList *next;
 }                       t_entityList;
 
-class Game {
+class                   Game {
 
     public:
         Game();
@@ -77,24 +67,24 @@ class Game {
         };
 
         void            _initGame();
-        bool            _checkTime(unsigned int msecond, clock_t &last);
         void            _gameLoop();
         void            _endGame();
         
+        void            _gameCore(int key);
         void            _displayEntities(t_entityList *list) const;
     	void			_moveInList(t_entityList *&begin, int key);
         void            _shootInList(t_entityList *list, t_entityList *&listOfMissile);
-        void            _collision(t_entityList *&list1, t_entityList *&list2);
         bool            _hitbox(t_entityList *entity1, t_entityList *entity2);
-        void            _gameCore(int key);
+        void            _collision(t_entityList *&list1, t_entityList *&list2);
 
+        bool            _checkTime(unsigned int msecond, clock_t &last);
+        void            _refreshMainWin(std::string bkgd);
+        void            _refreshBottomWin(std::string bkgd);
+        
         void            _pushInList(t_entityList *&list, AEntity *entity);
         void            _lstdelone(t_entityList *&begin, t_entityList *&current, char command);
         void            _freeEntityList(t_entityList *&list);
 
-        void            _refreshMainWin(std::string bkgd);
-        void            _refreshBottomWin(std::string bkgd);
-        
         std::string     _fillBackground() const;
         std::string     _readSkin(std::string nameOfFile) const;
 

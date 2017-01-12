@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 16:56:48 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/10 15:54:08 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 19:38:25 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class Player : public AEntity {
 
         bool        move(unsigned int height, unsigned int width, int key);
         AEntity     *shoot();
+        unsigned int    takeDamage(AEntity const &attacker, WINDOW *win);
         
     private:
         Player();

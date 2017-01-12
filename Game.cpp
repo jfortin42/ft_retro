@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/10 16:26:34 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 20:15:36 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
         {
                 if (tmp1->next && tmp2->next && _hitbox(tmp1->next, tmp2->next))
             {
-                tmp1HP = tmp1->next->entity->takeDamage(*tmp2->next->entity);
-                tmp2HP = tmp2->next->entity->takeDamage(*tmp1->next->entity);
+                tmp1HP = tmp1->next->entity->takeDamage(*tmp2->next->entity, _main_win);
+                tmp2HP = tmp2->next->entity->takeDamage(*tmp1->next->entity, _main_win);
                 if (!tmp1HP) 
                      _lstdelone(list1, tmp1, 'N');
                 if (!tmp2HP)
@@ -135,8 +135,8 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
             }
                 else if (tmp1->next && _hitbox(tmp1->next, tmp2))
             {
-                tmp1HP = tmp1->next->entity->takeDamage(*tmp2->entity);
-                tmp2HP = tmp2->entity->takeDamage(*tmp1->next->entity);
+                tmp1HP = tmp1->next->entity->takeDamage(*tmp2->entity, _main_win);
+                tmp2HP = tmp2->entity->takeDamage(*tmp1->next->entity, _main_win);
                 if (!tmp1HP)
                     _lstdelone(list1, tmp1, 'N');
                 if (!tmp2HP)
@@ -144,8 +144,8 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
             }
                 else if (tmp2->next && _hitbox(tmp1, tmp2->next))
             {
-                tmp1HP = tmp1->entity->takeDamage(*tmp2->next->entity);
-                tmp2HP = tmp2->next->entity->takeDamage(*tmp1->entity);
+                tmp1HP = tmp1->entity->takeDamage(*tmp2->next->entity, _main_win);
+                tmp2HP = tmp2->next->entity->takeDamage(*tmp1->entity, _main_win);
                 if (!tmp1HP)
                     _lstdelone(list1, tmp1, 'F');
                 if (!tmp2HP)
@@ -153,8 +153,8 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
             }
                 else if (_hitbox(tmp1, tmp2))
             {
-                tmp1HP = tmp1->entity->takeDamage(*tmp2->entity);
-                tmp2HP = tmp2->entity->takeDamage(*tmp1->entity);
+                tmp1HP = tmp1->entity->takeDamage(*tmp2->entity, _main_win);
+                tmp2HP = tmp2->entity->takeDamage(*tmp1->entity, _main_win);
                 if (!tmp1HP)
                     _lstdelone(list1, tmp1, 'F');
                 if (!tmp2HP)
@@ -196,13 +196,29 @@ void            Game::_refreshMainWin(std::string bkgd)
 
 void            Game::_refreshBottomWin(std::string bkgd)
 {
+    unsigned int i;
+    int x;
+
+    x = 26;
+    if (_playerList)
+        i = _playerList->entity->getHp();
     wattron(_bottom_win, COLOR_PAIR(2));
     mvwprintw(_bottom_win, 1, 1, bkgd.c_str());
     wattroff(_bottom_win, COLOR_PAIR(2));
     box(_bottom_win, 0, 0);
     mvwprintw(_bottom_win, 2, 2, "time:");
+    mvwprintw(_bottom_win, 2, 18, "lives:");
+    if (_playerList)
+    {
+        for (i = 0 ; i < _playerList->entity->getHp() ; i++)
+        {
+            mvwprintw(_bottom_win, 2, x, "<3");//single player only for now
+            x += 4;
+        }
+    }
     mvwprintw(_bottom_win, 2, 8, "%i", _timer);
     mvwvline(_bottom_win, 1, 16, ACS_VLINE, 3);
+    mvwvline(_bottom_win, 1, 39, ACS_VLINE, 3);    
     if (_checkTime(1000, _last_timer))
         _timer--;
     wrefresh(_bottom_win);

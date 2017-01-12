@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Enemy.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:59:42 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/10 16:10:29 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 19:41:04 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ class	Enemy : public AEntity{
 		Enemy(Enemy const &src);
 		~Enemy();
 
-		bool        move(unsigned int height, unsigned int width, int key);
-        AEntity     *shoot();
+		bool        	move(unsigned int height, unsigned int width, int key);
+        AEntity     	*shoot();
 
-		Enemy	&operator=(Enemy const &rhs);
+		Enemy			&operator=(Enemy const &rhs);
 
 	private:
 		Enemy();

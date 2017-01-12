@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/10 10:30:09 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 19:40:40 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,17 @@ public:
 	AEntity(AEntity const &src);
 	virtual ~AEntity();
 
-	void			equipWeapon(AWeapon *weapon);
-	virtual bool	move(unsigned int height, unsigned int width, int key) = 0;
-	//Missile *shoot();
-	virtual AEntity	*shoot() = 0;
-	unsigned int	takeDamage(AEntity const &attacker);
-	void			displaySkin(WINDOW *win) const;
-	t_coord			getCoord() const;
-	t_coord			getSizeSkin() const;
-	unsigned int	getHp() const;
-	unsigned int	getDamageDeal() const;
+	void				equipWeapon(AWeapon *weapon);
+	virtual bool		move(unsigned int height, unsigned int width, int key) = 0;
+	virtual AEntity		*shoot() = 0;
+	virtual unsigned int	takeDamage(AEntity const &attacker, WINDOW *win);
+	void				displaySkin(WINDOW *win) const;
+	t_coord				getCoord() const;
+	t_coord				getSizeSkin() const;
+	unsigned int		getHp() const;
+	unsigned int		getDamageDeal() const;
 
-	AEntity	&operator=(AEntity const &rhs);
+	AEntity				&operator=(AEntity const &rhs);
 
 protected:
 	class	NoWeaponEquippedException : public std::exception {

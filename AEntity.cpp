@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/10 10:31:25 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 19:59:25 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
+#include <unistd.h>
 
 AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
 	: hp(hp), damageDeal(damageDeal), speed(speed), cnt_move(0), skin(skin), weapon(weapon), coord(coord)
@@ -51,6 +52,17 @@ void	AEntity::equipWeapon(AWeapon *weapon)
 	this->weapon = weapon;
 }
 
+unsigned int	AEntity::takeDamage(AEntity const &attacker, WINDOW *win)
+{
+	// wattron(win, A_BLINK);
+	// displaySkin(win);
+	// wattroff(win, A_BLINK);
+	//wrefresh(win);
+	(void)win;
+	hp -= hp < attacker.getDamageDeal() ? hp : attacker.getDamageDeal();
+	return (hp);
+}
+
 AEntity	*AEntity::shoot()
 {
 	return (NULL);
@@ -62,12 +74,6 @@ AEntity	*AEntity::shoot()
 unsigned int	AEntity::getDamageDeal() const
 {
 	return (this->damageDeal);
-}
-
-unsigned int	AEntity::takeDamage(AEntity const &attacker)
-{
-	hp -= hp < attacker.getDamageDeal() ? hp : attacker.getDamageDeal();
-	return (hp);
 }
 
 void	AEntity::displaySkin(WINDOW *win) const
@@ -87,7 +93,7 @@ void	AEntity::displaySkin(WINDOW *win) const
 		i += skin.c_str()[i] ? 1 : 0;
 		y++;
 	}
-	wattroff(stdscr, COLOR_PAIR(3));
+	wattroff(win, COLOR_PAIR(3));
 }
 
 t_coord	AEntity::getCoord() const

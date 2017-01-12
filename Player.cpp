@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/10 15:54:23 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 19:58:31 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,15 @@ AEntity         *Player::shoot()
     coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
     coordShoot.y = this->coord.y - 1;
     return (weapon->createMissile(coordShoot, 'N'));
+}
+
+unsigned int	Player::takeDamage(AEntity const &attacker, WINDOW *win)
+{
+	wattron(win, A_BLINK);
+	displaySkin(win);
+    //sleep(1);
+	usleep(500000);
+	wattroff(win, A_BLINK);
+	hp -= hp < attacker.getDamageDeal() ? hp : attacker.getDamageDeal();
+	return (hp);
 }

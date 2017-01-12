@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:15:44 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/10 16:07:28 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 19:38:55 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ class Missile : public AEntity {
 
 		Missile		&operator=(Missile const &rhs);
 
-		bool	 	move(unsigned int height, unsigned int width, int key);
-        AEntity     *shoot();
+		bool	 		move(unsigned int height, unsigned int width, int key);
+        AEntity     	*shoot();
 
 	private:
 		Missile();

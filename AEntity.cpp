@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/12 21:17:28 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/12 22:03:34 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, s
 { this->sizeSkin = getSizeSkin(); }
 
 AEntity::AEntity(AEntity const &src)
-{ *this = src; }
+{ 
+	//DEEPCOPY!
+	*this = src;
+}
 
-//temporaire??
 AEntity::AEntity() { return ; }
-//temporaire??
 
-AEntity::~AEntity()
-{}
+AEntity::~AEntity() {}
 
 AEntity	&AEntity::operator=(AEntity const &rhs)
 {
@@ -34,7 +34,7 @@ AEntity	&AEntity::operator=(AEntity const &rhs)
 		hp = rhs.hp;
 		speed = rhs.speed;
 		skin = rhs.skin;
-		weapon = rhs.weapon;
+		weapon = rhs.weapon;//DEEPCOPY
 		coord = rhs.coord;
 	}
 	return (*this);

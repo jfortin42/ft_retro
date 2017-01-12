@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/12 21:16:44 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/12 22:02:28 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,40 +18,35 @@
 # include <string>
 # include <ncurses.h>
 
-// # include "AWeapon.hpp"
-// # include "Missile.hpp"
-
-// class   AEntity;
-class   AWeapon;
-// class   Missile;
-// # include "Game.hpp"
-typedef struct	s_coord
+class   			AWeapon;
+typedef struct		s_coord
 {
 	unsigned int	x;
 	unsigned int	y;
-}				t_coord;
+}					t_coord;
 
-//class	Missile;
-// class	AWeapon;
-
-class	AEntity{
+class				AEntity{
 
 public:
 	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
 	AEntity(AEntity const &src);
 	virtual ~AEntity();
 
-	void				equipWeapon(AWeapon *weapon);
-	virtual bool		move(unsigned int height, unsigned int width, int key) = 0;
-	virtual AEntity		*shoot() = 0;
-	virtual unsigned int	takeDamage(AEntity const &attacker, WINDOW *win);
-	void				displaySkin(WINDOW *win) const;
-	t_coord				getCoord() const;
-	t_coord				getSizeSkin() const;
-	unsigned int		getHp() const;
-	unsigned int		getDamageDeal() const;
+	void					equipWeapon(AWeapon *weapon);
 
-	AEntity				&operator=(AEntity const &rhs);
+	virtual bool			move(unsigned int height, unsigned int width, int key) = 0;
+	virtual AEntity			*shoot() = 0;
+
+	virtual unsigned int	takeDamage(AEntity const &attacker, WINDOW *win);
+
+	void					displaySkin(WINDOW *win) const;
+
+	t_coord					getCoord() const;
+	t_coord					getSizeSkin() const;
+	unsigned int			getHp() const;
+	unsigned int			getDamageDeal() const;
+
+	AEntity					&operator=(AEntity const &rhs);
 
 protected:
 	class	NoWeaponEquippedException : public std::exception {
@@ -64,16 +59,18 @@ protected:
 
 			char const					*what(void) const throw();
 	};
-	AEntity();
 	
-	unsigned int	hp;
-	unsigned int	damageDeal;
-	unsigned int	speed; //millisecond
-	unsigned int	cnt_move;
-	std::string		skin;
-	AWeapon			*weapon;
-	t_coord			coord;
-	t_coord			sizeSkin;
+	unsigned int			hp;
+	unsigned int			damageDeal;
+	unsigned int			speed; //millisecond
+	unsigned int			cnt_move;
+	std::string				skin;
+	AWeapon					*weapon;
+	t_coord					coord;
+	t_coord					sizeSkin;
+
+private:
+	AEntity();
 
 };
 

@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/12 20:57:19 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/12 21:44:14 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void            Game::_initGame()
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
-    AWeapon *laser = new Laser(1, 5, 30, 0);
+    AWeapon *laser = new Laser(1, 1, 30, 0);
     _pushInList(_playerList, new Player(3, 1, 2, _readSkin("env/playership.env"), laser, playerCoord));
 }
 
@@ -99,7 +99,7 @@ void            Game::_gameLoop()
     AWeapon *pioupiou = new Pioupiou(1, 1, 50, 1000);
 
     bkgd = _fillBackground();
-    game_over = _readSkin("env/gameover2.env");
+    game_over = _readSkin("env/gameover.env");
     while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0)
     {
         _refreshMainWin(bkgd);
@@ -395,6 +395,4 @@ Game::WindowDimensionsInvalidException  &Game::WindowDimensionsInvalidException:
 }
 
 char const                              *Game::WindowDimensionsInvalidException::what(void) const throw()
-{
-    return ("Window dimensions are invalid");
-}
+{ return ("Window dimensions are invalid"); }

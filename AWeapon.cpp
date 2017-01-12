@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AWeapon.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 14:51:41 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/10 16:02:53 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 21:42:19 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,7 @@ AWeapon::AWeapon(AWeapon const &src) : cnt_shoot(0)
 	*this = src;
 }
 
-AWeapon::~AWeapon()
-{}
-
-AEntity	*AWeapon::createMissile(t_coord coord, char direction)
-{
-	if (cnt_shoot++ < rateOfFire)
-        throw(AWeapon::RateOfFireException::RateOfFireException());
-	cnt_shoot = 0;
-	return (new Missile(1, 1, 100, "D", NULL, coord, direction));
-}
+AWeapon::~AWeapon() {}
 
 AWeapon	&AWeapon::operator=(AWeapon const &rhs)
 {

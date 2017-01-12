@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/12 19:40:40 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/12 21:16:44 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ protected:
 	
 	unsigned int	hp;
 	unsigned int	damageDeal;
-	unsigned int	speed; // millisecond
+	unsigned int	speed; //millisecond
 	unsigned int	cnt_move;
 	std::string		skin;
-	t_coord			sizeSkin;
 	AWeapon			*weapon;
 	t_coord			coord;
+	t_coord			sizeSkin;
 
 };
 

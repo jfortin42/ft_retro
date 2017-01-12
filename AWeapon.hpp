@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AWeapon.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/10 16:01:31 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/12 21:37:21 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ public:
 	AWeapon(AWeapon const &src);
 	~AWeapon();
 
-	virtual AEntity	*createMissile(t_coord coord, char direction);
+	virtual AEntity	*createMissile(t_coord coord, char direction) = 0;
 
 	AWeapon	&operator=(AWeapon const &rhs);
 

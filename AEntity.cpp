@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/12 19:59:25 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/12 21:17:28 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,10 @@
 
 AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
 	: hp(hp), damageDeal(damageDeal), speed(speed), cnt_move(0), skin(skin), weapon(weapon), coord(coord)
-{
-	this->sizeSkin = getSizeSkin();
-	//temporaire (retirer plus tard)
-	(void)weapon;
-	//temporaire
-}
+{ this->sizeSkin = getSizeSkin(); }
 
 AEntity::AEntity(AEntity const &src)
-{
-	*this = src;
-}
+{ *this = src; }
 
 //temporaire??
 AEntity::AEntity() { return ; }
@@ -54,27 +47,14 @@ void	AEntity::equipWeapon(AWeapon *weapon)
 
 unsigned int	AEntity::takeDamage(AEntity const &attacker, WINDOW *win)
 {
-	// wattron(win, A_BLINK);
-	// displaySkin(win);
-	// wattroff(win, A_BLINK);
-	//wrefresh(win);
 	(void)win;
 	hp -= hp < attacker.getDamageDeal() ? hp : attacker.getDamageDeal();
 	return (hp);
 }
 
-AEntity	*AEntity::shoot()
-{
-	return (NULL);
-	/*if (this->weapon)
-		return (this->weapon->createMissile());
-	return (NULL);*/
-}
+AEntity	*AEntity::shoot() { return (NULL); }
 
-unsigned int	AEntity::getDamageDeal() const
-{
-	return (this->damageDeal);
-}
+unsigned int	AEntity::getDamageDeal() const { return (this->damageDeal); }
 
 void	AEntity::displaySkin(WINDOW *win) const
 {
@@ -96,10 +76,7 @@ void	AEntity::displaySkin(WINDOW *win) const
 	wattroff(win, COLOR_PAIR(3));
 }
 
-t_coord	AEntity::getCoord() const
-{
-	return (this->coord);
-}
+t_coord	AEntity::getCoord() const { return (this->coord); }
 
 t_coord	AEntity::getSizeSkin() const
 {
@@ -127,10 +104,7 @@ t_coord	AEntity::getSizeSkin() const
 	return (t_coord){length_max, height};
 }
 
-unsigned int	AEntity::getHp() const
-{
-	return (this->hp);
-}
+unsigned int	AEntity::getHp() const { return (this->hp); }
 
 AEntity::NoWeaponEquippedException::NoWeaponEquippedException() { return ; }
 
@@ -145,6 +119,4 @@ AEntity::NoWeaponEquippedException  &AEntity::NoWeaponEquippedException::operato
 }
 
 char const                              *AEntity::NoWeaponEquippedException::what(void) const throw()
-{
-    return ("No Weapons Equipped");
-}
+{ return ("No Weapons Equipped"); }

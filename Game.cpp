@@ -6,18 +6,15 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/12 21:44:14 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 13:26:52 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 
-Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0),
-_playerList(NULL), _enemyList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL)
-{}
+Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL) {}
 
-Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score),
-_playerList(NULL), _enemyList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL)
+Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL)
 {
     //fonction pour remplir toutes les listes (DEEP COPY!)
 }
@@ -34,17 +31,17 @@ Game            &Game::operator=(Game const &rhs)
 {
     if (this != &rhs)
     {
-        wclear(this->_main_win);
-        wclear(this->_bottom_win);
-        delwin(this->_main_win);
-        delwin(this->_bottom_win);
+        _timer = rhs._timer;
+        _score = rhs._score;
+        wclear(_main_win);
+        wclear(_bottom_win);
+        delwin(_main_win);
+        delwin(_bottom_win);
         _freeEntityList(_playerList);
         _freeEntityList(_enemyList);
         _freeEntityList(_missilePlayerList);
         _freeEntityList(_missileEnemyList);
         //fonction pour remplir toutes les listes (DEEP COPY!)
-        this->_timer = rhs._timer;
-        this->_score = rhs._score;
     }
     return (*this);
 }
@@ -88,6 +85,7 @@ void            Game::_initGame()
     playerCoord.x = (COLS / 2) - 1;
     AWeapon *laser = new Laser(1, 1, 30, 0);
     _pushInList(_playerList, new Player(3, 1, 2, _readSkin("env/playership.env"), laser, playerCoord));
+    //need to delete laser and pioupiou => dans les destructeurs??
 }
 
 void            Game::_gameLoop()
@@ -96,7 +94,7 @@ void            Game::_gameLoop()
     int         key;
     std::string bkgd;
     std::string game_over;
-    AWeapon *pioupiou = new Pioupiou(1, 1, 50, 1000);
+    AWeapon     *pioupiou = new Pioupiou(1, 1, 50, 1000);
 
     bkgd = _fillBackground();
     game_over = _readSkin("env/gameover.env");
@@ -191,12 +189,12 @@ void            Game::_shootInList(t_entityList *list, t_entityList *&listOfMiss
     }
 }
 
-bool            Game::_hitbox(t_entityList *entity1, t_entityList *entity2)
+bool            Game::_hitbox(t_entityList *entity1, t_entityList *entity2) const
 {
-    if (entity1->entity->getCoord().x + entity1->entity->getSizeSkin().x >= entity2->entity->getCoord().x
-        && entity1->entity->getCoord().x <= entity2->entity->getCoord().x + entity2->entity->getSizeSkin().x
-        && entity1->entity->getCoord().y + entity1->entity->getSizeSkin().y - 1 >= entity2->entity->getCoord().y
-        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->getSizeSkin().y - 1)
+    if (entity1->entity->getCoord().x + entity1->entity->getSkinSize().x >= entity2->entity->getCoord().x
+        && entity1->entity->getCoord().x <= entity2->entity->getCoord().x + entity2->entity->getSkinSize().x
+        && entity1->entity->getCoord().y + entity1->entity->getSkinSize().y - 1 >= entity2->entity->getCoord().y
+        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->getSkinSize().y - 1)
         return (true);
     return (false);
 }
@@ -266,7 +264,7 @@ bool            Game::_checkTime(unsigned int msecond, clock_t  &last)
     return (false);
 }
 
-void            Game::_refreshMainWin(std::string bkgd)
+void            Game::_refreshMainWin(std::string bkgd) const
 {
     wattron(_main_win, COLOR_PAIR(2));
     mvwprintw(_main_win, 1, 1, bkgd.c_str());
@@ -382,11 +380,11 @@ void            Game::_freeEntityList(t_entityList *&list)
     list = NULL;
 }
 
-Game::WindowDimensionsInvalidException::WindowDimensionsInvalidException() { return ; }
+Game::WindowDimensionsInvalidException::WindowDimensionsInvalidException() {}
 
 Game::WindowDimensionsInvalidException::WindowDimensionsInvalidException(WindowDimensionsInvalidException const &src) { *this = src; }
 
-Game::WindowDimensionsInvalidException::~WindowDimensionsInvalidException() throw() { return ; }
+Game::WindowDimensionsInvalidException::~WindowDimensionsInvalidException() throw() {}
 
 Game::WindowDimensionsInvalidException  &Game::WindowDimensionsInvalidException::operator=(Game::WindowDimensionsInvalidException const &rhs)
 {
@@ -394,5 +392,4 @@ Game::WindowDimensionsInvalidException  &Game::WindowDimensionsInvalidException:
     return (*this);
 }
 
-char const                              *Game::WindowDimensionsInvalidException::what(void) const throw()
-{ return ("Window dimensions are invalid"); }
+char const                              *Game::WindowDimensionsInvalidException::what(void) const throw() { return ("Window dimensions are invalid"); }

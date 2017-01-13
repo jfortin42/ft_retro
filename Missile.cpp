@@ -3,53 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/10 16:08:13 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:14:50 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Missile.hpp"
 
-Missile::Missile(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, char direction)
-	: AEntity(hp, damageDeal, speed, skin, weapon, coord), direction(direction)
-{ return ; }
+Missile::Missile(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, char direction) : AEntity(hp, damageDeal, speed, skin, weapon, coord), direction(direction) {}
 
-Missile::Missile(Missile const &src) : AEntity(src), direction(src.direction)
-{
-	*this = src;
-}
+Missile::Missile(Missile const &src) : AEntity(src), direction(src.direction) {}
 
-Missile::~Missile() { return ; }
+Missile::~Missile() {}
 
-Missile	&Missile::operator=(Missile const &rhs)
+Missile		&Missile::operator=(Missile const &rhs)
 {
 	if (this != &rhs)
-	{
-		hp = rhs.hp;
-		speed = rhs.speed;
-		skin = rhs.skin;
-		weapon = rhs.weapon;
-		coord = rhs.coord;
-	}
+		*this = rhs;
 	return (*this);
+	//*this AEntity::operator= rhs;
+	/*if (this != &rhs)
+	{
+		_hp = rhs._hp;
+		_damageDeal = rhs._damageDeal;
+		_speed = rhs._speed;
+		_cnt_move = rhs._cnt_move;
+		_skin = rhs._skin;
+		//_weapon = rhs._weapon;//DEEPCOPY!
+		_coord = rhs._coord;
+	}
+	return (*this);*/
 }
 
-bool	Missile::move(unsigned int height, unsigned int width, int key)
+bool		Missile::move(unsigned int height, unsigned int width, int key)
 {
 	(void)key;
-    if (cnt_move++ >= speed)
+    if (_cnt_move++ >= _speed)
     {
-        cnt_move = 0;
-		if (this->direction == 'N' && this->coord.y > 1)
-			this->coord.y -= 1;
-		else if (this->direction == 'S' && this->coord.y < height - 2)
-			this->coord.y += 1;
-		else if (this->direction == 'W' && this->coord.x > 1)
-			this->coord.x -= 1;
-		else if (this->direction == 'E' && this->coord.x < width - 2)
-			this->coord.x += 1;
+        _cnt_move = 0;
+		if (direction == 'N' && _coord.y > 1)
+			_coord.y -= 1;
+		else if (direction == 'S' && _coord.y < height - 2)
+			_coord.y += 1;
+		else if (direction == 'W' && _coord.x > 1)
+			_coord.x -= 1;
+		else if (direction == 'E' && _coord.x < width - 2)
+			_coord.x += 1;
 		else
 			return (false);
 	}
@@ -58,9 +59,11 @@ bool	Missile::move(unsigned int height, unsigned int width, int key)
 
 AEntity	*Missile::shoot()
 {
-	t_coord coordShoot;
+	//a changer
+	/*t_coord coordShoot;
 
 	coordShoot.y = 0;
 	coordShoot.x = 0;
-	return (new Missile(1, 1, 1, "o", NULL, coordShoot, this->direction));
+	return (new Missile(1, 1, 1, "o", NULL, coordShoot, _direction));*/
+	return (NULL);
 }

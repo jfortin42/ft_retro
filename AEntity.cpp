@@ -6,117 +6,112 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/12 22:03:34 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:13:18 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
-#include <unistd.h>
 
-AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
-	: hp(hp), damageDeal(damageDeal), speed(speed), cnt_move(0), skin(skin), weapon(weapon), coord(coord)
-{ this->sizeSkin = getSizeSkin(); }
+AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord) : _hp(hp), _damageDeal(damageDeal), _speed(speed), _cnt_move(0), _skin(skin), _weapon(weapon), _coord(coord)
+{ _skin_size = getSkinSize(); }
 
-AEntity::AEntity(AEntity const &src)
-{ 
+AEntity::AEntity(AEntity const &src) : _hp(src._hp), _damageDeal(src._damageDeal), _speed(src._speed), _cnt_move(0), _skin(src._skin), _coord(src._coord)
+{
+	_skin_size = getSkinSize();
 	//DEEPCOPY!
-	*this = src;
+	//_weapon = src._weapon->clone();
+	//DEEPCOPY!
 }
-
-AEntity::AEntity() { return ; }
 
 AEntity::~AEntity() {}
 
-AEntity	&AEntity::operator=(AEntity const &rhs)
+AEntity			&AEntity::operator=(AEntity const &rhs)
 {
 	if (this != &rhs)
 	{
-		hp = rhs.hp;
-		speed = rhs.speed;
-		skin = rhs.skin;
-		weapon = rhs.weapon;//DEEPCOPY
-		coord = rhs.coord;
+		_hp = rhs._hp;
+		_damageDeal = rhs._damageDeal;
+		_speed = rhs._speed;
+		_cnt_move = rhs._cnt_move;
+		_skin = rhs._skin;
+		//_weapon = rhs._weapon;//DEEPCOPY
+		_coord = rhs._coord;
+		_skin_size = rhs._skin_size;
 	}
 	return (*this);
 }
 
-void	AEntity::equipWeapon(AWeapon *weapon)
-{
-	this->weapon = weapon;
-}
+void			AEntity::equipWeapon(AWeapon *weapon) { _weapon = weapon; }
 
 unsigned int	AEntity::takeDamage(AEntity const &attacker, WINDOW *win)
 {
 	(void)win;
-	hp -= hp < attacker.getDamageDeal() ? hp : attacker.getDamageDeal();
-	return (hp);
+	_hp -= _hp < attacker.getDamageDeal() ? _hp : attacker.getDamageDeal();
+	return (_hp);
 }
 
-AEntity	*AEntity::shoot() { return (NULL); }
-
-unsigned int	AEntity::getDamageDeal() const { return (this->damageDeal); }
-
-void	AEntity::displaySkin(WINDOW *win) const
+void			AEntity::displaySkin(WINDOW *win) const
 {
+	int	i;
 	int	x;
 	int	y;
-	int	i;
 
 	i = 0;
-	y = this->coord.y;
+	y = _coord.y;
 	wattron(win, COLOR_PAIR(3));
-	while (skin.c_str()[i])
+	while (_skin.c_str()[i])
 	{
 		x = 0;
-		while (skin.c_str()[i] && skin.c_str()[i] != '\n')
-			mvwaddch(win, y, coord.x + (x++), skin.c_str()[i++]);
-		i += skin.c_str()[i] ? 1 : 0;
+		while (_skin.c_str()[i] && _skin.c_str()[i] != '\n')
+			mvwaddch(win, y, _coord.x + (x++), _skin.c_str()[i++]);
+		i += _skin.c_str()[i] ? 1 : 0;
 		y++;
 	}
 	wattroff(win, COLOR_PAIR(3));
 }
 
-t_coord	AEntity::getCoord() const { return (this->coord); }
+unsigned int	AEntity::getHp() const { return (_hp); }
 
-t_coord	AEntity::getSizeSkin() const
+unsigned int	AEntity::getDamageDeal() const { return (_damageDeal); }
+
+t_coord			AEntity::getCoord() const { return (_coord); }
+
+t_coord			AEntity::getSkinSize() const
 {
-    std::size_t length_max;
-    std::size_t length_tmp;
     std::size_t index;
 	std::size_t	height;
+    std::size_t length_tmp;
+    std::size_t length_max;
 
     index = 0;
-    length_max = 0;
-    length_tmp = 0;
 	height = 0;
-    while (index < this->skin.length() - 1)
+    length_tmp = 0;
+    length_max = 0;
+	while (index < _skin.length() - 1)
     {
 		height++;
         index += length_tmp + 1;
-        if ((length_tmp = this->skin.find("\n", index + 1) - index) > this->skin.length())
+		if ((length_tmp = _skin.find("\n", index + 1) - index) > _skin.length())
         {
-            length_tmp = this->skin.length() - index;
+            length_tmp = _skin.length() - index;
             length_max = (length_max < length_tmp) ? length_tmp : length_max;        
             break ;
         }
         length_max = (length_max < length_tmp) ? length_tmp : length_max;
     }
-	return (t_coord){length_max, height};
+	return ((t_coord){length_max, height});
 }
 
-unsigned int	AEntity::getHp() const { return (this->hp); }
-
-AEntity::NoWeaponEquippedException::NoWeaponEquippedException() { return ; }
+AEntity::NoWeaponEquippedException::NoWeaponEquippedException() {}
 
 AEntity::NoWeaponEquippedException::NoWeaponEquippedException(NoWeaponEquippedException const &src) { *this = src; }
 
-AEntity::NoWeaponEquippedException::~NoWeaponEquippedException() throw() { return ; }
+AEntity::NoWeaponEquippedException::~NoWeaponEquippedException() throw() {}
 
-AEntity::NoWeaponEquippedException  &AEntity::NoWeaponEquippedException::operator=(AEntity::NoWeaponEquippedException const &rhs)
+AEntity::NoWeaponEquippedException	&AEntity::NoWeaponEquippedException::operator=(AEntity::NoWeaponEquippedException const &rhs)
 {
     (void)rhs;
     return (*this);
 }
 
-char const                              *AEntity::NoWeaponEquippedException::what(void) const throw()
-{ return ("No Weapons Equipped"); }
+char const                        	*AEntity::NoWeaponEquippedException::what(void) const throw() { return ("No Weapon Equipped"); }

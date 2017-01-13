@@ -6,37 +6,32 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 16:56:48 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/12 19:38:25 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 13:28:53 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLAYER_HPP
 # define PLAYER_HPP
 
-// # include "AEntity.hpp"
-// # include "Missile.hpp"
-// class   AEntity;
-// class   AWeapon;
-// class   Missile;
 # include "Game.hpp"
-// class Missile;
-// class AEntity;
 
 class Player : public AEntity {
 
-    public:
-        Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
-        Player(Player const &src);
-        ~Player();
+public:
+    Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
+    Player(Player const &src);
+    ~Player();
 
-        Player      &operator=(Player const &rhs);
+    Player          &operator=(Player const &rhs);
 
-        bool        move(unsigned int height, unsigned int width, int key);
-        AEntity     *shoot();
-        unsigned int    takeDamage(AEntity const &attacker, WINDOW *win);
+    bool            move(unsigned int height, unsigned int width, int key);
+    AEntity         *shoot();
+    
+    unsigned int    takeDamage(AEntity const &attacker, WINDOW *win);
         
-    private:
-        Player();
+private:
+    Player();
+
 };
 
 #endif

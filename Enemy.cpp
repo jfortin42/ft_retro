@@ -3,64 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   Enemy.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/10 16:10:50 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:15:34 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Enemy.hpp"
 
-Enemy::Enemy()
-{}
+Enemy::Enemy(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord) : AEntity(hp, damageDeal, speed, skin, weapon, coord) {}
 
-Enemy::Enemy(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord)
-	: AEntity(hp, damageDeal, speed, skin, weapon, coord)
-{}
+Enemy::Enemy(Enemy const &src) : AEntity(src) {}
 
-Enemy::Enemy(Enemy const &src)
+Enemy::~Enemy() {}
+
+Enemy	    &Enemy::operator=(Enemy const &rhs)
 {
-	*this = src;
-}
-
-Enemy::~Enemy()
-{}
-
-Enemy	&Enemy::operator=(Enemy const &rhs)
-{
-	if (this != &rhs)
+    if (this != &rhs)
+        *this = rhs;
+    return (*this);
+    //(appel de l'operateur d'AEntity? possible//
+    //*this AEntity::= rhs;
+    //??)
+    //OU ALORS
+	/*if (this != &rhs)
 	{
-        this->hp = rhs.hp;
-        this->speed = rhs.speed;
-        this->skin = rhs.skin;
-        this->weapon = rhs.weapon;
-        this->coord = rhs.coord;
+        _hp = rhs._hp;
+        _damageDeal = rhs._damageDeal;
+        _speed = rhs._speed;
+        _cnt_move = rhs._cnt_move;
+        _skin = rhs._skin;
+        //_weapon = rhs._weapon;//DEEP COPY!
+        _coord = rhs._coord;
+        _sizeSkin = rhs._skin_size;
 	}
-	return (*this);
+	return (*this);*/
 }
 
-bool            Enemy::move(unsigned int height, unsigned int width, int key)
+bool        Enemy::move(unsigned int height, unsigned int width, int key)
 {
     (void)width;
     (void)key;
-    if (cnt_move++ >= speed)
+    if (_cnt_move++ >= _speed)
     {
-        cnt_move = 0;
-        if (this->coord.y < height - sizeSkin.y - 1)
-            this->coord.y += 1;
+        _cnt_move = 0;
+        if (_coord.y < height - _skin_size.y - 1)
+            _coord.y += 1;
         else
             return (false);
     }
     return (true);
 }
 
-AEntity         *Enemy::shoot()
+AEntity     *Enemy::shoot()
 {
     t_coord coordShoot;
     
-    coordShoot.x = this->coord.x + this->sizeSkin.x / 2;
-    coordShoot.y = this->coord.y + this->sizeSkin.y + 1;
-    return (weapon->createMissile(coordShoot, 'S'));
+    coordShoot.x = _coord.x + _skin_size.x / 2;
+    coordShoot.y = _coord.y + _skin_size.y + 1;
+    return (_weapon->createMissile(coordShoot, 'S'));
 }
-

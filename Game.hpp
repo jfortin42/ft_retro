@@ -6,18 +6,18 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/12 20:56:40 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 13:26:48 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_HPP
 # define GAME_HPP
 
-# include <ncurses.h>
-# include <unistd.h>
-# include <iostream>
-# include <fstream>
-# include <sstream>
+//# include <ncurses.h>
+//# include <unistd.h>
+//# include <iostream>
+//# include <fstream>
+//# include <sstream>
 
 # include "AEntity.hpp"
 # include "AWeapon.hpp"
@@ -74,11 +74,11 @@ class                   Game {
         void            _displayEntities(t_entityList *list) const;
     	void			_moveInList(t_entityList *&begin, int key);
         void            _shootInList(t_entityList *list, t_entityList *&listOfMissile);
-        bool            _hitbox(t_entityList *entity1, t_entityList *entity2);
+        bool            _hitbox(t_entityList *entity1, t_entityList *entity2) const;
         void            _collision(t_entityList *&list1, t_entityList *&list2);
 
         bool            _checkTime(unsigned int msecond, clock_t &last);
-        void            _refreshMainWin(std::string bkgd);
+        void            _refreshMainWin(std::string bkgd) const;
         void            _refreshBottomWin(std::string bkgd);
         
         void            _pushInList(t_entityList *&list, AEntity *entity);

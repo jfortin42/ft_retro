@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bonus.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 13:35:21 by fsidler           #+#    #+#             */
-/*   Updated: 2016/12/15 15:18:51 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/13 12:40:45 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,25 @@ class AWeapon;
 
 class Bonus {
 
-    public:
-        Bonus(t_coord coord, std::string skin, unsigned int timer, AWeapon *weapon);
-        Bonus(Bonus const &src);
-        ~Bonus();
+public:
+    Bonus(t_coord coord, std::string skin, unsigned int timer, AWeapon *weapon);
+    Bonus(Bonus const &src);
+    ~Bonus();
 
-        Bonus           &operator=(Bonus const &rhs);
+    Bonus           &operator=(Bonus const &rhs);
 
-        bool            cmpCoord(AEntity *) const;
-        void            giveWeapon(AEntity *) const;
-        void            displaySkin() const;
-        unsigned int    getTimer() const;
-    private:
-        Bonus();
+    unsigned int    getTimer() const;
+    bool            cmpCoord(AEntity *entity) const;
+    void            displaySkin(WINDOW *win) const;
+    void            giveWeapon(AEntity *entity) const;
+    
+private:
+    Bonus();
 
-        t_coord         coord;
-        std::string     skin;//retirer?
-        unsigned int    timer;
-        AWeapon         *weapon;
+    t_coord         _coord;
+    std::string     _skin;
+    unsigned int    _timer;
+    AWeapon         _*weapon;
 
 };
 

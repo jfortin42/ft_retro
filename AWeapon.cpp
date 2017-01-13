@@ -6,51 +6,41 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 14:51:41 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/12 21:42:19 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:13:55 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AWeapon.hpp"
 
-AWeapon::AWeapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, unsigned int rateOfFire) :
-	hp_missile(hp_missile), damageDeal(damageDeal), speed_missile(speed_missile), rateOfFire(rateOfFire), cnt_shoot(0)
-{}
+AWeapon::AWeapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, unsigned int rateOfFire) : _hp_missile(hp_missile), _damageDeal(damageDeal), _speed_missile(speed_missile), _rateOfFire(rateOfFire), _cnt_shoot(0) {}
 
-AWeapon::AWeapon()
-{}
-
-AWeapon::AWeapon(AWeapon const &src) : cnt_shoot(0)
-{
-	*this = src;
-}
+AWeapon::AWeapon(AWeapon const &src) : _hp_missile(src._hp_missile), _damageDeal(src._damageDeal), _speed_missile(src._speed_missile), _rateOfFire(src._rateOfFire), _cnt_shoot(0) {}
 
 AWeapon::~AWeapon() {}
 
-AWeapon	&AWeapon::operator=(AWeapon const &rhs)
+AWeapon		&AWeapon::operator=(AWeapon const &rhs)
 {
 	if (this != &rhs)
 	{
-		hp_missile = rhs.hp_missile;
-		speed_missile = rhs.speed_missile;
-		rateOfFire = rhs.rateOfFire;
-		cnt_shoot = rhs.cnt_shoot;
+		_hp_missile = rhs._hp_missile;
+		_damageDeal = rhs._damageDeal;
+		_speed_missile = rhs._speed_missile;
+		_rateOfFire = rhs._rateOfFire;
+		_cnt_shoot = rhs._cnt_shoot;
 	}
 	return (*this);
 }
 
-AWeapon::RateOfFireException::RateOfFireException() { return ; }
+AWeapon::RateOfFireException::RateOfFireException() {}
 
 AWeapon::RateOfFireException::RateOfFireException(RateOfFireException const &src) { *this = src; }
 
-AWeapon::RateOfFireException::~RateOfFireException() throw() { return ; }
+AWeapon::RateOfFireException::~RateOfFireException() throw() {}
 
-AWeapon::RateOfFireException  &AWeapon::RateOfFireException::operator=(AWeapon::RateOfFireException const &rhs)
+AWeapon::RateOfFireException	&AWeapon::RateOfFireException::operator=(AWeapon::RateOfFireException const &rhs)
 {
     (void)rhs;
     return (*this);
 }
 
-char const					*AWeapon::RateOfFireException::what(void) const throw()
-{
-    return ("Rate of fire");
-}
+char const						*AWeapon::RateOfFireException::what(void) const throw() { return ("Rate of fire"); }

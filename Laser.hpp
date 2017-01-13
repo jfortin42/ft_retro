@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Laser.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 15:00:56 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/10 16:19:38 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:16:50 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "Game.hpp"
 
-class	Laser : public AWeapon{
+class Laser : public AWeapon {
 
 public:
 	Laser(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int rateOfFire);
@@ -23,11 +23,9 @@ public:
 	Laser(Laser const &src);
 	~Laser();
 
-	AEntity	*createMissile(t_coord coord, char direction);
-
 	Laser	&operator=(Laser const &rhs);
 
-private:
+	AEntity	*createMissile(t_coord coord, char direction);
 
 };
 

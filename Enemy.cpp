@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:15:34 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:39:17 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,8 @@ Enemy::~Enemy() {}
 
 Enemy	    &Enemy::operator=(Enemy const &rhs)
 {
-    if (this != &rhs)
-        *this = rhs;
+    AEntity::operator=(rhs);
     return (*this);
-    //(appel de l'operateur d'AEntity? possible//
-    //*this AEntity::= rhs;
-    //??)
     //OU ALORS
 	/*if (this != &rhs)
 	{

@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:14:50 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:39:00 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ Missile::~Missile() {}
 
 Missile		&Missile::operator=(Missile const &rhs)
 {
-	if (this != &rhs)
-		*this = rhs;
+	AEntity::operator=(rhs);
 	return (*this);
-	//*this AEntity::operator= rhs;
+	//OU ALORS
 	/*if (this != &rhs)
 	{
 		_hp = rhs._hp;

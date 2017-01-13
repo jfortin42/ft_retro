@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 15:06:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:18:14 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:39:07 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,8 @@ Laser::~Laser() {}
 
 Laser		&Laser::operator=(Laser const &rhs)
 {
-	if (this != &rhs)
-		*this = rhs;
+	AWeapon::operator=(rhs);
 	return (*this);
-	//(appel de l'operateur d'AEntity? possible//
-    //*this AWeapon::= rhs;
-    //??)
     //OU ALORS
 	/*if (this != &rhs)
 	{

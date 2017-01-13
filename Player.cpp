@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/13 19:12:16 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:38:37 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ Player::~Player() {}
 
 Player          &Player::operator=(Player const &rhs)
 {
-    //(appel de l'operateur d'AEntity? possible//
-    if (this != &rhs)
-        *this = rhs;
-    //??)
+    AEntity::operator=(rhs);
+    return (*this);
     //OU ALORS
-        /*if (this != &rhs)
+    /*if (this != &rhs)
 	{
         _hp = rhs._hp;
         _damageDeal = rhs._damageDeal;
@@ -35,8 +33,8 @@ Player          &Player::operator=(Player const &rhs)
         //_weapon = rhs._weapon;//DEEP COPY!
         _coord = rhs._coord;
         _sizeSkin = rhs._skin_size;
-	}*/
-	return (*this);
+	}
+	return (*this);*/
 }
 
 bool            Player::move(unsigned int height, unsigned int width, int key)

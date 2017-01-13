@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 21:44:35 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:17:58 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/13 19:38:46 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,8 @@ Pioupiou::Pioupiou(Pioupiou const &src) : AWeapon(src._hp_missile, src._damageDe
 
 Pioupiou	&Pioupiou::operator=(Pioupiou const &rhs)
 {
-	if (this != &rhs)
-		*this = rhs;
+	AWeapon::operator=(rhs);
 	return (*this);
-	//(appel de l'operateur d'AEntity? possible//
-    //*this AWeapon::= rhs;
-    //??)
     //OU ALORS
 	/*if (this != &rhs)
 	{

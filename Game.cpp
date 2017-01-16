@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/13 13:26:52 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 19:02:22 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ void            Game::_initGame()
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
     AWeapon *laser = new Laser(1, 1, 30, 0);
-    _pushInList(_playerList, new Player(3, 1, 2, _readSkin("env/playership.env"), laser, playerCoord));
-    //need to delete laser and pioupiou => dans les destructeurs??
+    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), laser->clone(), playerCoord));
 }
 
 void            Game::_gameLoop()
@@ -103,21 +102,21 @@ void            Game::_gameLoop()
         _refreshMainWin(bkgd);
         i = rand();
         if (i % 5000 < 1)
-            _pushInList(_enemyList, new Enemy(2, 1, 500, _readSkin("env/enemy.env"), pioupiou, (t_coord){i % (COLS - 10) + 1, 1}));
+            _pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), pioupiou->clone(), (t_coord){i % (COLS - 10) + 1, 1}));
         if (key == KEY_SPC && _playerList)
-        try
-        {
-            _pushInList(_missilePlayerList, _playerList->entity->shoot());
-        }
+        try { _pushInList(_missilePlayerList, _playerList->entity->shoot()); }
         catch (std::exception &e) {}
         _gameCore(key);
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
     }
-    if (!_playerList)
+    if (!_playerList || _timer == 0)
     {
         werase(_main_win);
-        mvwprintw(_main_win, (LINES - BOT_WIN_H - 8) / 2, 1, game_over.c_str());
+        delete pioupiou;
+        mvwprintw(_main_win, 3, (COLS - 10) / 2, "FINAL SCORE:");
+        mvwprintw(_main_win, 3, ((COLS - 3) / 2) + 14, "%i", _score);        
+        mvwprintw(_main_win, (LINES - BOT_WIN_H - 6) / 2, 1, game_over.c_str());
         wrefresh(_main_win);
         usleep(2000000);
     }
@@ -180,10 +179,7 @@ void            Game::_shootInList(t_entityList *list, t_entityList *&listOfMiss
 {
     while (list)
     {
-        try
-        {
-            _pushInList(listOfMissile, list->entity->shoot());
-        }
+        try { _pushInList(listOfMissile, list->entity->shoot()); }
         catch (std::exception &e) {}
         list = list->next;
     }
@@ -210,41 +206,65 @@ void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
         t_entityList    *tmp2 = list2;
         while (tmp1 && tmp2)
         {
-                if (tmp1->next && tmp2->next && _hitbox(tmp1->next, tmp2->next))
+            if (tmp1->next && tmp2->next && _hitbox(tmp1->next, tmp2->next))
             {
                 tmp1HP = tmp1->next->entity->takeDamage(*tmp2->next->entity, _main_win);
                 tmp2HP = tmp2->next->entity->takeDamage(*tmp1->next->entity, _main_win);
-                if (!tmp1HP) 
-                     _lstdelone(list1, tmp1, 'N');
+                if (!tmp1HP)
+                {
+                    _score += tmp1->entity->getScore();
+                    _lstdelone(list1, tmp1, 'N');
+                }
                 if (!tmp2HP)
+                {
+                    _score += tmp2->entity->getScore();
                     _lstdelone(list2, tmp2, 'N');
+                }
             }
-                else if (tmp1->next && _hitbox(tmp1->next, tmp2))
+            else if (tmp1->next && _hitbox(tmp1->next, tmp2))
             {
                 tmp1HP = tmp1->next->entity->takeDamage(*tmp2->entity, _main_win);
                 tmp2HP = tmp2->entity->takeDamage(*tmp1->next->entity, _main_win);
                 if (!tmp1HP)
+                {
+                    _score += tmp1->entity->getScore();
                     _lstdelone(list1, tmp1, 'N');
+                }
                 if (!tmp2HP)
+                {
+                    _score += tmp2->entity->getScore();
                     _lstdelone(list2, tmp2, 'F');
+                }
             }
-                else if (tmp2->next && _hitbox(tmp1, tmp2->next))
+            else if (tmp2->next && _hitbox(tmp1, tmp2->next))
             {
                 tmp1HP = tmp1->entity->takeDamage(*tmp2->next->entity, _main_win);
                 tmp2HP = tmp2->next->entity->takeDamage(*tmp1->entity, _main_win);
                 if (!tmp1HP)
+                {
+                    _score += tmp1->entity->getScore();
                     _lstdelone(list1, tmp1, 'F');
+                }
                 if (!tmp2HP)
+                {
+                    _score += tmp2->entity->getScore();
                     _lstdelone(list2, tmp2, 'N');
+                }
             }
-                else if (_hitbox(tmp1, tmp2))
+            else if (_hitbox(tmp1, tmp2))
             {
                 tmp1HP = tmp1->entity->takeDamage(*tmp2->entity, _main_win);
                 tmp2HP = tmp2->entity->takeDamage(*tmp1->entity, _main_win);
                 if (!tmp1HP)
+                {
+                    _score += tmp1->entity->getScore();
                     _lstdelone(list1, tmp1, 'F');
+                }
                 if (!tmp2HP)
+                {
+                    _score += tmp2->entity->getScore();
                     _lstdelone(list2, tmp2, 'F');
+                }
             }
             tmp2 = tmp2 ? tmp2->next : list2;
         }
@@ -284,8 +304,9 @@ void            Game::_refreshBottomWin(std::string bkgd)
     mvwprintw(_bottom_win, 1, 1, bkgd.c_str());
     wattroff(_bottom_win, COLOR_PAIR(2));
     box(_bottom_win, 0, 0);
-    mvwprintw(_bottom_win, 2, 2, "time:");
-    mvwprintw(_bottom_win, 2, 18, "lives:");
+    mvwprintw(_bottom_win, 2, 3, "time:");
+    mvwprintw(_bottom_win, 2, 19, "lives:");
+    mvwprintw(_bottom_win, 2, 42, "score:");
     if (_playerList)
     {
         for (i = 0 ; i < _playerList->entity->getHp() ; i++)
@@ -294,9 +315,11 @@ void            Game::_refreshBottomWin(std::string bkgd)
             x += 4;
         }
     }
-    mvwprintw(_bottom_win, 2, 8, "%i", _timer);
+    mvwprintw(_bottom_win, 2, 9, "%i", _timer);
+    mvwprintw(_bottom_win, 2, 50, "%i", _score);    
     mvwvline(_bottom_win, 1, 16, ACS_VLINE, 3);
-    mvwvline(_bottom_win, 1, 39, ACS_VLINE, 3);    
+    mvwvline(_bottom_win, 1, 39, ACS_VLINE, 3);
+    mvwvline(_bottom_win, 1, 60, ACS_VLINE, 3); 
     if (_checkTime(1000, _last_timer))
         _timer--;
     wrefresh(_bottom_win);

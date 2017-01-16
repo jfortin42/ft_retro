@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 21:44:35 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:38:46 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 19:02:50 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,13 @@ Pioupiou	&Pioupiou::operator=(Pioupiou const &rhs)
 {
 	AWeapon::operator=(rhs);
 	return (*this);
-    //OU ALORS
-	/*if (this != &rhs)
-	{
-		_hp_missile = rhs._hp_missile;
-		_damageDeal = rhs._damageDeal;
-		_speed_missile = rhs._speed_missile;
-		_rateOfFire = rhs._rateOfFire;
-		_cnt_shoot = rhs._cnt_shoot;
-	}
-	return (*this);*/
+}
+
+AWeapon		*Pioupiou::clone() const
+{
+	AWeapon	*clone = new Pioupiou(*this);
+
+	return (clone);
 }
 
 AEntity		*Pioupiou::createMissile(t_coord coord, char direction)

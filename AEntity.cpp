@@ -6,22 +6,17 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/13 19:13:18 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 18:57:46 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
 
-AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord) : _hp(hp), _damageDeal(damageDeal), _speed(speed), _cnt_move(0), _skin(skin), _weapon(weapon), _coord(coord)
+AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord) : _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _cnt_move(0), _skin(skin), _weapon(weapon), _coord(coord)
 { _skin_size = getSkinSize(); }
 
-AEntity::AEntity(AEntity const &src) : _hp(src._hp), _damageDeal(src._damageDeal), _speed(src._speed), _cnt_move(0), _skin(src._skin), _coord(src._coord)
-{
-	_skin_size = getSkinSize();
-	//DEEPCOPY!
-	//_weapon = src._weapon->clone();
-	//DEEPCOPY!
-}
+AEntity::AEntity(AEntity const &src) : _hp(src._hp), _damageDeal(src._damageDeal), _speed(src._speed), _score(src._score), _cnt_move(0), _skin(src._skin), _weapon(src._weapon), _coord(src._coord)
+{ _skin_size = getSkinSize(); }
 
 AEntity::~AEntity() {}
 
@@ -32,9 +27,9 @@ AEntity			&AEntity::operator=(AEntity const &rhs)
 		_hp = rhs._hp;
 		_damageDeal = rhs._damageDeal;
 		_speed = rhs._speed;
+		_score = rhs._score;
 		_cnt_move = rhs._cnt_move;
 		_skin = rhs._skin;
-		//_weapon = rhs._weapon;//DEEPCOPY
 		_coord = rhs._coord;
 		_skin_size = rhs._skin_size;
 	}
@@ -73,6 +68,8 @@ void			AEntity::displaySkin(WINDOW *win) const
 unsigned int	AEntity::getHp() const { return (_hp); }
 
 unsigned int	AEntity::getDamageDeal() const { return (_damageDeal); }
+
+unsigned int    AEntity::getScore() const { return (_score); }
 
 t_coord			AEntity::getCoord() const { return (_coord); }
 

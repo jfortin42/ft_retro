@@ -6,18 +6,12 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/13 13:26:48 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 19:05:19 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_HPP
 # define GAME_HPP
-
-//# include <ncurses.h>
-//# include <unistd.h>
-//# include <iostream>
-//# include <fstream>
-//# include <sstream>
 
 # include "AEntity.hpp"
 # include "AWeapon.hpp"

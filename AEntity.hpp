@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 13:26:09 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 18:57:50 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct		s_coord
 class				AEntity {
 
 public:
-	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord);
+	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord);
 	AEntity(AEntity const &src);
 	virtual ~AEntity();
 
@@ -48,6 +48,7 @@ public:
 
 	unsigned int			getHp() const;
 	unsigned int			getDamageDeal() const;
+	unsigned int			getScore() const;
 	t_coord					getCoord() const;
 	t_coord					getSkinSize() const;
 
@@ -65,7 +66,8 @@ protected:
 	
 	unsigned int			_hp;
 	unsigned int			_damageDeal;
-	unsigned int			_speed; //millisecond
+	unsigned int			_speed;
+	unsigned int			_score;
 	unsigned int			_cnt_move;
 	std::string				_skin;
 	AWeapon					*_weapon;

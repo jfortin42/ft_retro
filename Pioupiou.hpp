@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 18:41:51 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:16:43 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 18:37:28 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ public:
 
 	Pioupiou	&operator=(Pioupiou const &rhs);
 	
+	AWeapon		*clone() const;
 	AEntity		*createMissile(t_coord coord, char direction);
 
 private:

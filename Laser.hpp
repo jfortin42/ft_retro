@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 15:00:56 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:16:50 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 18:37:47 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ public:
 
 	Laser	&operator=(Laser const &rhs);
 
+	AWeapon	*clone() const;
 	AEntity	*createMissile(t_coord coord, char direction);
 
 };

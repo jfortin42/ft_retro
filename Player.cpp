@@ -6,35 +6,27 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/13 19:38:37 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 19:03:01 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Player.hpp"
 
-Player::Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord) : AEntity(hp, damageDeal, speed, skin, weapon, coord) {}
+Player::Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord) : AEntity(hp, damageDeal, speed, 0, skin, weapon, coord) {}
 
 Player::Player(Player const &src) : AEntity(src) {}
 
-Player::~Player() {}
+Player::~Player()
+{
+    if (_weapon)
+        delete _weapon;
+}
 
 Player          &Player::operator=(Player const &rhs)
 {
+    _weapon = rhs._weapon->clone();
     AEntity::operator=(rhs);
     return (*this);
-    //OU ALORS
-    /*if (this != &rhs)
-	{
-        _hp = rhs._hp;
-        _damageDeal = rhs._damageDeal;
-        _speed = rhs._speed;
-        _cnt_move = rhs._cnt_move;
-        _skin = rhs._skin;
-        //_weapon = rhs._weapon;//DEEP COPY!
-        _coord = rhs._coord;
-        _sizeSkin = rhs._skin_size;
-	}
-	return (*this);*/
 }
 
 bool            Player::move(unsigned int height, unsigned int width, int key)

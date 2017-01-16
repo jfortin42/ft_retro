@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:52:16 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/13 12:46:49 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 19:04:54 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 Bonus::Bonus(t_coord coord, std::string skin, unsigned int timer, AWeapon *weapon) : _coord(coord), _skin(skin), _timer(timer), _weapon(weapon) {}
 
-Bonus::Bonus(Bonus const &src) : _coord(src._coord), _skin(src._skin), _timer(src._timer)
-{
-    //DEEPCOPY
-    //_weapon = src._weapon->clone();
-    //DEEPCOPY
-}
+Bonus::Bonus(Bonus const &src) : _coord(src._coord), _skin(src._skin), _timer(src._timer) { _weapon = src._weapon->clone(); }
 
-Bonus::~Bonus() {}
+Bonus::~Bonus()
+{
+    if (_weapon)
+        delete _weapon;
+}
 
 Bonus           &Bonus::operator=(Bonus const &rhs)
 {
@@ -30,7 +29,7 @@ Bonus           &Bonus::operator=(Bonus const &rhs)
         _coord = rhs._coord;
         _skin = rhs._skin;
         _timer = rhs._timer;
-        //_weapon = rhs._weapon;//DEEPCOPY!
+        _weapon = rhs._weapon->clone();
     }
     return (*this);
 }
@@ -51,4 +50,4 @@ void            Bonus::displaySkin(WINDOW *win) const
     wattroff(win, A_BLINK);// | COLOR_PAIR(3));
 }
 
-void            Bonus::giveWeapon(AEntity *entity) const { entity->equipWeapon(_weapon); }
+void            Bonus::giveWeapon(AEntity *entity) const { entity->equipWeapon(_weapon->clone()); }

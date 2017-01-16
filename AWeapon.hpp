@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:17:29 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 18:42:55 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,12 @@ class	AWeapon {
 public:
 	AWeapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed, unsigned int rateOfFire);
 	AWeapon(AWeapon const &src);
-	~AWeapon();
+	virtual ~AWeapon();
 
 	AWeapon				&operator=(AWeapon const &rhs);
 
+	virtual AWeapon		*clone() const = 0;
 	virtual AEntity		*createMissile(t_coord coord, char direction) = 0;
-
-	//virtual AWeapon	*clone() const = 0;	
 
 protected:
 	class	RateOfFireException : public std::exception {

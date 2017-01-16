@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 15:06:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/13 19:39:07 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/16 19:02:29 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,13 @@ Laser		&Laser::operator=(Laser const &rhs)
 {
 	AWeapon::operator=(rhs);
 	return (*this);
-    //OU ALORS
-	/*if (this != &rhs)
-	{
-		_hp_missile = rhs._hp_missile;
-		_damageDeal = rhs._damageDeal;
-		_speed_missile = rhs._speed_missile;
-		_rateOfFire = rhs._rateOfFire;
-		_cnt_shoot = rhs._cnt_shoot;
-	}
-	return (*this);*/
+}
+
+AWeapon		*Laser::clone() const
+{
+	AWeapon	*clone = new Laser(*this);
+
+	return (clone);
 }
 
 AEntity		*Laser::createMissile(t_coord coord, char direction)

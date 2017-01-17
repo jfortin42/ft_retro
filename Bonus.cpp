@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:52:16 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/16 19:04:54 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/17 20:32:13 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ Bonus           &Bonus::operator=(Bonus const &rhs)
 
 unsigned int    Bonus::getTimer() const { return (_timer); }
 
-// bool         Bonus::cmpCoord(AEntity *entity) const
-// {
+//bool         Bonus::cmpCoord(AEntity *entity) const
+//{
     //comparer les coordonnees du bonus avec la hitbox de l'entite
     //return TRUE or FALSE
     //if TRUE => delete bonus
-// }
+//}
 
 void            Bonus::displaySkin(WINDOW *win) const
 {

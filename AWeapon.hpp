@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/16 18:42:55 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/21 20:01:28 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ protected:
 		public:
 			RateOfFireException();
 			RateOfFireException(RateOfFireException const &src);
-			~RateOfFireException() throw();
+			virtual ~RateOfFireException() throw();
 
 			RateOfFireException	&operator=(RateOfFireException const &rhs);
 

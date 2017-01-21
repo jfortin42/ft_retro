@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/16 18:57:50 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/21 20:01:19 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ protected:
 		public:
 			NoWeaponEquippedException();
 			NoWeaponEquippedException(NoWeaponEquippedException const &src);
-			~NoWeaponEquippedException() throw();
+			virtual ~NoWeaponEquippedException() throw();
 
 			NoWeaponEquippedException	&operator=(NoWeaponEquippedException const &rhs);
 

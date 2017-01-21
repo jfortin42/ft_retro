@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/16 19:05:19 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/01/21 20:01:48 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ class                   Game {
             public:
                 WindowDimensionsInvalidException();
                 WindowDimensionsInvalidException(WindowDimensionsInvalidException const &src);
-                ~WindowDimensionsInvalidException() throw();
+                virtual ~WindowDimensionsInvalidException() throw();
 
                 WindowDimensionsInvalidException    &operator=(WindowDimensionsInvalidException const &rhs);
                 

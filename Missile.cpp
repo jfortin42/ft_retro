@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/16 19:02:43 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/11 22:19:39 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ bool		Missile::move(unsigned int height, unsigned int width, int key)
         _cnt_move = 0;
 		if (direction == 'N' && _coord.y > 1)
 			_coord.y -= 1;
-		else if (direction == 'S' && _coord.y < height - 2)
+		else if (direction == 'S' && _coord.y + _skin_size.y < height)
 			_coord.y += 1;
 		else if (direction == 'W' && _coord.x > 1)
 			_coord.x -= 1;
-		else if (direction == 'E' && _coord.x < width - 2)
+		else if (direction == 'E' && _coord.x  + _skin_size.x < width)
 			_coord.x += 1;
 		else
 			return (false);
@@ -47,11 +47,7 @@ bool		Missile::move(unsigned int height, unsigned int width, int key)
 
 AEntity	*Missile::shoot()
 {
-	//a changer
-	/*t_coord coordShoot;
-
-	coordShoot.y = 0;
-	coordShoot.x = 0;
-	return (new Missile(1, 1, 1, 0, "o", NULL, coordShoot, _direction));*/
-	return (NULL);
+    if (!_weapon)
+        throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
+    return (_weapon->createMissile(*this, 'N'));
 }

@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/11 17:11:41 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/11 22:04:21 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void            Game::_initGame()
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
-    AWeapon *laser = new Laser(1, 1, 30, 0);
+    AWeapon *laser = new Laser(1, 1, 30, "|", 0);
     _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), laser->clone(), playerCoord));
 }
 
@@ -93,7 +93,7 @@ void            Game::_gameLoop()
     int         key;
     std::string bkgd;
     std::string game_over;
-    AWeapon     *pioupiou = new Pioupiou(1, 1, 50, 1000);
+    AWeapon     *pioupiou = new Pioupiou(1, 1, 50,_readSkin("env/stinger.env") , 1000);
 
     bkgd = _fillBackground();
     game_over = _readSkin("env/gameover.env");

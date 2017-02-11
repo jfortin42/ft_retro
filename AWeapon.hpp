@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AWeapon.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/21 20:01:28 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/11 17:53:33 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,6 @@ public:
 	virtual AEntity		*createMissile(t_coord coord, char direction) = 0;
 
 protected:
-	class	RateOfFireException : public std::exception {
-		public:
-			RateOfFireException();
-			RateOfFireException(RateOfFireException const &src);
-			virtual ~RateOfFireException() throw();
-
-			RateOfFireException	&operator=(RateOfFireException const &rhs);
-
-			char const			*what(void) const throw();
-	};
-	
 	unsigned int		_hp_missile;
 	unsigned int		_damageDeal;
 	unsigned int		_speed_missile;

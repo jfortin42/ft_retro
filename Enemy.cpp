@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Enemy.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/16 18:59:43 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/11 17:51:18 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ AEntity         *Enemy::shoot()
 {
     t_coord coordShoot;
     
+    if (!_weapon)
+        throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
     coordShoot.x = _coord.x + _skin_size.x / 2;
     coordShoot.y = _coord.y + _skin_size.y + 1;
     return (_weapon->createMissile(coordShoot, 'S'));

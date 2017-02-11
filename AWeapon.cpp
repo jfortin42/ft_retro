@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AWeapon.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 14:51:41 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/18 15:46:59 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/11 17:54:08 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,3 @@ AWeapon		&AWeapon::operator=(AWeapon const &rhs)
 	}
 	return (*this);
 }
-
-AWeapon::RateOfFireException::RateOfFireException() {}
-
-AWeapon::RateOfFireException::RateOfFireException(RateOfFireException const &src) { *this = src; }
-
-AWeapon::RateOfFireException::~RateOfFireException() throw() {}
-
-AWeapon::RateOfFireException	&AWeapon::RateOfFireException::operator=(AWeapon::RateOfFireException const &rhs)
-{
-    (void)rhs;
-    return (*this);
-}
-
-char const						*AWeapon::RateOfFireException::what(void) const throw() { return ("Rate of fire"); }

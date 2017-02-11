@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pioupiou.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 21:44:35 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/16 19:02:50 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/11 17:52:23 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ AWeapon		*Pioupiou::clone() const
 AEntity		*Pioupiou::createMissile(t_coord coord, char direction)
 {
 	if (_cnt_shoot++ < _rateOfFire || coord.y >= (unsigned int)(LINES - BOT_WIN_H))
-        throw(AWeapon::RateOfFireException::RateOfFireException());
+		return (NULL);
 	_cnt_shoot = 0;
 	return (new Missile(_hp_missile, _damageDeal, _speed_missile, ".", NULL, coord, direction));
 }

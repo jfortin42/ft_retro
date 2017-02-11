@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/18 15:46:45 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/11 17:11:41 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,14 +359,17 @@ std::string     Game::_readSkin(std::string nameOfFile) const
 
 void            Game::_pushInList(t_entityList *&list, AEntity *entity)
 {
-    t_entityList    *tmp = list;
-    t_entityList    *newEntity = new t_entityList();
+    if (entity)
+    {
+        t_entityList    *tmp = list;
+        t_entityList    *newEntity = new t_entityList();
 
-    newEntity->entity = entity;
-    newEntity->next = NULL;
-    while (tmp && tmp->next)
-        tmp = tmp->next;
-    tmp ? tmp->next = newEntity : list = newEntity;
+        newEntity->entity = entity;
+        newEntity->next = NULL;
+        while (tmp && tmp->next)
+            tmp = tmp->next;
+        tmp ? tmp->next = newEntity : list = newEntity;
+    }
 }
 
 void            Game::_lstdelone(t_entityList *&begin, t_entityList *&current, char command)

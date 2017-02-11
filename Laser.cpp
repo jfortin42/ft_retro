@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Laser.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 15:06:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/16 19:02:29 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/11 17:52:33 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ AWeapon		*Laser::clone() const
 AEntity		*Laser::createMissile(t_coord coord, char direction)
 {
 	if (_cnt_shoot++ < _rateOfFire)
-        throw(AWeapon::RateOfFireException::RateOfFireException());
+		return (NULL);
 	_cnt_shoot = 0;
 	return (new Missile(_hp_missile, _damageDeal, _speed_missile, "|", NULL, coord, direction));
 }

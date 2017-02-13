@@ -6,15 +6,15 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/11 22:04:21 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/13 20:48:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 
-Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL) {}
+Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL) {}
 
-Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL)
+Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL)
 {
     //fonction pour remplir toutes les listes (DEEP COPY!)
 }
@@ -39,6 +39,7 @@ Game            &Game::operator=(Game const &rhs)
         delwin(_bottom_win);
         _freeEntityList(_playerList);
         _freeEntityList(_enemyList);
+        _freeEntityList(_bossList);
         _freeEntityList(_missilePlayerList);
         _freeEntityList(_missileEnemyList);
         //fonction pour remplir toutes les listes (DEEP COPY!)
@@ -91,18 +92,24 @@ void            Game::_gameLoop()
 {
     int         i;
     int         key;
+    bool        boss_pop = false;
     std::string bkgd;
-    std::string game_over;
-    AWeapon     *pioupiou = new Pioupiou(1, 1, 50,_readSkin("env/stinger.env") , 1000);
+    std::string game_over = _readSkin("env/gameover.env");
+    std::string game_win = _readSkin("env/gamewin.env");
+    AWeapon     *pioupiou = new Pioupiou(1, 1, 50, _readSkin("env/stinger.env") , 1000);
 
     bkgd = _fillBackground();
-    game_over = _readSkin("env/gameover.env");
-    while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0)
+    while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0 && (!boss_pop || _bossList))
     {
         _refreshMainWin(bkgd);
         i = rand();
-        if (i % 5000 < 1)
+        if (i % 5000 < 1 && _timer > 100)
             _pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), pioupiou->clone(), (t_coord){i % (COLS - 10) + 1, 1}));
+        else if (!boss_pop && _timer <= 100)
+        {
+            _pushInList(_bossList, new Enemy(50, 3, 5000, 1000, _readSkin("env/shadow.env"), pioupiou->clone(), (t_coord){1, 1}));
+            boss_pop = true;
+        }
         if (key == KEY_SPC && _playerList)
         try { _pushInList(_missilePlayerList, _playerList->entity->shoot()); }
         catch (std::exception &e) {}
@@ -110,13 +117,16 @@ void            Game::_gameLoop()
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
     }
-    if (!_playerList || _timer == 0)
+    delete pioupiou;
+    if (key != KEY_ESC)
     {
         werase(_main_win);
-        delete pioupiou;
         mvwprintw(_main_win, 3, (COLS - 10) / 2, "FINAL SCORE:");
         mvwprintw(_main_win, 3, ((COLS - 3) / 2) + 14, "%i", _score);        
-        mvwprintw(_main_win, (LINES - BOT_WIN_H - 6) / 2, 1, game_over.c_str());
+        if (!_playerList || _timer == 0)
+            mvwprintw(_main_win, (LINES - BOT_WIN_H - 6) / 2, 1, game_over.c_str());
+        else if (key != KEY_ESC)
+            mvwprintw(_main_win, (LINES - BOT_WIN_H - 6) / 2, 1, game_win.c_str());
         wrefresh(_main_win);
         usleep(2000000);
     }
@@ -135,6 +145,7 @@ void            Game::_gameCore(int key)
 {
     _displayEntities(_playerList);
     _displayEntities(_enemyList);
+    _displayEntities(_bossList);
     _displayEntities(_missilePlayerList);
     _displayEntities(_missileEnemyList);
     _moveInList(_playerList, key);
@@ -142,10 +153,13 @@ void            Game::_gameCore(int key)
     {
         _moveInList(_missilePlayerList, key);
         _moveInList(_missileEnemyList, key);
+        _moveInList(_bossList, key);
         _moveInList(_enemyList, key);
         _collision(_missilePlayerList, _enemyList);
         _collision(_playerList, _enemyList);
         _collision(_playerList, _missileEnemyList);
+        _collision(_playerList, _bossList);
+        _collision(_missilePlayerList, _bossList);
         _shootInList(_enemyList, _missileEnemyList);
     }
 }

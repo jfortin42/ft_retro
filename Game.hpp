@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/11 22:02:29 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/13 13:38:01 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ class                   Game {
 
         t_entityList    *_playerList;
         t_entityList    *_enemyList;
+        t_entityList    *_bossList;
         t_entityList    *_missilePlayerList;
         t_entityList    *_missileEnemyList;
 

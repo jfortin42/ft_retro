@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/01/21 20:01:19 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/19 18:54:20 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ typedef struct		s_coord
 class				AEntity {
 
 public:
+
+typedef struct          s_entityList
+{
+	AEntity             *entity;
+	struct s_entityList *next;
+}                       t_entityList;
+
 	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord);
 	AEntity(AEntity const &src);
 	virtual ~AEntity();
@@ -40,7 +47,7 @@ public:
 	void					equipWeapon(AWeapon *weapon);
 
 	virtual bool			move(unsigned int height, unsigned int width, int key) = 0;
-	virtual AEntity			*shoot() = 0;
+	virtual t_entityList	*shoot() = 0;
 
 	virtual unsigned int	takeDamage(AEntity const &attacker, WINDOW *win);
 

@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Enemy.hpp                                          :+:      :+:    :+:   */
+/*   Boss.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/21 17:59:42 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/18 17:35:54 by jfortin          ###   ########.fr       */
+/*   Created: 2017/02/13 21:01:50 by jfortin           #+#    #+#             */
+/*   Updated: 2017/02/18 17:35:09 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENEMY_HPP
-# define ENEMY_HPP
+#ifndef BOSS_HPP
+# define BOSS_HPP
 
 # include "Game.hpp"
 
-class	Enemy : public AEntity {
+class	Boss : public AEntity {
 
 public:
-	Enemy(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord);
-	Enemy(Enemy const &src);
-	~Enemy();
+	Boss(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord);
+	Boss(Boss const &src);
+	~Boss();
 
-	Enemy			&operator=(Enemy const &rhs);
+	Boss			&operator=(Boss const &rhs);
 	
 	bool        	move(unsigned int height, unsigned int width, int key);
     t_entityList    *shoot();
 
 private:
-	Enemy();
+	Boss();
 		
+	char	_direction;
 };
 
 #endif

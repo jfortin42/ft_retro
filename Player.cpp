@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/11 20:20:00 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/19 19:07:42 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool            Player::move(unsigned int height, unsigned int width, int key)
     return (true);
 }
 
-AEntity         *Player::shoot()
+AEntity::t_entityList    *Player::shoot()
 {
     if (!_weapon)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());

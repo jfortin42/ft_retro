@@ -6,15 +6,15 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/13 20:48:25 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/19 19:05:39 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 
-Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL) {}
+Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL) {}
 
-Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL)
+Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL)
 {
     //fonction pour remplir toutes les listes (DEEP COPY!)
 }
@@ -23,8 +23,10 @@ Game::~Game()
 {
     _freeEntityList(_playerList);
     _freeEntityList(_enemyList);
+    _freeEntityList(_bossList);
     _freeEntityList(_missilePlayerList);
     _freeEntityList(_missileEnemyList);
+    _freeEntityList(_missileBossList);
 }
 
 Game            &Game::operator=(Game const &rhs)
@@ -42,6 +44,7 @@ Game            &Game::operator=(Game const &rhs)
         _freeEntityList(_bossList);
         _freeEntityList(_missilePlayerList);
         _freeEntityList(_missileEnemyList);
+        _freeEntityList(_missileBossList);
         //fonction pour remplir toutes les listes (DEEP COPY!)
     }
     return (*this);
@@ -84,8 +87,9 @@ void            Game::_initGame()
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord.y = LINES - (6 + BOT_WIN_H);
     playerCoord.x = (COLS / 2) - 1;
-    AWeapon *laser = new Laser(1, 1, 30, "|", 0);
-    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), laser->clone(), playerCoord));
+    // AWeapon *laser = new Laser(1, 1, 30, "|", 0);
+    AWeapon     *missileboss = new Missileboss(2, 2, 50, "|", 0, 0);
+    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord));
 }
 
 void            Game::_gameLoop()
@@ -97,6 +101,7 @@ void            Game::_gameLoop()
     std::string game_over = _readSkin("env/gameover.env");
     std::string game_win = _readSkin("env/gamewin.env");
     AWeapon     *pioupiou = new Pioupiou(1, 1, 50, _readSkin("env/stinger.env") , 1000);
+    AWeapon     *missileboss = new Missileboss(2, 2, 50, "|", 1000, 1);
 
     bkgd = _fillBackground();
     while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0 && (!boss_pop || _bossList))
@@ -107,7 +112,7 @@ void            Game::_gameLoop()
             _pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), pioupiou->clone(), (t_coord){i % (COLS - 10) + 1, 1}));
         else if (!boss_pop && _timer <= 100)
         {
-            _pushInList(_bossList, new Enemy(50, 3, 5000, 1000, _readSkin("env/shadow.env"), pioupiou->clone(), (t_coord){1, 1}));
+            _pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), missileboss->clone(), (t_coord){1, 1}));
             boss_pop = true;
         }
         if (key == KEY_SPC && _playerList)
@@ -148,11 +153,13 @@ void            Game::_gameCore(int key)
     _displayEntities(_bossList);
     _displayEntities(_missilePlayerList);
     _displayEntities(_missileEnemyList);
+    _displayEntities(_missileBossList);
     _moveInList(_playerList, key);
     if (_checkTime(1, _last_loop))
     {
         _moveInList(_missilePlayerList, key);
         _moveInList(_missileEnemyList, key);
+        _moveInList(_missileBossList, key);
         _moveInList(_bossList, key);
         _moveInList(_enemyList, key);
         _collision(_missilePlayerList, _enemyList);
@@ -160,13 +167,15 @@ void            Game::_gameCore(int key)
         _collision(_playerList, _missileEnemyList);
         _collision(_playerList, _bossList);
         _collision(_missilePlayerList, _bossList);
+        _collision(_playerList, _missileBossList);
         _shootInList(_enemyList, _missileEnemyList);
+        _shootInList(_bossList, _missileBossList);
     }
 }
 
-void            Game::_displayEntities(t_entityList *list) const
+void            Game::_displayEntities(AEntity::t_entityList *list) const
 {
-    t_entityList    *list_tmp = list;
+    AEntity::t_entityList    *list_tmp = list;
 
     while (list_tmp)
     {
@@ -175,9 +184,9 @@ void            Game::_displayEntities(t_entityList *list) const
     }
 }
 
-void            Game::_moveInList(t_entityList *&begin, int key)
+void            Game::_moveInList(AEntity::t_entityList *&begin, int key)
 {
-    t_entityList    *entity_tmp = begin;
+    AEntity::t_entityList    *entity_tmp = begin;
 
     while (entity_tmp)
     {
@@ -189,7 +198,7 @@ void            Game::_moveInList(t_entityList *&begin, int key)
     }
 }
 
-void            Game::_shootInList(t_entityList *list, t_entityList *&listOfMissile)
+void            Game::_shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile)
 {
     while (list)
     {
@@ -199,7 +208,7 @@ void            Game::_shootInList(t_entityList *list, t_entityList *&listOfMiss
     }
 }
 
-bool            Game::_hitbox(t_entityList *entity1, t_entityList *entity2) const
+bool            Game::_hitbox(AEntity::t_entityList *entity1, AEntity::t_entityList *entity2) const
 {
     if (entity1->entity->getCoord().x + entity1->entity->getSkinSize().x >= entity2->entity->getCoord().x
         && entity1->entity->getCoord().x <= entity2->entity->getCoord().x + entity2->entity->getSkinSize().x
@@ -209,15 +218,15 @@ bool            Game::_hitbox(t_entityList *entity1, t_entityList *entity2) cons
     return (false);
 }
 
-void            Game::_collision(t_entityList *&list1, t_entityList *&list2)
+void            Game::_collision(AEntity::t_entityList *&list1, AEntity::t_entityList *&list2)
 {
-    t_entityList    *tmp1 = list1;
+    AEntity::t_entityList    *tmp1 = list1;
     unsigned int    tmp1HP;
     unsigned int    tmp2HP;
 
     while (tmp1)
     {
-        t_entityList    *tmp2 = list2;
+        AEntity::t_entityList    *tmp2 = list2;
         while (tmp1 && tmp2)
         {
             if (tmp1->next && tmp2->next && _hitbox(tmp1->next, tmp2->next))
@@ -371,12 +380,12 @@ std::string     Game::_readSkin(std::string nameOfFile) const
 
 //copy creation and operator= must send a clone of entity to Game::_pushInList (cf. d04/ex02/Squad.cpp)
 
-void            Game::_pushInList(t_entityList *&list, AEntity *entity)
+void            Game::_pushInList(AEntity::t_entityList *&list, AEntity *entity)
 {
     if (entity)
     {
-        t_entityList    *tmp = list;
-        t_entityList    *newEntity = new t_entityList();
+        AEntity::t_entityList    *tmp = list;
+        AEntity::t_entityList    *newEntity = new AEntity::t_entityList();
 
         newEntity->entity = entity;
         newEntity->next = NULL;
@@ -386,9 +395,20 @@ void            Game::_pushInList(t_entityList *&list, AEntity *entity)
     }
 }
 
-void            Game::_lstdelone(t_entityList *&begin, t_entityList *&current, char command)
+void            Game::_pushInList(AEntity::t_entityList *&dest, AEntity::t_entityList *src)
 {
-    t_entityList    *tmp_next = NULL;
+    if (src)
+    {
+        AEntity::t_entityList *tmp = dest;
+        while (tmp && tmp->next)
+            tmp = tmp->next;
+        tmp ? tmp->next = src : dest = src;
+    }
+}
+
+void            Game::_lstdelone(AEntity::t_entityList *&begin, AEntity::t_entityList *&current, char command)
+{
+    AEntity::t_entityList    *tmp_next = NULL;
 
     if (current == begin && command == 'F')
     {
@@ -406,9 +426,9 @@ void            Game::_lstdelone(t_entityList *&begin, t_entityList *&current, c
     }
 }
 
-void            Game::_freeEntityList(t_entityList *&list)
+void            Game::_freeEntityList(AEntity::t_entityList *&list)
 {
-    t_entityList    *tmp;
+    AEntity::t_entityList    *tmp;
 
     while (list)
     {

@@ -1,50 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Enemy.cpp                                          :+:      :+:    :+:   */
+/*   Boss.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/18 20:08:25 by jfortin          ###   ########.fr       */
+/*   Created: 2017/02/13 21:04:07 by jfortin           #+#    #+#             */
+/*   Updated: 2017/02/18 20:08:48 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Enemy.hpp"
+#include "Boss.hpp"
 
-Enemy::Enemy(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord) : AEntity(hp, damageDeal, speed, score, skin, weapon, coord) {}
+Boss::Boss(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord) : AEntity(hp, damageDeal, speed, score, skin, weapon, coord), _direction('E') {}
 
-Enemy::Enemy(Enemy const &src) : AEntity(src) {}
+Boss::Boss(Boss const &src) : AEntity(src), _direction(src._direction) {}
 
-Enemy::~Enemy()
+Boss::~Boss()
 {
     if (_weapon)
         delete _weapon;
 }
 
-Enemy	        &Enemy::operator=(Enemy const &rhs)
+Boss	        &Boss::operator=(Boss const &rhs)
 {
     _weapon = rhs._weapon->clone();
     AEntity::operator=(rhs);
+    _direction = rhs._direction;
     return (*this);
 }
 
-bool            Enemy::move(unsigned int height, unsigned int width, int key)
+bool            Boss::move(unsigned int height, unsigned int width, int key)
 {
-    (void)width;
+    (void)height;
     (void)key;
     if (_cnt_move++ >= _speed)
     {
         _cnt_move = 0;
-        if (_coord.y < height - _skin_size.y - 1)
-            _coord.y += 1;
+        if (_direction == 'E' && _coord.x + _skin_size.x < width - 1)
+            _coord.x += 1;
         else
-            return (false);
+            _direction = 'W';
+        if (_direction == 'W' && _coord.x > 1)
+            _coord.x -= 1;
+        else
+            _direction = 'E';
     }
     return (true);
 }
 
-AEntity::t_entityList    *Enemy::shoot()
+AEntity::t_entityList    *Boss::shoot()
 {
     if (!_weapon)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());

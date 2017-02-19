@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/11 22:19:39 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/19 18:03:04 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ Missile		&Missile::operator=(Missile const &rhs)
 	return (*this);
 }
 
-bool		Missile::move(unsigned int height, unsigned int width, int key)
+bool					Missile::move(unsigned int height, unsigned int width, int key)
 {
 	(void)key;
     if (_cnt_move++ >= _speed)
@@ -33,11 +33,11 @@ bool		Missile::move(unsigned int height, unsigned int width, int key)
         _cnt_move = 0;
 		if (direction == 'N' && _coord.y > 1)
 			_coord.y -= 1;
-		else if (direction == 'S' && _coord.y + _skin_size.y < height)
+		else if (direction == 'S' && _coord.y + _skin_size.y < height - 1)
 			_coord.y += 1;
 		else if (direction == 'W' && _coord.x > 1)
 			_coord.x -= 1;
-		else if (direction == 'E' && _coord.x  + _skin_size.x < width)
+		else if (direction == 'E' && _coord.x  + _skin_size.x < width - 1)
 			_coord.x += 1;
 		else
 			return (false);
@@ -45,7 +45,7 @@ bool		Missile::move(unsigned int height, unsigned int width, int key)
 	return (true);
 }
 
-AEntity	*Missile::shoot()
+AEntity::t_entityList	*Missile::shoot()
 {
     if (!_weapon)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());

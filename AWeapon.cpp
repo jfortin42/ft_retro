@@ -6,11 +6,12 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 14:51:41 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/11 22:25:24 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/19 19:02:07 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AWeapon.hpp"
+# include "Game.hpp"
 
 AWeapon::AWeapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, std::string skin_missile, unsigned int rateOfFire) : _hp_missile(hp_missile), _damageDeal(damageDeal), _speed_missile(speed_missile), _skin_missile(skin_missile), _rateOfFire(rateOfFire), _cnt_shoot(0) {}
 
@@ -58,11 +59,12 @@ t_coord			AWeapon::getSkinSize() const
 	return ((t_coord){length_max, height});
 }
 
-AEntity		*AWeapon::createMissile(AEntity &shooter, char direction)
+AEntity::t_entityList		*AWeapon::createMissile(AEntity &shooter, char direction)
 {
 	t_coord	skinShooter = shooter.getSkinSize();
 	t_coord coordShooter = shooter.getCoord();
 	t_coord	coordMissile;
+	AEntity::t_entityList *listOfMissile = NULL;
 
 	if (direction == 'N')
 	{
@@ -87,5 +89,6 @@ AEntity		*AWeapon::createMissile(AEntity &shooter, char direction)
 	if (_cnt_shoot++ < _rateOfFire || coordMissile.y + getSkinSize().y >= (unsigned int)(LINES - BOT_WIN_H))
 		return (NULL);
 	_cnt_shoot = 0;
-	return (new Missile(_hp_missile, _damageDeal, _speed_missile, _skin_missile, NULL, coordMissile, direction));
+	Game::_pushInList(listOfMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, _skin_missile, NULL, coordMissile, direction));
+	return (listOfMissile);
 }

@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/11 22:22:16 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/19 19:03:15 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 # define BOT_WIN_H 5
 
+class		Game;
+
 class	AWeapon {
 
 public:
@@ -27,9 +29,9 @@ public:
 
 	AWeapon				&operator=(AWeapon const &rhs);
 
-	virtual AWeapon		*clone() const = 0;
-	virtual AEntity		*createMissile(AEntity &shooter, char direction);
-	t_coord				getSkinSize() const;
+	virtual AWeapon			*clone() const = 0;
+	virtual AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
+	t_coord					getSkinSize() const;
 
 protected:
 	unsigned int		_hp_missile;

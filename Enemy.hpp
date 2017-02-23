@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:59:42 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/18 17:35:54 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 21:55:32 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ public:
 	Enemy			&operator=(Enemy const &rhs);
 	
 	bool        	move(unsigned int height, unsigned int width, int key);
-    t_entityList    *shoot();
+    t_entityList    *shoot(int key);
 
 private:
 	Enemy();

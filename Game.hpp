@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/19 16:01:27 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 23:39:08 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ class                   Game {
 		void            _gameCore(int key);
 		void            _displayEntities(AEntity::t_entityList *list) const;
 		void			_moveInList(AEntity::t_entityList *&begin, int key);
-		void            _shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile);
+		void            _shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile, int key);
 		bool            _hitbox(AEntity::t_entityList *entity1, AEntity::t_entityList *entity2) const;
 		void            _collision(AEntity::t_entityList *&list1, AEntity::t_entityList *&list2);
 

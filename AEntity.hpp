@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/19 18:54:20 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 22:09:16 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct          s_entityList
 	void					equipWeapon(AWeapon *weapon);
 
 	virtual bool			move(unsigned int height, unsigned int width, int key) = 0;
-	virtual t_entityList	*shoot() = 0;
+	virtual t_entityList	*shoot(int key) = 0;
 
 	virtual unsigned int	takeDamage(AEntity const &attacker, WINDOW *win);
 

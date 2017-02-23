@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:15:44 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/18 17:37:03 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 21:56:01 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ public:
 	Missile		&operator=(Missile const &rhs);
 
 	bool	 		move(unsigned int height, unsigned int width, int key);
-    t_entityList	*shoot();
+    t_entityList	*shoot(int key);
 
 private:
 	Missile();

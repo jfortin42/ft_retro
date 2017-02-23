@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 21:04:07 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/18 20:08:48 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 21:55:18 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ bool            Boss::move(unsigned int height, unsigned int width, int key)
     return (true);
 }
 
-AEntity::t_entityList    *Boss::shoot()
+AEntity::t_entityList    *Boss::shoot(int key)
 {
+    (void)key;
     if (!_weapon)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
     return (_weapon->createMissile(*this, 'S'));

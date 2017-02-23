@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 21:01:50 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/18 17:35:09 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 21:54:55 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ public:
 	Boss			&operator=(Boss const &rhs);
 	
 	bool        	move(unsigned int height, unsigned int width, int key);
-    t_entityList    *shoot();
+    t_entityList    *shoot(int key);
 
 private:
 	Boss();

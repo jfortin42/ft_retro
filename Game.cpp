@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/19 19:05:39 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 23:30:53 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void            Game::launch()
 
 void            Game::_initGame()
 {
-    t_coord playerCoord;
+    t_coord playerCoord1;
+    t_coord playerCoord2;
 
     initscr();
     if (LINES < MAIN_WIN_HMIN || COLS < MAIN_WIN_WMIN)
@@ -85,11 +86,14 @@ void            Game::_initGame()
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     wbkgdset(_main_win, COLOR_PAIR(1));
     wbkgdset(_bottom_win, COLOR_PAIR(1));
-    playerCoord.y = LINES - (6 + BOT_WIN_H);
-    playerCoord.x = (COLS / 2) - 1;
+    playerCoord1.y = LINES - (6 + BOT_WIN_H);
+    playerCoord1.x = (COLS / 3) - 1;
+    playerCoord2.y = LINES - (6 + BOT_WIN_H);
+    playerCoord2.x = 2 * (COLS / 3) - 1;
     // AWeapon *laser = new Laser(1, 1, 30, "|", 0);
     AWeapon     *missileboss = new Missileboss(2, 2, 50, "|", 0, 0);
-    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord));
+    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord1, 119, 115, 97, 100, KEY_SPC));
+    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 92));
 }
 
 void            Game::_gameLoop()
@@ -115,9 +119,6 @@ void            Game::_gameLoop()
             _pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), missileboss->clone(), (t_coord){1, 1}));
             boss_pop = true;
         }
-        if (key == KEY_SPC && _playerList)
-        try { _pushInList(_missilePlayerList, _playerList->entity->shoot()); }
-        catch (std::exception &e) {}
         _gameCore(key);
         wrefresh(_main_win);
         _refreshBottomWin(bkgd);
@@ -148,6 +149,8 @@ void            Game::_endGame()
 
 void            Game::_gameCore(int key)
 {
+    if ((key == KEY_SPC || key == 92) && _playerList)
+        _shootInList(_playerList, _missilePlayerList, key);
     _displayEntities(_playerList);
     _displayEntities(_enemyList);
     _displayEntities(_bossList);
@@ -168,8 +171,8 @@ void            Game::_gameCore(int key)
         _collision(_playerList, _bossList);
         _collision(_missilePlayerList, _bossList);
         _collision(_playerList, _missileBossList);
-        _shootInList(_enemyList, _missileEnemyList);
-        _shootInList(_bossList, _missileBossList);
+        _shootInList(_enemyList, _missileEnemyList, key);
+        _shootInList(_bossList, _missileBossList, key);
     }
 }
 
@@ -198,11 +201,11 @@ void            Game::_moveInList(AEntity::t_entityList *&begin, int key)
     }
 }
 
-void            Game::_shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile)
+void            Game::_shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile, int key)
 {
     while (list)
     {
-        try { _pushInList(listOfMissile, list->entity->shoot()); }
+        try { _pushInList(listOfMissile, list->entity->shoot(key)); }
         catch (std::exception &e) {}
         list = list->next;
     }

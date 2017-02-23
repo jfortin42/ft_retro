@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/19 18:03:04 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 21:56:19 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ bool					Missile::move(unsigned int height, unsigned int width, int key)
 	return (true);
 }
 
-AEntity::t_entityList	*Missile::shoot()
+AEntity::t_entityList	*Missile::shoot(int key)
 {
+	(void)key;
     if (!_weapon)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
     return (_weapon->createMissile(*this, 'N'));

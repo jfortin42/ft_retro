@@ -6,13 +6,13 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/19 19:07:42 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/23 22:04:04 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Player.hpp"
 
-Player::Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord) : AEntity(hp, damageDeal, speed, 0, skin, weapon, coord) {}
+Player::Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, int keyUp, int keyDown, int keyLeft, int keyRight, int keyShoot) : AEntity(hp, damageDeal, speed, 0, skin, weapon, coord), _keyUp(keyUp), _keyDown(keyDown), _keyLeft(keyLeft), _keyRight(keyRight), _keyShoot(keyShoot) {}
 
 Player::Player(Player const &src) : AEntity(src) {}
 
@@ -25,28 +25,37 @@ Player::~Player()
 Player          &Player::operator=(Player const &rhs)
 {
     _weapon = rhs._weapon->clone();
+    _keyUp = rhs._keyUp;
+    _keyDown = rhs._keyDown;
+    _keyLeft = rhs._keyLeft;
+    _keyRight = rhs._keyRight;
+    _keyShoot = rhs._keyShoot;
     AEntity::operator=(rhs);
     return (*this);
 }
 
 bool            Player::move(unsigned int height, unsigned int width, int key)
 {
-    if (key == KEY_UP && _coord.y > _speed / 2)
+    if (key == _keyUp && _coord.y > _speed / 2)
         _coord.y -= _speed / 2;
-	else if (key == KEY_DOWN && _coord.y < height - _speed / 2 - _skin_size.y)
+	else if (key == _keyDown && _coord.y < height - _speed / 2 - _skin_size.y)
         _coord.y += _speed / 2;
-	else if (key == KEY_LEFT && _coord.x > _speed / 2)
+	else if (key == _keyLeft && _coord.x > _speed / 2)
         _coord.x -= _speed;
-	else if (key == KEY_RIGHT && _coord.x < width - _speed / 2 - _skin_size.x - 1)
+	else if (key == _keyRight && _coord.x < width - _speed / 2 - _skin_size.x - 1)
         _coord.x += _speed;
     return (true);
 }
 
-AEntity::t_entityList    *Player::shoot()
+AEntity::t_entityList    *Player::shoot(int key)
 {
-    if (!_weapon)
-        throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
-    return (_weapon->createMissile(*this, 'N'));
+    if (key == _keyShoot)
+    {
+        if (!_weapon)
+            throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
+        return (_weapon->createMissile(*this, 'N'));
+    }
+    return (NULL);
 }
 
 unsigned int	Player::takeDamage(AEntity const &attacker, WINDOW *win)

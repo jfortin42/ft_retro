@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/23 23:30:53 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/25 16:33:24 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,12 +320,6 @@ void            Game::_refreshMainWin(std::string bkgd) const
 
 void            Game::_refreshBottomWin(std::string bkgd)
 {
-    unsigned int i;
-    int x;
-
-    x = 26;
-    if (_playerList)
-        i = _playerList->entity->getHp();
     wattron(_bottom_win, COLOR_PAIR(2));
     mvwprintw(_bottom_win, 1, 1, bkgd.c_str());
     wattroff(_bottom_win, COLOR_PAIR(2));
@@ -333,13 +327,16 @@ void            Game::_refreshBottomWin(std::string bkgd)
     mvwprintw(_bottom_win, 2, 3, "time:");
     mvwprintw(_bottom_win, 2, 19, "lives:");
     mvwprintw(_bottom_win, 2, 42, "score:");
-    if (_playerList)
+    AEntity::t_entityList    *playerListTmp = _playerList;
+    for (int y = 0; playerListTmp; y++)
     {
-        for (i = 0 ; i < _playerList->entity->getHp() ; i++)
+        int x = 26;
+        for (unsigned int i = 0 ; i < playerListTmp->entity->getHp() ; i++)
         {
-            mvwprintw(_bottom_win, 2, x, "<3");//single player only for now
+            mvwprintw(_bottom_win, 2 + y, x, "<3");
             x += 4;
         }
+        playerListTmp = playerListTmp->next;
     }
     mvwprintw(_bottom_win, 2, 9, "%i", _timer);
     mvwprintw(_bottom_win, 2, 50, "%i", _score);    

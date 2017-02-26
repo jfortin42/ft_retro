@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/18 15:46:53 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/02/26 18:06:08 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
 
-AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord) : _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _cnt_move(0), _skin(skin), _weapon(weapon), _coord(coord)
-{ _skin_size = getSkinSize(); }
+AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord) : _skin_size(getSkinSize(skin)), _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _last_move(0), _skin(skin), _weapon(weapon), _coord(coord)
+{}
 
-AEntity::AEntity(AEntity const &src) : _hp(src._hp), _damageDeal(src._damageDeal), _speed(src._speed), _score(src._score), _cnt_move(0), _skin(src._skin), _weapon(src._weapon), _coord(src._coord)
-{ _skin_size = getSkinSize(); }
+AEntity::AEntity(AEntity const &src) : _skin_size(src._skin_size), _hp(src._hp), _damageDeal(src._damageDeal), _speed(src._speed), _score(src._score), _last_move(0), _skin(src._skin), _weapon(src._weapon), _coord(src._coord)
+{}
 
 AEntity::~AEntity() {}
 
@@ -28,10 +28,9 @@ AEntity			&AEntity::operator=(AEntity const &rhs)
 		_damageDeal = rhs._damageDeal;
 		_speed = rhs._speed;
 		_score = rhs._score;
-		_cnt_move = rhs._cnt_move;
+		_last_move = rhs._last_move;
 		_skin = rhs._skin;
 		_coord = rhs._coord;
-		_skin_size = rhs._skin_size;
 	}
 	return (*this);
 }
@@ -73,7 +72,7 @@ unsigned int    AEntity::getScore() const { return (_score); }
 
 t_coord			AEntity::getCoord() const { return (_coord); }
 
-t_coord			AEntity::getSkinSize() const
+t_coord			AEntity::getSkinSize(std::string skin)
 {
     std::size_t index;
 	std::size_t	height;
@@ -84,13 +83,13 @@ t_coord			AEntity::getSkinSize() const
 	height = 0;
     length_tmp = 0;
     length_max = 0;
-	while (index < _skin.length() - 1)
+	while (index < skin.length() - 1)
     {
 		height++;
         index += length_tmp + 1;
-		if ((length_tmp = _skin.find("\n", index + 1) - index) > _skin.length())
+		if ((length_tmp = skin.find("\n", index + 1) - index) > skin.length())
         {
-            length_tmp = _skin.length() - index;
+            length_tmp = skin.length() - index;
             length_max = (length_max < length_tmp) ? length_tmp : length_max;        
             break ;
         }

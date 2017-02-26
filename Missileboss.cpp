@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/15 11:43:21 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/19 18:49:36 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/26 17:55:41 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ AWeapon		*Missileboss::clone() const
 
 AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char direction)
 {
-	t_coord			skinShooter = shooter.getSkinSize();
+	t_coord			skinShooter = shooter._skin_size;
 	t_coord			coordShooter = shooter.getCoord();
 	t_coord			coordMissile1;
 	t_coord			coordMissile2;
@@ -43,38 +43,37 @@ AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char directi
 
 	if (direction == 'N')
 	{
-		coordMissile1.x = coordShooter.x + _marging - getSkinSize().x / 2;
-		coordMissile1.y = coordShooter.y - getSkinSize().y;
-		coordMissile2.x = coordShooter.x + skinShooter.x - _marging - getSkinSize().x / 2 - 1;
-		coordMissile2.y = coordShooter.y - getSkinSize().y;
+		coordMissile1.x = coordShooter.x + _marging - _skin_size.x / 2;
+		coordMissile1.y = coordShooter.y - _skin_size.y;
+		coordMissile2.x = coordShooter.x + skinShooter.x - _marging - _skin_size.x / 2 - 1;
+		coordMissile2.y = coordShooter.y - _skin_size.y;
 	}
 	else if (direction == 'S')
 	{
-		coordMissile1.x = coordShooter.x + _marging - getSkinSize().x / 2;
+		coordMissile1.x = coordShooter.x + _marging - _skin_size.x / 2;
 		coordMissile1.y = coordShooter.y + skinShooter.y;
-		coordMissile2.x = coordShooter.x + skinShooter.x - _marging - getSkinSize().x / 2 - 1;
+		coordMissile2.x = coordShooter.x + skinShooter.x - _marging - _skin_size.x / 2 - 1;
 		coordMissile2.y = coordMissile1.y;
 	}
 	else if (direction == 'E')
 	{
 		coordMissile1.x = coordShooter.x + skinShooter.x;
-		coordMissile1.y = coordShooter.y + _marging + getSkinSize().y / 2;
+		coordMissile1.y = coordShooter.y + _marging + _skin_size.y / 2;
 		coordMissile2.x = coordShooter.x + skinShooter.x;
-		coordMissile2.y = coordShooter.y + skinShooter.y - _marging - getSkinSize().y / 2 - 1;
+		coordMissile2.y = coordShooter.y + skinShooter.y - _marging - _skin_size.y / 2 - 1;
 	}
 	else if (direction == 'W')
 	{
-		coordMissile1.x = coordShooter.x - getSkinSize().x - 1;
-		coordMissile1.y = coordShooter.y + _marging + getSkinSize().y / 2;
-		coordMissile2.x = coordShooter.x - getSkinSize().x - 1;
-		coordMissile2.y = coordShooter.y + skinShooter.y - _marging - getSkinSize().y / 2 - 1;
+		coordMissile1.x = coordShooter.x - _skin_size.x - 1;
+		coordMissile1.y = coordShooter.y + _marging + _skin_size.y / 2;
+		coordMissile2.x = coordShooter.x - _skin_size.x - 1;
+		coordMissile2.y = coordShooter.y + skinShooter.y - _marging - _skin_size.y / 2 - 1;
 	}
-	if (_cnt_shoot++ < _rateOfFire)
+	if (!Game::_checkTime(_rateOfFire, _last_shoot))
 		return (NULL);
-	_cnt_shoot = 0;
-	if (insideMap(coordMissile1, getSkinSize()))
+	if (insideMap(coordMissile1, _skin_size))
 		Game::_pushInList(listMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, _skin_missile, NULL, coordMissile1, direction));
-	if (insideMap(coordMissile2, getSkinSize()))
+	if (insideMap(coordMissile2, _skin_size))
 		Game::_pushInList(listMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, _skin_missile, NULL, coordMissile2, direction));
 	return (listMissile);
 }

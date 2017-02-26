@@ -6,15 +6,15 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/25 16:33:24 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/26 18:19:47 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 
-Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL) {}
+Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL), _last_timer(0) {}
 
-Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL)
+Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL)
 {
     //fonction pour remplir toutes les listes (DEEP COPY!)
 }
@@ -91,7 +91,7 @@ void            Game::_initGame()
     playerCoord2.y = LINES - (6 + BOT_WIN_H);
     playerCoord2.x = 2 * (COLS / 3) - 1;
     // AWeapon *laser = new Laser(1, 1, 30, "|", 0);
-    AWeapon     *missileboss = new Missileboss(2, 2, 50, "|", 0, 0);
+    AWeapon     *missileboss = new Missileboss(2, 2, 50, "|", 500, 0);
     _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord1, 119, 115, 97, 100, KEY_SPC));
     _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 92));
 }
@@ -149,31 +149,30 @@ void            Game::_endGame()
 
 void            Game::_gameCore(int key)
 {
-    if ((key == KEY_SPC || key == 92) && _playerList)
-        _shootInList(_playerList, _missilePlayerList, key);
+    _shootInList(_playerList, _missilePlayerList, key);
+    _shootInList(_enemyList, _missileEnemyList, key);
+    _shootInList(_bossList, _missileBossList, key);
+
     _displayEntities(_playerList);
     _displayEntities(_enemyList);
     _displayEntities(_bossList);
     _displayEntities(_missilePlayerList);
     _displayEntities(_missileEnemyList);
     _displayEntities(_missileBossList);
+
     _moveInList(_playerList, key);
-    if (_checkTime(1, _last_loop))
-    {
-        _moveInList(_missilePlayerList, key);
-        _moveInList(_missileEnemyList, key);
-        _moveInList(_missileBossList, key);
-        _moveInList(_bossList, key);
-        _moveInList(_enemyList, key);
-        _collision(_missilePlayerList, _enemyList);
-        _collision(_playerList, _enemyList);
-        _collision(_playerList, _missileEnemyList);
-        _collision(_playerList, _bossList);
-        _collision(_missilePlayerList, _bossList);
-        _collision(_playerList, _missileBossList);
-        _shootInList(_enemyList, _missileEnemyList, key);
-        _shootInList(_bossList, _missileBossList, key);
-    }
+    _moveInList(_enemyList, key);
+    _moveInList(_bossList, key);
+    _moveInList(_missilePlayerList, key);
+    _moveInList(_missileEnemyList, key);
+    _moveInList(_missileBossList, key);
+    
+    _collision(_playerList, _enemyList);
+    _collision(_playerList, _bossList);
+    _collision(_playerList, _missileEnemyList);
+    _collision(_playerList, _missileBossList);
+    _collision(_missilePlayerList, _enemyList);
+    _collision(_missilePlayerList, _bossList);
 }
 
 void            Game::_displayEntities(AEntity::t_entityList *list) const
@@ -213,10 +212,10 @@ void            Game::_shootInList(AEntity::t_entityList *list, AEntity::t_entit
 
 bool            Game::_hitbox(AEntity::t_entityList *entity1, AEntity::t_entityList *entity2) const
 {
-    if (entity1->entity->getCoord().x + entity1->entity->getSkinSize().x >= entity2->entity->getCoord().x
-        && entity1->entity->getCoord().x <= entity2->entity->getCoord().x + entity2->entity->getSkinSize().x
-        && entity1->entity->getCoord().y + entity1->entity->getSkinSize().y - 1 >= entity2->entity->getCoord().y
-        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->getSkinSize().y - 1)
+    if (entity1->entity->getCoord().x + entity1->entity->_skin_size.x >= entity2->entity->getCoord().x
+        && entity1->entity->getCoord().x <= entity2->entity->getCoord().x + entity2->entity->_skin_size.x
+        && entity1->entity->getCoord().y + entity1->entity->_skin_size.y - 1 >= entity2->entity->getCoord().y
+        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->_skin_size.y - 1)
         return (true);
     return (false);
 }

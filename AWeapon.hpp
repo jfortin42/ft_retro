@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/19 19:03:15 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/26 17:59:29 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@ public:
 	AWeapon(AWeapon const &src);
 	virtual ~AWeapon();
 
-	AWeapon				&operator=(AWeapon const &rhs);
+	AWeapon	&operator=(AWeapon const &rhs);
 
-	virtual AWeapon			*clone() const = 0;
+	virtual AWeapon					*clone() const = 0;
 	virtual AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
-	t_coord					getSkinSize() const;
+	
+	t_coord	const		_skin_size;
 
 protected:
 	unsigned int		_hp_missile;
@@ -39,7 +40,7 @@ protected:
 	unsigned int		_speed_missile;
 	std::string			_skin_missile;
 	unsigned int		_rateOfFire;
-	unsigned int		_cnt_shoot;
+	clock_t				_last_shoot;
 
 private:
 	AWeapon();

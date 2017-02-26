@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/23 23:39:08 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/26 18:19:24 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class                   Game {
 		Game            &operator=(Game const &rhs);
 		void            launch();
 		static void     _pushInList(AEntity::t_entityList *&list, AEntity *entity);
+		static bool     _checkTime(unsigned int msecond, clock_t &last);
 		
 	private:
 		class WindowDimensionsInvalidException : public std::exception {
@@ -67,7 +68,6 @@ class                   Game {
 		bool            _hitbox(AEntity::t_entityList *entity1, AEntity::t_entityList *entity2) const;
 		void            _collision(AEntity::t_entityList *&list1, AEntity::t_entityList *&list2);
 
-		bool            _checkTime(unsigned int msecond, clock_t &last);
 		void            _refreshMainWin(std::string bkgd) const;
 		void            _refreshBottomWin(std::string bkgd);
 		
@@ -91,7 +91,6 @@ class                   Game {
 		AEntity::t_entityList    *_missileEnemyList;
 		AEntity::t_entityList    *_missileBossList;
 
-		clock_t         _last_loop;
 		clock_t         _last_timer;
 
 };

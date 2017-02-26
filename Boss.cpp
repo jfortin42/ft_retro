@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 21:04:07 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/23 21:55:18 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/26 16:58:33 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ bool            Boss::move(unsigned int height, unsigned int width, int key)
 {
     (void)height;
     (void)key;
-    if (_cnt_move++ >= _speed)
+    if (Game::_checkTime(_speed, _last_move))
     {
-        _cnt_move = 0;
         if (_direction == 'E' && _coord.x + _skin_size.x < width - 1)
             _coord.x += 1;
         else

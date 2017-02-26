@@ -6,11 +6,12 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/23 21:56:19 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/02/26 17:04:31 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Missile.hpp"
+#include "Game.hpp"
 
 Missile::Missile(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, AWeapon *weapon, t_coord coord, char direction) : AEntity(hp, damageDeal, speed, 0, skin, weapon, coord), direction(direction) {}
 
@@ -28,9 +29,8 @@ Missile		&Missile::operator=(Missile const &rhs)
 bool					Missile::move(unsigned int height, unsigned int width, int key)
 {
 	(void)key;
-    if (_cnt_move++ >= _speed)
+    if (Game::_checkTime(_speed, _last_move))
     {
-        _cnt_move = 0;
 		if (direction == 'N' && _coord.y > 1)
 			_coord.y -= 1;
 		else if (direction == 'S' && _coord.y + _skin_size.y < height - 1)

@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/10 20:42:15 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/10 21:14:31 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void            Game::_initGame()
     set_escdelay(0);
     start_color();
     init_color(COLOR_BLUE, 600, 800, 1000);
-    init_color(COLOR_WHITE, 1000, 700, 300);
+    init_color(COLOR_WHITE, 1000, 500, 200);
     init_color(COLOR_BLACK, 0, 0, 0);
 	init_color(COLOR_YELLOW, 220, 180, 120);
     init_color(COLOR_RED, 800, 0, 0);

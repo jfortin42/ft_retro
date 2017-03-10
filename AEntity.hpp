@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/26 18:04:56 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 17:52:38 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
 # include <unistd.h>
 # include <string>
 
-class   			AWeapon;
+class   				AWeapon;
 
-typedef struct		s_coord
+typedef struct			s_coord
 {
-	unsigned int	x;
-	unsigned int	y;
-}					t_coord;
+	unsigned int		x;
+	unsigned int		y;
+}						t_coord;
 
-class				AEntity {
+class					AEntity {
 
 public:
 
@@ -51,7 +51,7 @@ typedef struct          s_entityList
 
 	virtual unsigned int	takeDamage(AEntity const &attacker, WINDOW *win);
 
-	void					displaySkin(WINDOW *win) const;
+	void					displaySkin(WINDOW *win, unsigned int color_nb) const;
 
 	unsigned int			getHp() const;
 	unsigned int			getDamageDeal() const;

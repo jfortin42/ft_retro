@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Enemy.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/26 16:57:08 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 18:00:22 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ Enemy::~Enemy()
         delete _weapon;
 }
 
-Enemy	        &Enemy::operator=(Enemy const &rhs)
+Enemy	                &Enemy::operator=(Enemy const &rhs)
 {
     _weapon = rhs._weapon->clone();
     AEntity::operator=(rhs);
     return (*this);
 }
 
-bool            Enemy::move(unsigned int height, unsigned int width, int key)
+bool                    Enemy::move(unsigned int height, unsigned int width, int key)
 {
     (void)width;
     (void)key;

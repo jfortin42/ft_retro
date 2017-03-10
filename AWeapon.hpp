@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AWeapon.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:18:27 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/26 17:59:29 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 18:01:21 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # define BOT_WIN_H 5
 
-class		Game;
+class	Game;
 
 class	AWeapon {
 
@@ -27,20 +27,20 @@ public:
 	AWeapon(AWeapon const &src);
 	virtual ~AWeapon();
 
-	AWeapon	&operator=(AWeapon const &rhs);
+	AWeapon							&operator=(AWeapon const &rhs);
 
 	virtual AWeapon					*clone() const = 0;
 	virtual AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
 	
-	t_coord	const		_skin_size;
+	t_coord	const					_skin_size;
 
 protected:
-	unsigned int		_hp_missile;
-	unsigned int		_damageDeal;
-	unsigned int		_speed_missile;
-	std::string			_skin_missile;
-	unsigned int		_rateOfFire;
-	clock_t				_last_shoot;
+	unsigned int					_hp_missile;
+	unsigned int					_damageDeal;
+	unsigned int					_speed_missile;
+	std::string						_skin_missile;
+	unsigned int					_rateOfFire;
+	clock_t							_last_shoot;
 
 private:
 	AWeapon();

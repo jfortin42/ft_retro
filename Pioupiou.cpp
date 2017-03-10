@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pioupiou.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 21:44:35 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/11 22:23:06 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 18:49:07 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,5 @@ Pioupiou	&Pioupiou::operator=(Pioupiou const &rhs)
 AWeapon		*Pioupiou::clone() const
 {
 	AWeapon	*clone = new Pioupiou(*this);
-
 	return (clone);
 }

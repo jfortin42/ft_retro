@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missileboss.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/15 11:43:21 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/26 17:55:41 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 19:29:33 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,38 @@ Missileboss::Missileboss(Missileboss const &src) : AWeapon(src._hp_missile, src.
 
 Missileboss::~Missileboss() {}
 
-Missileboss		&Missileboss::operator=(Missileboss const &rhs)
+Missileboss				&Missileboss::operator=(Missileboss const &rhs)
 {
 	AWeapon::operator=(rhs);
+	_marging = rhs._marging;
 	return (*this);
 }
 
-AWeapon		*Missileboss::clone() const
+AWeapon					*Missileboss::clone() const
 {
 	AWeapon	*clone = new Missileboss(*this);
-
 	return (clone);
 }
 
 AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char direction)
 {
-	t_coord			skinShooter = shooter._skin_size;
-	t_coord			coordShooter = shooter.getCoord();
-	t_coord			coordMissile1;
-	t_coord			coordMissile2;
+	t_coord					skinShooter = shooter._skin_size;
+	t_coord					coordShooter = shooter.getCoord();
+	
+	t_coord					coordMissile1;
+	t_coord					coordMissile2;
+
+	char					direction2;
+	char					direction3;	
+
 	AEntity::t_entityList	*listMissile = NULL;
 
+	//if (!Game::_checkTime(_rateOfFire, _last_shoot))
+	//	return (NULL);
 	if (direction == 'N')
 	{
+		direction2 = 'W';
+		direction3 = 'E';
 		coordMissile1.x = coordShooter.x + _marging - _skin_size.x / 2;
 		coordMissile1.y = coordShooter.y - _skin_size.y;
 		coordMissile2.x = coordShooter.x + skinShooter.x - _marging - _skin_size.x / 2 - 1;
@@ -50,6 +59,8 @@ AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char directi
 	}
 	else if (direction == 'S')
 	{
+		direction2 = 'W';
+		direction3 = 'E';
 		coordMissile1.x = coordShooter.x + _marging - _skin_size.x / 2;
 		coordMissile1.y = coordShooter.y + skinShooter.y;
 		coordMissile2.x = coordShooter.x + skinShooter.x - _marging - _skin_size.x / 2 - 1;
@@ -57,6 +68,8 @@ AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char directi
 	}
 	else if (direction == 'E')
 	{
+		direction2 = 'N';
+		direction3 = 'S';
 		coordMissile1.x = coordShooter.x + skinShooter.x;
 		coordMissile1.y = coordShooter.y + _marging + _skin_size.y / 2;
 		coordMissile2.x = coordShooter.x + skinShooter.x;
@@ -64,6 +77,8 @@ AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char directi
 	}
 	else if (direction == 'W')
 	{
+		direction2 = 'N';
+		direction3 = 'S';
 		coordMissile1.x = coordShooter.x - _skin_size.x - 1;
 		coordMissile1.y = coordShooter.y + _marging + _skin_size.y / 2;
 		coordMissile2.x = coordShooter.x - _skin_size.x - 1;
@@ -71,10 +86,13 @@ AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char directi
 	}
 	if (!Game::_checkTime(_rateOfFire, _last_shoot))
 		return (NULL);
+	int rof = rand() % 255 + 245;
+	AWeapon *pioupiou = new Pioupiou(1, 1, 50, "-", rof);
 	if (insideMap(coordMissile1, _skin_size))
-		Game::_pushInList(listMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, _skin_missile, NULL, coordMissile1, direction));
+		Game::_pushInList(listMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, 50, _skin_missile, pioupiou->clone(), coordMissile1, direction, direction2));
 	if (insideMap(coordMissile2, _skin_size))
-		Game::_pushInList(listMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, _skin_missile, NULL, coordMissile2, direction));
+		Game::_pushInList(listMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, 50, _skin_missile, pioupiou->clone(), coordMissile2, direction, direction3));
+	delete pioupiou;
 	return (listMissile);
 }
 

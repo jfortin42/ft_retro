@@ -6,33 +6,30 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:52:16 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/17 20:32:13 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/10 19:48:10 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bonus.hpp"
 
-Bonus::Bonus(t_coord coord, std::string skin, unsigned int timer, AWeapon *weapon) : _coord(coord), _skin(skin), _timer(timer), _weapon(weapon) {}
+Bonus::Bonus(t_coord coord, unsigned int timer) : _coord(coord), _timer(timer), _refresh(0) {}
 
-Bonus::Bonus(Bonus const &src) : _coord(src._coord), _skin(src._skin), _timer(src._timer) { _weapon = src._weapon->clone(); }
+Bonus::Bonus(Bonus const &src) : _coord(src._coord), _timer(src._timer), _refresh(src._refresh) {}
 
-Bonus::~Bonus()
-{
-    if (_weapon)
-        delete _weapon;
-}
+Bonus::~Bonus() {}
 
 Bonus           &Bonus::operator=(Bonus const &rhs)
 {
     if (this != &rhs)
     {
         _coord = rhs._coord;
-        _skin = rhs._skin;
         _timer = rhs._timer;
-        _weapon = rhs._weapon->clone();
+        _refresh = rhs._refresh;
     }
     return (*this);
 }
+
+
 
 unsigned int    Bonus::getTimer() const { return (_timer); }
 
@@ -45,9 +42,7 @@ unsigned int    Bonus::getTimer() const { return (_timer); }
 
 void            Bonus::displaySkin(WINDOW *win) const
 {
-    wattron(win, A_BLINK);// | COLOR_PAIR(3));
-    mvwprintw(win, _coord.y, _coord.x, _skin.c_str());
-    wattroff(win, A_BLINK);// | COLOR_PAIR(3));
+    wattron(win, A_BLINK | COLOR_PAIR(3));
+    mvwaddch(win, _coord.y, _coord.x, ACS_DIAMOND);
+    wattroff(win, A_BLINK | COLOR_PAIR(3));
 }
-
-void            Bonus::giveWeapon(AEntity *entity) const { entity->equipWeapon(_weapon->clone()); }

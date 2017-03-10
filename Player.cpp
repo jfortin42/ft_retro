@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Player.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/23 22:04:04 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 19:35:08 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Player::~Player()
         delete _weapon;
 }
 
-Player          &Player::operator=(Player const &rhs)
+Player                  &Player::operator=(Player const &rhs)
 {
     _weapon = rhs._weapon->clone();
     _keyUp = rhs._keyUp;
@@ -34,7 +34,7 @@ Player          &Player::operator=(Player const &rhs)
     return (*this);
 }
 
-bool            Player::move(unsigned int height, unsigned int width, int key)
+bool                    Player::move(unsigned int height, unsigned int width, int key)
 {
     if (key == _keyUp && _coord.y > _speed / 2)
         _coord.y -= _speed / 2;
@@ -58,10 +58,10 @@ AEntity::t_entityList    *Player::shoot(int key)
     return (NULL);
 }
 
-unsigned int	Player::takeDamage(AEntity const &attacker, WINDOW *win)
+unsigned int	        Player::takeDamage(AEntity const &attacker, WINDOW *win)
 {
 	wattron(win, A_BLINK);
-	displaySkin(win);
+	displaySkin(win, 3);
 	usleep(500000);
 	wattroff(win, A_BLINK);
 	_hp -= _hp < attacker.getDamageDeal() ? _hp : attacker.getDamageDeal();

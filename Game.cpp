@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/26 18:19:47 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 20:42:15 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
+#include <stdio.h>
 
-Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL), _last_timer(0) {}
+Game::Game() : _main_win(NULL), _bottom_win(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL), _missileBossList_missiles(NULL), _last_timer(0) {}
 
 Game::Game(Game const &src) : _main_win(NULL), _bottom_win(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL)
 {
@@ -27,6 +28,7 @@ Game::~Game()
     _freeEntityList(_missilePlayerList);
     _freeEntityList(_missileEnemyList);
     _freeEntityList(_missileBossList);
+    _freeEntityList(_missileBossList_missiles);
 }
 
 Game            &Game::operator=(Game const &rhs)
@@ -45,6 +47,7 @@ Game            &Game::operator=(Game const &rhs)
         _freeEntityList(_missilePlayerList);
         _freeEntityList(_missileEnemyList);
         _freeEntityList(_missileBossList);
+        _freeEntityList(_missileBossList_missiles);
         //fonction pour remplir toutes les listes (DEEP COPY!)
     }
     return (*this);
@@ -81,19 +84,23 @@ void            Game::_initGame()
     init_color(COLOR_WHITE, 1000, 700, 300);
     init_color(COLOR_BLACK, 0, 0, 0);
 	init_color(COLOR_YELLOW, 220, 180, 120);
+    init_color(COLOR_RED, 800, 0, 0);
+    init_color(COLOR_MAGENTA, 800, 0, 800);
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	init_pair(2, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
+    init_pair(4, COLOR_RED, COLOR_BLACK);
+    init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
     wbkgdset(_main_win, COLOR_PAIR(1));
     wbkgdset(_bottom_win, COLOR_PAIR(1));
     playerCoord1.y = LINES - (6 + BOT_WIN_H);
     playerCoord1.x = (COLS / 3) - 1;
     playerCoord2.y = LINES - (6 + BOT_WIN_H);
     playerCoord2.x = 2 * (COLS / 3) - 1;
-    // AWeapon *laser = new Laser(1, 1, 30, "|", 0);
     AWeapon     *missileboss = new Missileboss(2, 2, 50, "|", 500, 0);
     _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord1, 119, 115, 97, 100, KEY_SPC));
-    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 92));
+    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
+    delete missileboss;
 }
 
 void            Game::_gameLoop()
@@ -104,8 +111,8 @@ void            Game::_gameLoop()
     std::string bkgd;
     std::string game_over = _readSkin("env/gameover.env");
     std::string game_win = _readSkin("env/gamewin.env");
-    AWeapon     *pioupiou = new Pioupiou(1, 1, 50, _readSkin("env/stinger.env") , 1000);
-    AWeapon     *missileboss = new Missileboss(2, 2, 50, "|", 1000, 1);
+    AWeapon     *pioupiou = new Pioupiou(1, 1, 50, "|" , 1000);
+    AWeapon     *missileboss = new Missileboss(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
 
     bkgd = _fillBackground();
     while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0 && (!boss_pop || _bossList))
@@ -116,7 +123,8 @@ void            Game::_gameLoop()
             _pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), pioupiou->clone(), (t_coord){i % (COLS - 10) + 1, 1}));
         else if (!boss_pop && _timer <= 100)
         {
-            _pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), missileboss->clone(), (t_coord){1, 1}));
+            _pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), missileboss->clone(), (t_coord){30, 1}));
+            delete missileboss;
             boss_pop = true;
         }
         _gameCore(key);
@@ -152,13 +160,15 @@ void            Game::_gameCore(int key)
     _shootInList(_playerList, _missilePlayerList, key);
     _shootInList(_enemyList, _missileEnemyList, key);
     _shootInList(_bossList, _missileBossList, key);
+    _shootInList(_missileBossList, _missileBossList_missiles, key);
 
-    _displayEntities(_playerList);
-    _displayEntities(_enemyList);
-    _displayEntities(_bossList);
-    _displayEntities(_missilePlayerList);
-    _displayEntities(_missileEnemyList);
-    _displayEntities(_missileBossList);
+    _displayEntities(_playerList, 3);
+    _displayEntities(_enemyList, 1);
+    _displayEntities(_bossList, 4);
+    _displayEntities(_missilePlayerList, 3);
+    _displayEntities(_missileEnemyList, 1);
+    _displayEntities(_missileBossList, 5);
+    _displayEntities(_missileBossList_missiles, 5);
 
     _moveInList(_playerList, key);
     _moveInList(_enemyList, key);
@@ -166,22 +176,25 @@ void            Game::_gameCore(int key)
     _moveInList(_missilePlayerList, key);
     _moveInList(_missileEnemyList, key);
     _moveInList(_missileBossList, key);
+    _moveInList(_missileBossList_missiles, key);
     
     _collision(_playerList, _enemyList);
     _collision(_playerList, _bossList);
     _collision(_playerList, _missileEnemyList);
     _collision(_playerList, _missileBossList);
+    _collision(_playerList, _missileBossList_missiles);
     _collision(_missilePlayerList, _enemyList);
     _collision(_missilePlayerList, _bossList);
+	_collision(_missilePlayerList, _missileBossList);
 }
 
-void            Game::_displayEntities(AEntity::t_entityList *list) const
+void            Game::_displayEntities(AEntity::t_entityList *list, unsigned int color_nb) const
 {
     AEntity::t_entityList    *list_tmp = list;
 
     while (list_tmp)
     {
-        list_tmp->entity->displaySkin(_main_win);
+        list_tmp->entity->displaySkin(_main_win, color_nb);
         list_tmp = list_tmp->next;
     }
 }

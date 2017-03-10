@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AWeapon.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 14:51:41 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/26 18:07:11 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 18:18:04 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ AWeapon::AWeapon(AWeapon const &src) : _skin_size(src._skin_size), _hp_missile(s
 
 AWeapon::~AWeapon() {}
 
-AWeapon		&AWeapon::operator=(AWeapon const &rhs)
+AWeapon						&AWeapon::operator=(AWeapon const &rhs)
 {
 	if (this != &rhs)
 	{
@@ -62,6 +62,6 @@ AEntity::t_entityList		*AWeapon::createMissile(AEntity &shooter, char direction)
 	}
 	if (!Game::_checkTime(_rateOfFire, _last_shoot) || coordMissile.y + _skin_size.y >= (unsigned int)(LINES - BOT_WIN_H))
 		return (NULL);
-	Game::_pushInList(listOfMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, _skin_missile, NULL, coordMissile, direction));
+	Game::_pushInList(listOfMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, 0, _skin_missile, NULL, coordMissile, direction, direction));
 	return (listOfMissile);
 }

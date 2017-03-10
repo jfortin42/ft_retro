@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 13:35:21 by fsidler           #+#    #+#             */
-/*   Updated: 2017/01/13 12:40:45 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/10 19:48:06 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,14 @@ class AWeapon;
 class Bonus {
 
 public:
-    Bonus(t_coord coord, std::string skin, unsigned int timer, AWeapon *weapon);
+
+    typedef struct          s_bonusList
+    {
+	    Bonus               *bonus;
+	    struct s_bonusList  *next;
+    }                       t_bonusList;
+
+    Bonus(t_coord coord, unsigned int timer);
     Bonus(Bonus const &src);
     ~Bonus();
 
@@ -30,15 +37,13 @@ public:
     unsigned int    getTimer() const;
     bool            cmpCoord(AEntity *entity) const;
     void            displaySkin(WINDOW *win) const;
-    void            giveWeapon(AEntity *entity) const;
     
 private:
     Bonus();
 
     t_coord         _coord;
-    std::string     _skin;
     unsigned int    _timer;
-    AWeapon         _*weapon;
+    unsigned int    _refresh;
 
 };
 

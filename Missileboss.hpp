@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missileboss.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/15 11:38:39 by jfortin           #+#    #+#             */
-/*   Updated: 2017/02/19 18:42:28 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 18:07:38 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,18 @@ public:
 	Missileboss(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin_missile, unsigned int rateOfFire, unsigned int marging);
 	Missileboss();
 	Missileboss(Missileboss const &src);
-	AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
-	bool					insideMap(t_coord coordEntity, t_coord sizeSkin);
 	~Missileboss();
 
-	Missileboss	&operator=(Missileboss const &rhs);
+	Missileboss				&operator=(Missileboss const &rhs);
+	
+	AWeapon					*clone() const;
+	AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
+	
+	bool					insideMap(t_coord coordEntity, t_coord sizeSkin);
 
-	AWeapon	*clone() const;
 
 private:
-	unsigned int	_marging;
+	unsigned int			_marging;
 
 };
 

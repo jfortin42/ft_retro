@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/26 18:06:08 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 18:44:00 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ unsigned int	AEntity::takeDamage(AEntity const &attacker, WINDOW *win)
 	return (_hp);
 }
 
-void			AEntity::displaySkin(WINDOW *win) const
+void			AEntity::displaySkin(WINDOW *win, unsigned int color_nb) const
 {
 	int	i;
 	int	x;
@@ -52,7 +52,7 @@ void			AEntity::displaySkin(WINDOW *win) const
 
 	i = 0;
 	y = _coord.y;
-	wattron(win, COLOR_PAIR(3));
+	wattron(win, COLOR_PAIR(color_nb));
 	while (_skin.c_str()[i])
 	{
 		x = 0;
@@ -61,7 +61,7 @@ void			AEntity::displaySkin(WINDOW *win) const
 		i += _skin.c_str()[i] ? 1 : 0;
 		y++;
 	}
-	wattroff(win, COLOR_PAIR(3));
+	wattroff(win, COLOR_PAIR(color_nb));
 }
 
 unsigned int	AEntity::getHp() const { return (_hp); }

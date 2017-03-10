@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/02/26 18:19:24 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/10 20:41:29 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "Pioupiou.hpp"
 # include "Laser.hpp"
 # include "Missileboss.hpp"
+# include "Bonus.hpp"
 
 # define MAIN_WIN_WMIN 130
 # define MAIN_WIN_HMIN 30
@@ -62,7 +63,7 @@ class                   Game {
 		void            _endGame();
 		
 		void            _gameCore(int key);
-		void            _displayEntities(AEntity::t_entityList *list) const;
+		void            _displayEntities(AEntity::t_entityList *list, unsigned int color_nb) const;
 		void			_moveInList(AEntity::t_entityList *&begin, int key);
 		void            _shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile, int key);
 		bool            _hitbox(AEntity::t_entityList *entity1, AEntity::t_entityList *entity2) const;
@@ -75,8 +76,12 @@ class                   Game {
 		void            _lstdelone(AEntity::t_entityList *&begin, AEntity::t_entityList *&current, char command);
 		void            _freeEntityList(AEntity::t_entityList *&list);
 
-		std::string     _fillBackground() const;
-		std::string     _readSkin(std::string nameOfFile) const;
+		/*void			_pushInbList(Bonus::t_bonusList *&dest, Bonus *src);
+		void			_blstdelone(Bonus::t_bonusList *&begin, Bonus *cur, char command);
+		void			_freeBonusList(Bonus::t_bonusList *&list);*/
+
+		std::string		_fillBackground() const;
+		std::string		_readSkin(std::string nameOfFile) const;
 
 		WINDOW          *_main_win;
 		WINDOW          *_bottom_win;
@@ -84,12 +89,15 @@ class                   Game {
 		unsigned int    _timer;
 		unsigned int    _score;
 
-		AEntity::t_entityList    *_playerList;
-		AEntity::t_entityList    *_enemyList;
-		AEntity::t_entityList    *_bossList;
-		AEntity::t_entityList    *_missilePlayerList;
-		AEntity::t_entityList    *_missileEnemyList;
-		AEntity::t_entityList    *_missileBossList;
+		AEntity::t_entityList	*_playerList;
+		AEntity::t_entityList	*_enemyList;
+		AEntity::t_entityList	*_bossList;
+		AEntity::t_entityList	*_missilePlayerList;
+		AEntity::t_entityList	*_missileEnemyList;
+		AEntity::t_entityList	*_missileBossList;
+		AEntity::t_entityList	*_missileBossList_missiles;
+
+		//Bonus::t_bonusList		*_bonusList;
 
 		clock_t         _last_timer;
 

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/10 20:44:20 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:23:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Missile.hpp"
 #include "Game.hpp"
 
-Missile::Missile(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord, char direction1, char direction2) : AEntity(hp, damageDeal, speed, score, skin, weapon, coord), _direction1(direction1), _direction2(direction2) {}
+Missile::Missile(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord, char direction1, char direction2) : AEntity(hp, damageDeal, speed, score, skin, weapon, coord), _direction1(direction1), _direction2(direction2) {}
 
 Missile::Missile(Missile const &src) : AEntity(src), _direction1(src._direction1), _direction2(src._direction2) {}
 

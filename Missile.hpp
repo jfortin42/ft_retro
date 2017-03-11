@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 19:15:44 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/10 18:02:09 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:23:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 # define MISSILE_HPP
 
 # include "AEntity.hpp"
-# include "AWeapon.hpp"
+# include "Weapon.hpp"
 
 class Missile : public AEntity {
 
 public:
-	Missile(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord, char direction1, char direction2);
+	Missile(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord, char direction1, char direction2);
 	Missile(Missile const &src);
 	~Missile();
 

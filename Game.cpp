@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/10 21:14:31 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:44:51 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,10 @@ void            Game::_initGame()
     playerCoord1.x = (COLS / 3) - 1;
     playerCoord2.y = LINES - (6 + BOT_WIN_H);
     playerCoord2.x = 2 * (COLS / 3) - 1;
-    AWeapon     *missileboss = new Missileboss(2, 2, 50, "|", 500, 0);
-    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord1, 119, 115, 97, 100, KEY_SPC));
-    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), missileboss->clone(), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
-    delete missileboss;
+    Weapon     *weaponBoss = new WeapTwoMissSameSide(2, 2, 50, "|", 500, 0);
+    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), weaponBoss->clone(), playerCoord1, 119, 115, 97, 100, KEY_SPC));
+    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), weaponBoss->clone(), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
+    delete weaponBoss;
 }
 
 void            Game::_gameLoop()
@@ -111,8 +111,8 @@ void            Game::_gameLoop()
     std::string bkgd;
     std::string game_over = _readSkin("env/gameover.env");
     std::string game_win = _readSkin("env/gamewin.env");
-    AWeapon     *pioupiou = new Pioupiou(1, 1, 50, "|" , 1000);
-    AWeapon     *missileboss = new Missileboss(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
+    Weapon     *pioupiou = new Weapon(1, 1, 50, "|" , 1000);
+    Weapon     *weaponBoss = new WeapTwoMissSameSide(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
 
     bkgd = _fillBackground();
     while ((key = wgetch(_main_win)) != KEY_ESC && _playerList && _timer > 0 && (!boss_pop || _bossList))
@@ -123,8 +123,8 @@ void            Game::_gameLoop()
             _pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), pioupiou->clone(), (t_coord){i % (COLS - 10) + 1, 1}));
         else if (!boss_pop && _timer <= 100)
         {
-            _pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), missileboss->clone(), (t_coord){30, 1}));
-            delete missileboss;
+            _pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), weaponBoss->clone(), (t_coord){30, 1}));
+            delete weaponBoss;
             boss_pop = true;
         }
         _gameCore(key);

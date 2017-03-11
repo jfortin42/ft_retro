@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Boss.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 21:01:50 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/10 17:01:28 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:23:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 class	Boss : public AEntity {
 
 public:
-	Boss(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord);
+	Boss(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord);
 	Boss(Boss const &src);
 	~Boss();
 

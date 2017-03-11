@@ -8,13 +8,11 @@ SRC = main.cpp \
 	  Game.cpp \
 	  Player.cpp \
 	  AEntity.cpp \
-	  AWeapon.cpp \
+	  Weapon.cpp \
 	  Missile.cpp \
 	  Enemy.cpp \
 	  Boss.cpp \
-	  Pioupiou.cpp \
-	  Laser.cpp \
-	  Missileboss.cpp
+	  WeapTwoMissSameSide.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

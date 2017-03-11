@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Missileboss.hpp                                    :+:      :+:    :+:   */
+/*   WeapTwoMissSameSide.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/15 11:38:39 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/10 18:07:38 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:23:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 
 # include "Game.hpp"
 
-class Missileboss : public AWeapon {
+class WeapTwoMissSameSide : public Weapon {
 
 public:
-	Missileboss(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin_missile, unsigned int rateOfFire, unsigned int marging);
-	Missileboss();
-	Missileboss(Missileboss const &src);
-	~Missileboss();
+	WeapTwoMissSameSide(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin_missile, unsigned int rateOfFire, unsigned int marging);
+	WeapTwoMissSameSide();
+	WeapTwoMissSameSide(WeapTwoMissSameSide const &src);
+	~WeapTwoMissSameSide();
 
-	Missileboss				&operator=(Missileboss const &rhs);
+	WeapTwoMissSameSide				&operator=(WeapTwoMissSameSide const &rhs);
 	
-	AWeapon					*clone() const;
+	Weapon					*clone() const;
 	AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
 	
 	bool					insideMap(t_coord coordEntity, t_coord sizeSkin);

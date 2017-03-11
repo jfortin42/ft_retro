@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/10 20:41:29 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:41:54 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 # define GAME_HPP
 
 # include "AEntity.hpp"
-# include "AWeapon.hpp"
+# include "Weapon.hpp"
 # include "Missile.hpp"
 # include "Player.hpp"
 # include "Enemy.hpp"
 # include "Boss.hpp"
-# include "Pioupiou.hpp"
-# include "Laser.hpp"
-# include "Missileboss.hpp"
+# include "WeapTwoMissSameSide.hpp"
 # include "Bonus.hpp"
 
 # define MAIN_WIN_WMIN 130

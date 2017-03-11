@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AWeapon.hpp                                        :+:      :+:    :+:   */
+/*   Weapon.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -20,16 +20,16 @@
 
 class	Game;
 
-class	AWeapon {
+class	Weapon {
 
 public:
-	AWeapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, std::string skin_missile, unsigned int rateOfFire);
-	AWeapon(AWeapon const &src);
-	virtual ~AWeapon();
+	Weapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, std::string skin_missile, unsigned int rateOfFire);
+	Weapon(Weapon const &src);
+	virtual ~Weapon();
 
-	AWeapon							&operator=(AWeapon const &rhs);
+	Weapon							&operator=(Weapon const &rhs);
 
-	virtual AWeapon					*clone() const = 0;
+	virtual Weapon					*clone() const;
 	virtual AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
 	
 	t_coord	const					_skin_size;
@@ -43,7 +43,7 @@ protected:
 	clock_t							_last_shoot;
 
 private:
-	AWeapon();
+	Weapon();
 
 };
 

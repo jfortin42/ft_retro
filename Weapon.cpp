@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AWeapon.cpp                                        :+:      :+:    :+:   */
+/*   Weapon.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AWeapon.hpp"
+#include "Weapon.hpp"
 # include "Game.hpp"
 
-AWeapon::AWeapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, std::string skin_missile, unsigned int rateOfFire) : _skin_size(AEntity::getSkinSize(skin_missile)), _hp_missile(hp_missile), _damageDeal(damageDeal), _speed_missile(speed_missile), _skin_missile(skin_missile), _rateOfFire(rateOfFire), _last_shoot(0) {}
+Weapon::Weapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, std::string skin_missile, unsigned int rateOfFire) : _skin_size(AEntity::getSkinSize(skin_missile)), _hp_missile(hp_missile), _damageDeal(damageDeal), _speed_missile(speed_missile), _skin_missile(skin_missile), _rateOfFire(rateOfFire), _last_shoot(0) {}
 
-AWeapon::AWeapon(AWeapon const &src) : _skin_size(src._skin_size), _hp_missile(src._hp_missile), _damageDeal(src._damageDeal), _speed_missile(src._speed_missile), _skin_missile(src._skin_missile), _rateOfFire(src._rateOfFire), _last_shoot(0) {}
+Weapon::Weapon(Weapon const &src) : _skin_size(src._skin_size), _hp_missile(src._hp_missile), _damageDeal(src._damageDeal), _speed_missile(src._speed_missile), _skin_missile(src._skin_missile), _rateOfFire(src._rateOfFire), _last_shoot(0) {}
 
-AWeapon::~AWeapon() {}
+Weapon::~Weapon() {}
 
-AWeapon						&AWeapon::operator=(AWeapon const &rhs)
+Weapon						&Weapon::operator=(Weapon const &rhs)
 {
 	if (this != &rhs)
 	{
@@ -33,7 +33,14 @@ AWeapon						&AWeapon::operator=(AWeapon const &rhs)
 	return (*this);
 }
 
-AEntity::t_entityList		*AWeapon::createMissile(AEntity &shooter, char direction)
+Weapon		*Weapon::clone() const
+{
+	Weapon	*clone = new Weapon(*this);
+
+	return (clone);
+}
+
+AEntity::t_entityList		*Weapon::createMissile(AEntity &shooter, char direction)
 {
 	t_coord	skinShooter = shooter._skin_size;
 	t_coord coordShooter = shooter.getCoord();

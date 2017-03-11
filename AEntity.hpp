@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/10 17:52:38 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:35:51 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <unistd.h>
 # include <string>
 
-class   				AWeapon;
+class   				Weapon;
 
 typedef struct			s_coord
 {
@@ -38,13 +38,13 @@ typedef struct          s_entityList
 	struct s_entityList *next;
 }                       t_entityList;
 
-	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord);
+	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord);
 	AEntity(AEntity const &src);
 	virtual ~AEntity();
 
 	AEntity					&operator=(AEntity const &rhs);
 	
-	void					equipWeapon(AWeapon *weapon);
+	void					equipWeapon(Weapon *weapon);
 
 	virtual bool			move(unsigned int height, unsigned int width, int key) = 0;
 	virtual t_entityList	*shoot(int key) = 0;
@@ -79,7 +79,7 @@ protected:
 	unsigned int			_score;
 	clock_t					_last_move;
 	std::string				_skin;
-	AWeapon					*_weapon;
+	Weapon					*_weapon;
 	t_coord					_coord;
 
 private:

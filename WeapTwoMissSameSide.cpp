@@ -1,39 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Missileboss.cpp                                    :+:      :+:    :+:   */
+/*   WeapTwoMissSameSide.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/15 11:43:21 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/10 19:29:33 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:32:09 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Missileboss.hpp"
+#include "WeapTwoMissSameSide.hpp"
 
-Missileboss::Missileboss(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, std::string skin_missile, unsigned int rateOfFire, unsigned int marging) : AWeapon(hp_missile, damageDeal, speed_missile, skin_missile, rateOfFire), _marging(marging) {}
+WeapTwoMissSameSide::WeapTwoMissSameSide(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, std::string skin_missile, unsigned int rateOfFire, unsigned int marging) : Weapon(hp_missile, damageDeal, speed_missile, skin_missile, rateOfFire), _marging(marging) {}
 
-Missileboss::Missileboss() : AWeapon(1, 2, 50, "|", 200), _marging(1) {}
+WeapTwoMissSameSide::WeapTwoMissSameSide() : Weapon(1, 2, 50, "|", 200), _marging(1) {}
 
-Missileboss::Missileboss(Missileboss const &src) : AWeapon(src._hp_missile, src._damageDeal, src._speed_missile, src._skin_missile, src._rateOfFire), _marging(src._marging) {}
+WeapTwoMissSameSide::WeapTwoMissSameSide(WeapTwoMissSameSide const &src) : Weapon(src._hp_missile, src._damageDeal, src._speed_missile, src._skin_missile, src._rateOfFire), _marging(src._marging) {}
 
-Missileboss::~Missileboss() {}
+WeapTwoMissSameSide::~WeapTwoMissSameSide() {}
 
-Missileboss				&Missileboss::operator=(Missileboss const &rhs)
+WeapTwoMissSameSide				&WeapTwoMissSameSide::operator=(WeapTwoMissSameSide const &rhs)
 {
-	AWeapon::operator=(rhs);
+	Weapon::operator=(rhs);
 	_marging = rhs._marging;
 	return (*this);
 }
 
-AWeapon					*Missileboss::clone() const
+Weapon					*WeapTwoMissSameSide::clone() const
 {
-	AWeapon	*clone = new Missileboss(*this);
+	Weapon	*clone = new WeapTwoMissSameSide(*this);
 	return (clone);
 }
 
-AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char direction)
+AEntity::t_entityList	*WeapTwoMissSameSide::createMissile(AEntity &shooter, char direction)
 {
 	t_coord					skinShooter = shooter._skin_size;
 	t_coord					coordShooter = shooter.getCoord();
@@ -87,7 +87,7 @@ AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char directi
 	if (!Game::_checkTime(_rateOfFire, _last_shoot))
 		return (NULL);
 	int rof = rand() % 255 + 245;
-	AWeapon *pioupiou = new Pioupiou(1, 1, 50, "-", rof);
+	Weapon *pioupiou = new Weapon(1, 1, 50, "-", rof);
 	if (insideMap(coordMissile1, _skin_size))
 		Game::_pushInList(listMissile, new Missile(_hp_missile, _damageDeal, _speed_missile, 50, _skin_missile, pioupiou->clone(), coordMissile1, direction, direction2));
 	if (insideMap(coordMissile2, _skin_size))
@@ -96,7 +96,7 @@ AEntity::t_entityList	*Missileboss::createMissile(AEntity &shooter, char directi
 	return (listMissile);
 }
 
-bool					Missileboss::insideMap(t_coord coordEntity, t_coord sizeSkin)
+bool					WeapTwoMissSameSide::insideMap(t_coord coordEntity, t_coord sizeSkin)
 {
 	if (coordEntity.x < 1 || coordEntity.x + sizeSkin.x > (unsigned int)COLS || coordEntity.y < 1 || coordEntity.y + sizeSkin.y > (unsigned int)(LINES - BOT_WIN_H))
 		return false;

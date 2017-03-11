@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/10 18:44:00 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/11 12:23:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
 
-AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, AWeapon *weapon, t_coord coord) : _skin_size(getSkinSize(skin)), _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _last_move(0), _skin(skin), _weapon(weapon), _coord(coord)
+AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord) : _skin_size(getSkinSize(skin)), _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _last_move(0), _skin(skin), _weapon(weapon), _coord(coord)
 {}
 
 AEntity::AEntity(AEntity const &src) : _skin_size(src._skin_size), _hp(src._hp), _damageDeal(src._damageDeal), _speed(src._speed), _score(src._score), _last_move(0), _skin(src._skin), _weapon(src._weapon), _coord(src._coord)
@@ -35,7 +35,7 @@ AEntity			&AEntity::operator=(AEntity const &rhs)
 	return (*this);
 }
 
-void			AEntity::equipWeapon(AWeapon *weapon) { _weapon = weapon; }
+void			AEntity::equipWeapon(Weapon *weapon) { _weapon = weapon; }
 
 unsigned int	AEntity::takeDamage(AEntity const &attacker, WINDOW *win)
 {

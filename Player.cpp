@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 12:23:25 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 13:22:56 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ bool                    Player::move(unsigned int height, unsigned int width, in
 {
     if (key == _keyUp && _coord.y > _speed / 2)
         _coord.y -= _speed / 2;
-	else if (key == _keyDown && _coord.y < height - _speed / 2 - _skin_size.y)
+	else if (key == _keyDown && _coord.y < height - _speed / 2 - _skinSize.y)
         _coord.y += _speed / 2;
 	else if (key == _keyLeft && _coord.x > _speed / 2)
         _coord.x -= _speed;
-	else if (key == _keyRight && _coord.x < width - _speed / 2 - _skin_size.x - 1)
+	else if (key == _keyRight && _coord.x < width - _speed / 2 - _skinSize.x - 1)
         _coord.x += _speed;
     return (true);
 }

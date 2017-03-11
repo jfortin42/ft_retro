@@ -23,7 +23,7 @@ class	Game;
 class	Weapon {
 
 public:
-	Weapon(unsigned int hp_missile, unsigned int damageDeal, unsigned int speed_missile, std::string skin_missile, unsigned int rateOfFire);
+	Weapon(unsigned int hpMissile, unsigned int damageDeal, unsigned int speedMissile, std::string skinMissile, unsigned int rateOfFire);
 	Weapon(Weapon const &src);
 	virtual ~Weapon();
 
@@ -32,15 +32,15 @@ public:
 	virtual Weapon					*clone() const;
 	virtual AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
 	
-	t_coord	const					_skin_size;
+	t_coord	const					_skinSize;
 
 protected:
-	unsigned int					_hp_missile;
+	unsigned int					_hpMissile;
 	unsigned int					_damageDeal;
-	unsigned int					_speed_missile;
-	std::string						_skin_missile;
+	unsigned int					_speedMissile;
+	std::string						_skinMissile;
 	unsigned int					_rateOfFire;
-	clock_t							_last_shoot;
+	clock_t							_lastShoot;
 
 private:
 	Weapon();

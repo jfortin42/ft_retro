@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 12:35:51 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 13:20:40 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct          s_entityList
 
 	virtual unsigned int	takeDamage(AEntity const &attacker, WINDOW *win);
 
-	void					displaySkin(WINDOW *win, unsigned int color_nb) const;
+	void					displaySkin(WINDOW *win, unsigned int colorNb) const;
 
 	unsigned int			getHp() const;
 	unsigned int			getDamageDeal() const;
@@ -59,7 +59,7 @@ typedef struct          s_entityList
 	t_coord					getCoord() const;
 	static t_coord			getSkinSize(std::string skin);
 
-	t_coord	const			_skin_size;
+	t_coord	const			_skinSize;
 
 protected:
 	class	NoWeaponEquippedException : public std::exception {
@@ -77,7 +77,7 @@ protected:
 	unsigned int			_damageDeal;
 	unsigned int			_speed;
 	unsigned int			_score;
-	clock_t					_last_move;
+	clock_t					_lastMove;
 	std::string				_skin;
 	Weapon					*_weapon;
 	t_coord					_coord;

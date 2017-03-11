@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 12:23:25 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 13:21:55 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,15 @@ Missile					&Missile::operator=(Missile const &rhs)
 bool					Missile::move(unsigned int height, unsigned int width, int key)
 {
 	(void)key;
-    if (Game::_checkTime(_speed, _last_move))
+    if (Game::_checkTime(_speed, _lastMove))
     {
 		if (_direction1 == 'N' && _coord.y > 1)
 			_coord.y -= 1;
-		else if (_direction1 == 'S' && _coord.y + _skin_size.y < height - 1)
+		else if (_direction1 == 'S' && _coord.y + _skinSize.y < height - 1)
 			_coord.y += 1;
 		else if (_direction1 == 'W' && _coord.x > 2)
 			_coord.x -= 1;
-		else if (_direction1 == 'E' && _coord.x  + _skin_size.x < width - 1)
+		else if (_direction1 == 'E' && _coord.x  + _skinSize.x < width - 1)
 			_coord.x += 1;
 		else
 			return (false);

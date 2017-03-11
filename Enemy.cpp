@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 12:23:25 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 13:00:34 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ bool                    Enemy::move(unsigned int height, unsigned int width, int
 {
     (void)width;
     (void)key;
-    if (Game::_checkTime(_speed, _last_move))
+    if (Game::_checkTime(_speed, _lastMove))
     {
-        if (_coord.y < height - _skin_size.y - 1)
+        if (_coord.y < height - _skinSize.y - 1)
             _coord.y += 1;
         else
             return (false);

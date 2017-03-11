@@ -18,7 +18,7 @@
 class WeapTwoMissSameSide : public Weapon {
 
 public:
-	WeapTwoMissSameSide(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin_missile, unsigned int rateOfFire, unsigned int marging);
+	WeapTwoMissSameSide(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skinMissile, unsigned int rateOfFire, unsigned int marging);
 	WeapTwoMissSameSide();
 	WeapTwoMissSameSide(WeapTwoMissSameSide const &src);
 	~WeapTwoMissSameSide();

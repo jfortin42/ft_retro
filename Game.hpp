@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 12:41:54 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 13:20:40 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ class                   Game {
 		void            _endGame();
 		
 		void            _gameCore(int key);
-		void            _displayEntities(AEntity::t_entityList *list, unsigned int color_nb) const;
+		void            _displayEntities(AEntity::t_entityList *list, unsigned int colorNb) const;
 		void			_moveInList(AEntity::t_entityList *&begin, int key);
 		void            _shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile, int key);
 		bool            _hitbox(AEntity::t_entityList *entity1, AEntity::t_entityList *entity2) const;
@@ -81,8 +81,8 @@ class                   Game {
 		std::string		_fillBackground() const;
 		std::string		_readSkin(std::string nameOfFile) const;
 
-		WINDOW          *_main_win;
-		WINDOW          *_bottom_win;
+		WINDOW          *_mainWin;
+		WINDOW          *_bottomWin;
 		
 		unsigned int    _timer;
 		unsigned int    _score;
@@ -97,7 +97,7 @@ class                   Game {
 
 		//Bonus::t_bonusList		*_bonusList;
 
-		clock_t         _last_timer;
+		clock_t         _lastTimer;
 
 };
 

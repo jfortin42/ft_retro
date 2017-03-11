@@ -27,12 +27,6 @@ WeapTwoMissSameSide				&WeapTwoMissSameSide::operator=(WeapTwoMissSameSide const
 	return (*this);
 }
 
-Weapon					*WeapTwoMissSameSide::clone() const
-{
-	Weapon	*clone = new WeapTwoMissSameSide(*this);
-	return (clone);
-}
-
 AEntity::t_entityList	*WeapTwoMissSameSide::createMissile(AEntity &shooter, char direction)
 {
 	t_coord					skinShooter = shooter._skinSize;
@@ -46,7 +40,7 @@ AEntity::t_entityList	*WeapTwoMissSameSide::createMissile(AEntity &shooter, char
 
 	AEntity::t_entityList	*listMissile = NULL;
 
-	//if (!Game::_checkTime(_rateOfFire, _lastShoot))
+	//if (!Game::checkTime(_rateOfFire, _lastShoot))
 	//	return (NULL);
 	if (direction == 'N')
 	{
@@ -84,15 +78,14 @@ AEntity::t_entityList	*WeapTwoMissSameSide::createMissile(AEntity &shooter, char
 		coordMissile2.x = coordShooter.x - _skinSize.x - 1;
 		coordMissile2.y = coordShooter.y + skinShooter.y - _marging - _skinSize.y / 2 - 1;
 	}
-	if (!Game::_checkTime(_rateOfFire, _lastShoot))
+	if (!Game::checkTime(_rateOfFire, _lastShoot))
 		return (NULL);
 	int rof = rand() % 255 + 245;
-	Weapon *pioupiou = new Weapon(1, 1, 50, "-", rof);
+	Weapon pioupiou = Weapon(1, 1, 50, "-", rof);
 	if (insideMap(coordMissile1, _skinSize))
-		Game::_pushInList(listMissile, new Missile(_hpMissile, _damageDeal, _speedMissile, 50, _skinMissile, pioupiou->clone(), coordMissile1, direction, direction2));
+		Game::pushInList(listMissile, new Missile(_hpMissile, _damageDeal, _speedMissile, 50, _skinMissile, new Weapon(pioupiou), coordMissile1, direction, direction2));
 	if (insideMap(coordMissile2, _skinSize))
-		Game::_pushInList(listMissile, new Missile(_hpMissile, _damageDeal, _speedMissile, 50, _skinMissile, pioupiou->clone(), coordMissile2, direction, direction3));
-	delete pioupiou;
+		Game::pushInList(listMissile, new Missile(_hpMissile, _damageDeal, _speedMissile, 50, _skinMissile, new Weapon(pioupiou), coordMissile2, direction, direction3));
 	return (listMissile);
 }
 

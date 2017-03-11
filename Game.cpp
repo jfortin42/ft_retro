@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 13:20:40 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 16:42:31 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,13 @@ Game::Game() : _mainWin(NULL), _bottomWin(NULL), _timer(120), _score(0), _player
 
 Game::Game(Game const &src) : _mainWin(NULL), _bottomWin(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL)
 {
-    //fonction pour remplir toutes les listes (DEEP COPY!)
+    _copyEntityList(_playerList, src._playerList);
+    _copyEntityList(_enemyList, src._enemyList);
+    _copyEntityList(_bossList, src._bossList);
+    _copyEntityList(_missilePlayerList, src._missilePlayerList);
+    _copyEntityList(_missileEnemyList, src._missileEnemyList);
+    _copyEntityList(_missileBossList, src._missileBossList);
+    _copyEntityList(_missileBossList_missiles, src._missileBossList_missiles);
 }
 
 Game::~Game()
@@ -41,14 +47,13 @@ Game            &Game::operator=(Game const &rhs)
         wclear(_bottomWin);
         delwin(_mainWin);
         delwin(_bottomWin);
-        _freeEntityList(_playerList);
-        _freeEntityList(_enemyList);
-        _freeEntityList(_bossList);
-        _freeEntityList(_missilePlayerList);
-        _freeEntityList(_missileEnemyList);
-        _freeEntityList(_missileBossList);
-        _freeEntityList(_missileBossList_missiles);
-        //fonction pour remplir toutes les listes (DEEP COPY!)
+        _copyEntityList(_playerList, rhs._playerList);
+        _copyEntityList(_enemyList, rhs._enemyList);
+        _copyEntityList(_bossList, rhs._bossList);
+        _copyEntityList(_missilePlayerList, rhs._missilePlayerList);
+        _copyEntityList(_missileEnemyList, rhs._missileEnemyList);
+        _copyEntityList(_missileBossList, rhs._missileBossList);
+        _copyEntityList(_missileBossList_missiles, rhs._missileBossList_missiles);
     }
     return (*this);
 }
@@ -97,10 +102,9 @@ void            Game::_initGame()
     playerCoord1.x = (COLS / 3) - 1;
     playerCoord2.y = LINES - (6 + BOT_WIN_H);
     playerCoord2.x = 2 * (COLS / 3) - 1;
-    Weapon     *weaponBoss = new WeapTwoMissSameSide(2, 2, 50, "|", 500, 0);
-    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), weaponBoss->clone(), playerCoord1, 119, 115, 97, 100, KEY_SPC));
-    _pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), weaponBoss->clone(), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
-    delete weaponBoss;
+    WeapTwoMissSameSide     weaponBoss = WeapTwoMissSameSide(2, 2, 50, "|", 500, 0);
+    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new WeapTwoMissSameSide(weaponBoss), playerCoord1, 119, 115, 97, 100, KEY_SPC));
+    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new WeapTwoMissSameSide(weaponBoss), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
 }
 
 void            Game::_gameLoop()
@@ -111,8 +115,8 @@ void            Game::_gameLoop()
     std::string bkgd;
     std::string gameOver = _readSkin("env/gameover.env");
     std::string gameWin = _readSkin("env/gamewin.env");
-    Weapon     *pioupiou = new Weapon(1, 1, 50, "|" , 1000);
-    Weapon     *weaponBoss = new WeapTwoMissSameSide(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
+    Weapon      pioupiou = Weapon(1, 1, 50, "|" , 1000);
+    WeapTwoMissSameSide     weaponBoss = WeapTwoMissSameSide(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
 
     bkgd = _fillBackground();
     while ((key = wgetch(_mainWin)) != KEY_ESC && _playerList && _timer > 0 && (!bossPop || _bossList))
@@ -120,18 +124,16 @@ void            Game::_gameLoop()
         _refreshMainWin(bkgd);
         i = rand();
         if (i % 5000 < 1 && _timer > 100)
-            _pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), pioupiou->clone(), (t_coord){i % (COLS - 10) + 1, 1}));
+            pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), new Weapon(pioupiou), (t_coord){i % (COLS - 10) + 1, 1}));
         else if (!bossPop && _timer <= 100)
         {
-            _pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), weaponBoss->clone(), (t_coord){30, 1}));
-            delete weaponBoss;
+            pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), new WeapTwoMissSameSide(weaponBoss), (t_coord){30, 1}));
             bossPop = true;
         }
         _gameCore(key);
         wrefresh(_mainWin);
         _refreshBottomWin(bkgd);
     }
-    delete pioupiou;
     if (key != KEY_ESC)
     {
         werase(_mainWin);
@@ -215,7 +217,7 @@ void            Game::_shootInList(AEntity::t_entityList *list, AEntity::t_entit
 {
     while (list)
     {
-        try { _pushInList(listOfMissile, list->entity->shoot(key)); }
+        try { pushInList(listOfMissile, list->entity->shoot(key)); }
         catch (std::exception &e) {}
         list = list->next;
     }
@@ -308,7 +310,7 @@ void            Game::_collision(AEntity::t_entityList *&list1, AEntity::t_entit
     }
 }
 
-bool            Game::_checkTime(unsigned int msecond, clock_t  &last)
+bool            Game::checkTime(unsigned int msecond, clock_t  &last)
 {
     clock_t        now;
 
@@ -353,7 +355,7 @@ void            Game::_refreshBottomWin(std::string bkgd)
     mvwvline(_bottomWin, 1, 16, ACS_VLINE, 3);
     mvwvline(_bottomWin, 1, 39, ACS_VLINE, 3);
     mvwvline(_bottomWin, 1, 60, ACS_VLINE, 3); 
-    if (_checkTime(1000, _lastTimer))
+    if (checkTime(1000, _lastTimer))
         _timer--;
     wrefresh(_bottomWin);
     werase(_bottomWin);
@@ -388,9 +390,7 @@ std::string     Game::_readSkin(std::string nameOfFile) const
     return (read.str());
 }
 
-//copy creation and operator= must send a clone of entity to Game::_pushInList (cf. d04/ex02/Squad.cpp)
-
-void            Game::_pushInList(AEntity::t_entityList *&list, AEntity *entity)
+void            Game::pushInList(AEntity::t_entityList *&list, AEntity *entity)
 {
     if (entity)
     {
@@ -405,7 +405,7 @@ void            Game::_pushInList(AEntity::t_entityList *&list, AEntity *entity)
     }
 }
 
-void            Game::_pushInList(AEntity::t_entityList *&dest, AEntity::t_entityList *src)
+void            Game::pushInList(AEntity::t_entityList *&dest, AEntity::t_entityList *src)
 {
     if (src)
     {
@@ -448,6 +448,15 @@ void            Game::_freeEntityList(AEntity::t_entityList *&list)
         list = tmp;
     }
     list = NULL;
+}
+
+void            Game::_copyEntityList(AEntity::t_entityList *&dest, AEntity::t_entityList *src)
+{
+	while (src)
+	{
+		pushInList(dest, src->entity);
+		src = src->next;
+	}
 }
 
 Game::WindowDimensionsInvalidException::WindowDimensionsInvalidException() {}

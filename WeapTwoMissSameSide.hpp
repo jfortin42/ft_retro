@@ -25,7 +25,6 @@ public:
 
 	WeapTwoMissSameSide				&operator=(WeapTwoMissSameSide const &rhs);
 	
-	Weapon					*clone() const;
 	AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
 	
 	bool					insideMap(t_coord coordEntity, t_coord sizeSkin);

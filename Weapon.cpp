@@ -33,13 +33,6 @@ Weapon						&Weapon::operator=(Weapon const &rhs)
 	return (*this);
 }
 
-Weapon		*Weapon::clone() const
-{
-	Weapon	*clone = new Weapon(*this);
-
-	return (clone);
-}
-
 AEntity::t_entityList		*Weapon::createMissile(AEntity &shooter, char direction)
 {
 	t_coord	skinShooter = shooter._skinSize;
@@ -67,8 +60,8 @@ AEntity::t_entityList		*Weapon::createMissile(AEntity &shooter, char direction)
 		coordMissile.x = coordShooter.x - _skinSize.x - 1;
 		coordMissile.y = coordShooter.y + skinShooter.y / 2 - _skinSize.y / 2;
 	}
-	if (!Game::_checkTime(_rateOfFire, _lastShoot) || coordMissile.y + _skinSize.y >= (unsigned int)(LINES - BOT_WIN_H))
+	if (!Game::checkTime(_rateOfFire, _lastShoot) || coordMissile.y + _skinSize.y >= (unsigned int)(LINES - BOT_WIN_H))
 		return (NULL);
-	Game::_pushInList(listOfMissile, new Missile(_hpMissile, _damageDeal, _speedMissile, 0, _skinMissile, NULL, coordMissile, direction, direction));
+	Game::pushInList(listOfMissile, new Missile(_hpMissile, _damageDeal, _speedMissile, 0, _skinMissile, NULL, coordMissile, direction, direction));
 	return (listOfMissile);
 }

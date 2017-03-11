@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 13:22:56 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 15:59:01 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,10 @@ Player::Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std
 
 Player::Player(Player const &src) : AEntity(src) {}
 
-Player::~Player()
-{
-    if (_weapon)
-        delete _weapon;
-}
+Player::~Player() {}
 
 Player                  &Player::operator=(Player const &rhs)
 {
-    _weapon = rhs._weapon->clone();
     _keyUp = rhs._keyUp;
     _keyDown = rhs._keyDown;
     _keyLeft = rhs._keyLeft;
@@ -51,9 +46,16 @@ AEntity::t_entityList    *Player::shoot(int key)
 {
     if (key == _keyShoot)
     {
-        if (!_weapon)
+        if (!_weaponList)
             throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
-        return (_weapon->createMissile(*this, 'N'));
+        t_weaponList            *tmp = _weaponList;
+        AEntity::t_entityList   *listOfMissile = NULL;
+        while (tmp)
+        {
+            Game::pushInList(listOfMissile, tmp->weapon->createMissile(*this,'N'));
+            tmp = tmp->next;
+        }
+        return (listOfMissile);
     }
     return (NULL);
 }

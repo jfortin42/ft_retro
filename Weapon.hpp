@@ -29,7 +29,6 @@ public:
 
 	Weapon							&operator=(Weapon const &rhs);
 
-	virtual Weapon					*clone() const;
 	virtual AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
 	
 	t_coord	const					_skinSize;

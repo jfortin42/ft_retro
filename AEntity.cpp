@@ -6,19 +6,31 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 13:20:40 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 17:04:30 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
 
-AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord) : _skinSize(getSkinSize(skin)), _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _lastMove(0), _skin(skin), _weapon(weapon), _coord(coord)
-{}
+AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord) : _skinSize(getSkinSize(skin)), _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _lastMove(0), _skin(skin), _weaponList(NULL), _coord(coord)
+{
+	equipWeapon(weapon);
+}
 
-AEntity::AEntity(AEntity const &src) : _skinSize(src._skinSize), _hp(src._hp), _damageDeal(src._damageDeal), _speed(src._speed), _score(src._score), _lastMove(0), _skin(src._skin), _weapon(src._weapon), _coord(src._coord)
-{}
+AEntity::AEntity(AEntity const &src) : _skinSize(src._skinSize), _hp(src._hp), _damageDeal(src._damageDeal), _speed(src._speed), _score(src._score), _lastMove(0), _skin(src._skin), _coord(src._coord)
+{
+	copyWeaponList(src._weaponList);
+}
 
-AEntity::~AEntity() {}
+AEntity::~AEntity()
+{
+	while (_weaponList)
+	{
+		t_weaponList	*next = _weaponList->next;
+		delete _weaponList;
+		_weaponList = next;
+	}
+}
 
 AEntity			&AEntity::operator=(AEntity const &rhs)
 {
@@ -31,11 +43,47 @@ AEntity			&AEntity::operator=(AEntity const &rhs)
 		_lastMove = rhs._lastMove;
 		_skin = rhs._skin;
 		_coord = rhs._coord;
+		copyWeaponList(rhs._weaponList);
 	}
 	return (*this);
 }
 
-void			AEntity::equipWeapon(Weapon *weapon) { _weapon = weapon; }
+void			AEntity::copyWeaponList(t_weaponList *src)
+{
+	while (src)
+	{
+		equipWeapon(src->weapon);
+		src = src->next;
+	}
+}
+
+void            AEntity::equipWeapon(Weapon *weapon)
+{
+    if (weapon)
+    {
+        t_weaponList    *tmp = _weaponList;
+        t_weaponList    *newWeapon = new t_weaponList();
+
+        newWeapon->weapon = weapon;
+		// newWeapon->direction = direction;
+        newWeapon->next = NULL;
+        while (tmp && tmp->next)
+            tmp = tmp->next;
+        tmp ? tmp->next = newWeapon : _weaponList = newWeapon;
+    }
+}
+
+void            AEntity::equipWeapon(t_weaponList *src)
+{
+    if (src)
+    {
+		// (void)direction;
+        t_weaponList *tmp = _weaponList;
+        while (tmp && tmp->next)
+            tmp = tmp->next;
+        tmp ? tmp->next = src : _weaponList = src;
+    }
+}
 
 unsigned int	AEntity::takeDamage(AEntity const &attacker, WINDOW *win)
 {

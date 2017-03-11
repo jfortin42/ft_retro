@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 13:20:40 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 17:04:25 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ typedef struct			s_coord
 	unsigned int		y;
 }						t_coord;
 
+typedef struct			s_weaponList
+{
+	Weapon				*weapon;
+	char				direction;
+	struct s_weaponList	*next;
+}						t_weaponList;
+
+
 class					AEntity {
 
 public:
@@ -43,8 +51,6 @@ typedef struct          s_entityList
 	virtual ~AEntity();
 
 	AEntity					&operator=(AEntity const &rhs);
-	
-	void					equipWeapon(Weapon *weapon);
 
 	virtual bool			move(unsigned int height, unsigned int width, int key) = 0;
 	virtual t_entityList	*shoot(int key) = 0;
@@ -73,13 +79,17 @@ protected:
 			char const					*what(void) const throw();
 	};
 	
+	void					equipWeapon(Weapon *weapon);
+	void            		equipWeapon(t_weaponList *src);
+	void					copyWeaponList(t_weaponList *src);
+	
 	unsigned int			_hp;
 	unsigned int			_damageDeal;
 	unsigned int			_speed;
 	unsigned int			_score;
 	clock_t					_lastMove;
 	std::string				_skin;
-	Weapon					*_weapon;
+	t_weaponList			*_weaponList;
 	t_coord					_coord;
 
 private:

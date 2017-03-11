@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 13:21:55 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 16:51:59 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,10 @@ Missile::Missile(unsigned int hp, unsigned int damageDeal, unsigned int speed, u
 
 Missile::Missile(Missile const &src) : AEntity(src), _direction1(src._direction1), _direction2(src._direction2) {}
 
-Missile::~Missile() {
-	delete _weapon;
-}
+Missile::~Missile() {}
 
 Missile					&Missile::operator=(Missile const &rhs)
 {
-	_weapon = rhs._weapon->clone();
 	_direction1 = rhs._direction1;
 	_direction2 = rhs._direction2;
 	AEntity::operator=(rhs);
@@ -33,7 +30,7 @@ Missile					&Missile::operator=(Missile const &rhs)
 bool					Missile::move(unsigned int height, unsigned int width, int key)
 {
 	(void)key;
-    if (Game::_checkTime(_speed, _lastMove))
+    if (Game::checkTime(_speed, _lastMove))
     {
 		if (_direction1 == 'N' && _coord.y > 1)
 			_coord.y -= 1;
@@ -52,7 +49,14 @@ bool					Missile::move(unsigned int height, unsigned int width, int key)
 AEntity::t_entityList	*Missile::shoot(int key)
 {
 	(void)key;
-    if (!_weapon)
+    if (!_weaponList)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
-    return (_weapon->createMissile(*this, _direction2));
+    t_weaponList            *tmp = _weaponList;
+    AEntity::t_entityList   *listOfMissile = NULL;
+    while (tmp)
+    {
+        Game::pushInList(listOfMissile, tmp->weapon->createMissile(*this, _direction2));
+        tmp = tmp->next;
+    }
+    return (listOfMissile);
 }

@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 13:20:40 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 16:33:51 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ class                   Game {
 
 		Game            &operator=(Game const &rhs);
 		void            launch();
-		static void     _pushInList(AEntity::t_entityList *&list, AEntity *entity);
-		static bool     _checkTime(unsigned int msecond, clock_t &last);
+		static void     pushInList(AEntity::t_entityList *&list, AEntity *entity);
+		static void     pushInList(AEntity::t_entityList *&dest, AEntity::t_entityList *src);
+		static bool     checkTime(unsigned int msecond, clock_t &last);
 		
 	private:
 		class WindowDimensionsInvalidException : public std::exception {
@@ -70,9 +71,9 @@ class                   Game {
 		void            _refreshMainWin(std::string bkgd) const;
 		void            _refreshBottomWin(std::string bkgd);
 		
-		void           	_pushInList(AEntity::t_entityList *&dest, AEntity::t_entityList *src);
 		void            _lstdelone(AEntity::t_entityList *&begin, AEntity::t_entityList *&current, char command);
 		void            _freeEntityList(AEntity::t_entityList *&list);
+		void            _copyEntityList(AEntity::t_entityList *&dest, AEntity::t_entityList *src);
 
 		/*void			_pushInbList(Bonus::t_bonusList *&dest, Bonus *src);
 		void			_blstdelone(Bonus::t_bonusList *&begin, Bonus *cur, char command);

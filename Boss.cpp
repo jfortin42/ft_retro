@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 21:04:07 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 13:02:25 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 17:02:13 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,10 @@ Boss::Boss(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigne
 
 Boss::Boss(Boss const &src) : AEntity(src), _direction(src._direction) {}
 
-Boss::~Boss()
-{
-    if (_weapon)
-        delete _weapon;
-}
+Boss::~Boss() {}
 
 Boss	        &Boss::operator=(Boss const &rhs)
 {
-    _weapon = rhs._weapon->clone();
     AEntity::operator=(rhs);
     _direction = rhs._direction;
     return (*this);
@@ -34,7 +29,7 @@ bool            Boss::move(unsigned int height, unsigned int width, int key)
 {
     (void)height;
     (void)key;
-    if (Game::_checkTime(_speed, _lastMove))
+    if (Game::checkTime(_speed, _lastMove))
     {
         if (_direction == 'E' && _coord.x + _skinSize.x < width - 1)
             _coord.x += 1;
@@ -51,7 +46,14 @@ bool            Boss::move(unsigned int height, unsigned int width, int key)
 AEntity::t_entityList    *Boss::shoot(int key)
 {
     (void)key;
-    if (!_weapon)
+    if (!_weaponList)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
-    return (_weapon->createMissile(*this, 'S'));
+    t_weaponList            *tmp = _weaponList;
+    AEntity::t_entityList   *listOfMissile = NULL;
+    while (tmp)
+    {
+        Game::pushInList(listOfMissile, tmp->weapon->createMissile(*this,'S'));
+        tmp = tmp->next;
+    }
+    return (listOfMissile);
 }

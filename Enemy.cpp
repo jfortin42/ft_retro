@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:06:28 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 13:00:34 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/11 15:58:48 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,10 @@ Enemy::Enemy(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsig
 
 Enemy::Enemy(Enemy const &src) : AEntity(src) {}
 
-Enemy::~Enemy()
-{
-    if (_weapon)
-        delete _weapon;
-}
+Enemy::~Enemy() {}
 
 Enemy	                &Enemy::operator=(Enemy const &rhs)
 {
-    _weapon = rhs._weapon->clone();
     AEntity::operator=(rhs);
     return (*this);
 }
@@ -33,7 +28,7 @@ bool                    Enemy::move(unsigned int height, unsigned int width, int
 {
     (void)width;
     (void)key;
-    if (Game::_checkTime(_speed, _lastMove))
+    if (Game::checkTime(_speed, _lastMove))
     {
         if (_coord.y < height - _skinSize.y - 1)
             _coord.y += 1;
@@ -46,7 +41,14 @@ bool                    Enemy::move(unsigned int height, unsigned int width, int
 AEntity::t_entityList    *Enemy::shoot(int key)
 {
     (void)key;
-    if (!_weapon)
+    if (!_weaponList)
         throw(AEntity::NoWeaponEquippedException::NoWeaponEquippedException());
-    return (_weapon->createMissile(*this, 'S'));
+    t_weaponList            *tmp = _weaponList;
+    AEntity::t_entityList   *listOfMissile = NULL;
+    while (tmp)
+    {
+        Game::pushInList(listOfMissile, tmp->weapon->createMissile(*this,'S'));
+        tmp = tmp->next;
+    }
+    return (listOfMissile);
 }

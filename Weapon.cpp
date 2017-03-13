@@ -60,8 +60,17 @@ AEntity::t_entityList		*Weapon::createMissile(AEntity &shooter, char direction)
 		coordMissile.x = coordShooter.x - _skinSize.x - 1;
 		coordMissile.y = coordShooter.y + skinShooter.y / 2 - _skinSize.y / 2;
 	}
-	if (!Game::checkTime(_rateOfFire, _lastShoot) || coordMissile.y + _skinSize.y >= (unsigned int)(LINES - BOT_WIN_H))
+	if (!Game::checkTime(_rateOfFire, _lastShoot) || !insideMap(coordMissile, _skinSize))
 		return (NULL);
 	Game::pushInList(listOfMissile, new Missile(_hpMissile, _damageDeal, _speedMissile, 0, _skinMissile, NULL, coordMissile, direction, direction));
 	return (listOfMissile);
 }
+
+bool						Weapon::insideMap(t_coord coordEntity, t_coord sizeSkin) const
+{
+	if (coordEntity.x < 2 || coordEntity.x + sizeSkin.x + 1 > (unsigned int)COLS || coordEntity.y < 1 || coordEntity.y + sizeSkin.y > (unsigned int)(LINES - BOT_WIN_H))
+		return false;
+	return true;
+}
+
+bool						Weapon::isSimpleWeapon() const { return (true); }

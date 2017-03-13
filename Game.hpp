@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 16:33:51 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/18 15:46:56 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,24 @@
 # include "AEntity.hpp"
 # include "Weapon.hpp"
 # include "Missile.hpp"
+# include "Bonus.hpp"
 # include "Player.hpp"
 # include "Enemy.hpp"
 # include "Boss.hpp"
 # include "WeapTwoMissSameSide.hpp"
-# include "Bonus.hpp"
 
 # define MAIN_WIN_WMIN 130
 # define MAIN_WIN_HMIN 30
 
 # define KEY_SPC 32
 # define KEY_ESC 27
+
+# define COL_DEFAULT 1
+# define COL_YELLOW 2
+# define COL_BLUE 3
+# define COL_RED 4
+# define COL_PURPLE 5
+# define COL_GREEN 6
 
 class                   Player;
 
@@ -75,10 +82,6 @@ class                   Game {
 		void            _freeEntityList(AEntity::t_entityList *&list);
 		void            _copyEntityList(AEntity::t_entityList *&dest, AEntity::t_entityList *src);
 
-		/*void			_pushInbList(Bonus::t_bonusList *&dest, Bonus *src);
-		void			_blstdelone(Bonus::t_bonusList *&begin, Bonus *cur, char command);
-		void			_freeBonusList(Bonus::t_bonusList *&list);*/
-
 		std::string		_fillBackground() const;
 		std::string		_readSkin(std::string nameOfFile) const;
 
@@ -94,9 +97,7 @@ class                   Game {
 		AEntity::t_entityList	*_missilePlayerList;
 		AEntity::t_entityList	*_missileEnemyList;
 		AEntity::t_entityList	*_missileBossList;
-		AEntity::t_entityList	*_missileBossList_missiles;
-
-		//Bonus::t_bonusList		*_bonusList;
+		AEntity::t_entityList	*_bonusList;
 
 		clock_t         _lastTimer;
 

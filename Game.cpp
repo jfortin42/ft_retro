@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 16:42:31 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/18 16:00:23 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
 #include <stdio.h>
 
-Game::Game() : _mainWin(NULL), _bottomWin(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL), _missileBossList_missiles(NULL), _lastTimer(0) {}
+Game::Game() : _mainWin(NULL), _bottomWin(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL), _bonusList(NULL), _lastTimer(0) {}
 
 Game::Game(Game const &src) : _mainWin(NULL), _bottomWin(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL)
 {
@@ -23,7 +23,7 @@ Game::Game(Game const &src) : _mainWin(NULL), _bottomWin(NULL), _timer(src._time
     _copyEntityList(_missilePlayerList, src._missilePlayerList);
     _copyEntityList(_missileEnemyList, src._missileEnemyList);
     _copyEntityList(_missileBossList, src._missileBossList);
-    _copyEntityList(_missileBossList_missiles, src._missileBossList_missiles);
+    _copyEntityList(_bonusList, src._bonusList);
 }
 
 Game::~Game()
@@ -34,7 +34,7 @@ Game::~Game()
     _freeEntityList(_missilePlayerList);
     _freeEntityList(_missileEnemyList);
     _freeEntityList(_missileBossList);
-    _freeEntityList(_missileBossList_missiles);
+    _freeEntityList(_bonusList);
 }
 
 Game            &Game::operator=(Game const &rhs)
@@ -47,13 +47,20 @@ Game            &Game::operator=(Game const &rhs)
         wclear(_bottomWin);
         delwin(_mainWin);
         delwin(_bottomWin);
+        _freeEntityList(_playerList);
+        _freeEntityList(_enemyList);
+        _freeEntityList(_bossList);
+        _freeEntityList(_missilePlayerList);
+        _freeEntityList(_missileEnemyList);
+        _freeEntityList(_missileBossList);
+        _freeEntityList(_bonusList);
         _copyEntityList(_playerList, rhs._playerList);
         _copyEntityList(_enemyList, rhs._enemyList);
         _copyEntityList(_bossList, rhs._bossList);
         _copyEntityList(_missilePlayerList, rhs._missilePlayerList);
         _copyEntityList(_missileEnemyList, rhs._missileEnemyList);
         _copyEntityList(_missileBossList, rhs._missileBossList);
-        _copyEntityList(_missileBossList_missiles, rhs._missileBossList_missiles);
+        _copyEntityList(_bonusList, rhs._bonusList);
     }
     return (*this);
 }
@@ -91,13 +98,15 @@ void            Game::_initGame()
 	init_color(COLOR_YELLOW, 220, 180, 120);
     init_color(COLOR_RED, 800, 0, 0);
     init_color(COLOR_MAGENTA, 800, 0, 800);
+    init_color(COLOR_GREEN, 0, 800, 0);
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	init_pair(2, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     init_pair(4, COLOR_RED, COLOR_BLACK);
     init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
-    wbkgdset(_mainWin, COLOR_PAIR(1));
-    wbkgdset(_bottomWin, COLOR_PAIR(1));
+    init_pair(6, COLOR_GREEN, COLOR_BLACK);
+    wbkgdset(_mainWin, COLOR_PAIR(COL_DEFAULT));
+    wbkgdset(_bottomWin, COLOR_PAIR(COL_DEFAULT));
     playerCoord1.y = LINES - (6 + BOT_WIN_H);
     playerCoord1.x = (COLS / 3) - 1;
     playerCoord2.y = LINES - (6 + BOT_WIN_H);
@@ -116,8 +125,10 @@ void            Game::_gameLoop()
     std::string gameOver = _readSkin("env/gameover.env");
     std::string gameWin = _readSkin("env/gamewin.env");
     Weapon      pioupiou = Weapon(1, 1, 50, "|" , 1000);
+    WeapTwoMissSameSide     bonusWeap = WeapTwoMissSameSide(2, 2, 70, "*", 400, 0);
     WeapTwoMissSameSide     weaponBoss = WeapTwoMissSameSide(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
 
+    _timer = 101;
     bkgd = _fillBackground();
     while ((key = wgetch(_mainWin)) != KEY_ESC && _playerList && _timer > 0 && (!bossPop || _bossList))
     {
@@ -129,6 +140,11 @@ void            Game::_gameLoop()
         {
             pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), new WeapTwoMissSameSide(weaponBoss), (t_coord){30, 1}));
             bossPop = true;
+        }
+        if (_timer == 100)
+        {
+            //pushInList(_bonusList, new Bonus("$", new Weapon(bonusWeap), (t_coord){15, 15}));
+            pushInList(_bonusList, new Bonus("$", new Weapon(bonusWeap), (t_coord){10, 10}));
         }
         _gameCore(key);
         wrefresh(_mainWin);
@@ -162,15 +178,15 @@ void            Game::_gameCore(int key)
     _shootInList(_playerList, _missilePlayerList, key);
     _shootInList(_enemyList, _missileEnemyList, key);
     _shootInList(_bossList, _missileBossList, key);
-    _shootInList(_missileBossList, _missileBossList_missiles, key);
+    _shootInList(_missileBossList, _missileBossList, key);
 
-    _displayEntities(_playerList, 3);
-    _displayEntities(_enemyList, 1);
-    _displayEntities(_bossList, 4);
-    _displayEntities(_missilePlayerList, 3);
-    _displayEntities(_missileEnemyList, 1);
-    _displayEntities(_missileBossList, 5);
-    _displayEntities(_missileBossList_missiles, 5);
+    _displayEntities(_playerList, COL_BLUE);
+    _displayEntities(_enemyList, COL_DEFAULT);
+    _displayEntities(_bossList, COL_RED);
+    _displayEntities(_missilePlayerList, COL_BLUE);
+    _displayEntities(_missileEnemyList, COL_DEFAULT);
+    _displayEntities(_missileBossList, COL_PURPLE);
+    _displayEntities(_bonusList, COL_GREEN);
 
     _moveInList(_playerList, key);
     _moveInList(_enemyList, key);
@@ -178,13 +194,13 @@ void            Game::_gameCore(int key)
     _moveInList(_missilePlayerList, key);
     _moveInList(_missileEnemyList, key);
     _moveInList(_missileBossList, key);
-    _moveInList(_missileBossList_missiles, key);
+    //_moveInList(_bonusList, key);
     
     _collision(_playerList, _enemyList);
     _collision(_playerList, _bossList);
     _collision(_playerList, _missileEnemyList);
     _collision(_playerList, _missileBossList);
-    _collision(_playerList, _missileBossList_missiles);
+    _collision(_playerList, _bonusList);
     _collision(_missilePlayerList, _enemyList);
     _collision(_missilePlayerList, _bossList);
 	_collision(_missilePlayerList, _missileBossList);
@@ -228,7 +244,7 @@ bool            Game::_hitbox(AEntity::t_entityList *entity1, AEntity::t_entityL
     if (entity1->entity->getCoord().x + entity1->entity->_skinSize.x >= entity2->entity->getCoord().x
         && entity1->entity->getCoord().x <= entity2->entity->getCoord().x + entity2->entity->_skinSize.x
         && entity1->entity->getCoord().y + entity1->entity->_skinSize.y - 1 >= entity2->entity->getCoord().y
-        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->_skinSize.y - 1)
+        && entity1->entity->getCoord().y <= entity2->entity->getCoord().y + entity2->entity->_skinSize.y)
         return (true);
     return (false);
 }
@@ -324,17 +340,17 @@ bool            Game::checkTime(unsigned int msecond, clock_t  &last)
 
 void            Game::_refreshMainWin(std::string bkgd) const
 {
-    wattron(_mainWin, COLOR_PAIR(2));
+    wattron(_mainWin, COLOR_PAIR(COL_YELLOW));
     mvwprintw(_mainWin, 1, 1, bkgd.c_str());
-    wattroff(_mainWin, COLOR_PAIR(2));
+    wattroff(_mainWin, COLOR_PAIR(COL_YELLOW));
     box(_mainWin, 0, 0);
 }
 
 void            Game::_refreshBottomWin(std::string bkgd)
 {
-    wattron(_bottomWin, COLOR_PAIR(2));
+    wattron(_bottomWin, COLOR_PAIR(COL_YELLOW));
     mvwprintw(_bottomWin, 1, 1, bkgd.c_str());
-    wattroff(_bottomWin, COLOR_PAIR(2));
+    wattroff(_bottomWin, COLOR_PAIR(COL_YELLOW));
     box(_bottomWin, 0, 0);
     mvwprintw(_bottomWin, 2, 3, "time:");
     mvwprintw(_bottomWin, 2, 19, "lives:");

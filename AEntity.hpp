@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 17:04:25 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/13 21:40:54 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct          s_entityList
 	virtual bool			move(unsigned int height, unsigned int width, int key) = 0;
 	virtual t_entityList	*shoot(int key) = 0;
 
-	virtual unsigned int	takeDamage(AEntity const &attacker, WINDOW *win);
+	virtual unsigned int	takeDamage(AEntity &attacker, WINDOW *win);
 
 	void					displaySkin(WINDOW *win, unsigned int colorNb) const;
 
@@ -67,6 +67,10 @@ typedef struct          s_entityList
 
 	t_coord	const			_skinSize;
 
+	void					equipWeapon(Weapon *weapon);
+	void            		equipWeapon(t_weaponList *src);
+	void					copyWeaponList(t_weaponList *src);
+	
 protected:
 	class	NoWeaponEquippedException : public std::exception {
 		public:
@@ -78,10 +82,6 @@ protected:
 
 			char const					*what(void) const throw();
 	};
-	
-	void					equipWeapon(Weapon *weapon);
-	void            		equipWeapon(t_weaponList *src);
-	void					copyWeaponList(t_weaponList *src);
 	
 	unsigned int			_hp;
 	unsigned int			_damageDeal;

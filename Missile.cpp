@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Missile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:20:14 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/11 16:51:59 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/13 19:33:01 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ bool					Missile::move(unsigned int height, unsigned int width, int key)
 	(void)key;
     if (Game::checkTime(_speed, _lastMove))
     {
-		if (_direction1 == 'N' && _coord.y > 1)
+		if (_direction1 == 'N' && _coord.y > 2)
 			_coord.y -= 1;
-		else if (_direction1 == 'S' && _coord.y + _skinSize.y < height - 1)
+		else if (_direction1 == 'S' && _coord.y + _skinSize.y < height - 2)
 			_coord.y += 1;
 		else if (_direction1 == 'W' && _coord.x > 2)
 			_coord.x -= 1;
-		else if (_direction1 == 'E' && _coord.x  + _skinSize.x < width - 1)
+		else if (_direction1 == 'E' && _coord.x  + _skinSize.x < width - 2)
 			_coord.x += 1;
 		else
 			return (false);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/11 17:04:30 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/13 21:48:40 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void            AEntity::equipWeapon(t_weaponList *src)
     }
 }
 
-unsigned int	AEntity::takeDamage(AEntity const &attacker, WINDOW *win)
+unsigned int	AEntity::takeDamage(AEntity &attacker, WINDOW *win)
 {
 	(void)win;
 	_hp -= _hp < attacker.getDamageDeal() ? _hp : attacker.getDamageDeal();

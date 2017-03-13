@@ -23,6 +23,7 @@ class	Game;
 class	Weapon {
 
 public:
+
 	Weapon(unsigned int hpMissile, unsigned int damageDeal, unsigned int speedMissile, std::string skinMissile, unsigned int rateOfFire);
 	Weapon(Weapon const &src);
 	virtual ~Weapon();
@@ -30,10 +31,15 @@ public:
 	Weapon							&operator=(Weapon const &rhs);
 
 	virtual AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
+
+	virtual bool					isSimpleWeapon() const;
 	
 	t_coord	const					_skinSize;
 
 protected:
+
+	bool							insideMap(t_coord coordEntity, t_coord sizeSkin) const;
+
 	unsigned int					_hpMissile;
 	unsigned int					_damageDeal;
 	unsigned int					_speedMissile;

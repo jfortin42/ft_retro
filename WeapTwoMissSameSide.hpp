@@ -25,10 +25,9 @@ public:
 
 	WeapTwoMissSameSide				&operator=(WeapTwoMissSameSide const &rhs);
 	
-	AEntity::t_entityList	*createMissile(AEntity &shooter, char direction);
-	
-	bool					insideMap(t_coord coordEntity, t_coord sizeSkin);
+	AEntity::t_entityList			*createMissile(AEntity &shooter, char direction);
 
+	bool							isSimpleWeapon() const;
 
 private:
 	unsigned int			_marging;

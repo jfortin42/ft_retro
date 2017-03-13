@@ -2,7 +2,7 @@ NAME = ft_retro
 
 CLANG = clang++
 
-FLAG = -Wall -Wextra -Werror
+FLAG = -Wall -Wextra -Werror -g
 
 SRC = main.cpp \
 	  Game.cpp \
@@ -12,6 +12,7 @@ SRC = main.cpp \
 	  Missile.cpp \
 	  Enemy.cpp \
 	  Boss.cpp \
+	  Bonus.cpp \
 	  WeapTwoMissSameSide.cpp
 
 OBJ = $(SRC:.cpp=.o)

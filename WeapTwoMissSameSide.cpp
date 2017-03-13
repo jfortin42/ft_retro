@@ -65,7 +65,7 @@ AEntity::t_entityList	*WeapTwoMissSameSide::createMissile(AEntity &shooter, char
 		direction2 = 'N';
 		direction3 = 'S';
 		coordMissile1.x = coordShooter.x + skinShooter.x;
-		coordMissile1.y = coordShooter.y + _marging + _skinSize.y / 2;
+		coordMissile1.y = coordShooter.y + _marging - _skinSize.y / 2;
 		coordMissile2.x = coordShooter.x + skinShooter.x;
 		coordMissile2.y = coordShooter.y + skinShooter.y - _marging - _skinSize.y / 2 - 1;
 	}
@@ -74,7 +74,7 @@ AEntity::t_entityList	*WeapTwoMissSameSide::createMissile(AEntity &shooter, char
 		direction2 = 'N';
 		direction3 = 'S';
 		coordMissile1.x = coordShooter.x - _skinSize.x - 1;
-		coordMissile1.y = coordShooter.y + _marging + _skinSize.y / 2;
+		coordMissile1.y = coordShooter.y + _marging - _skinSize.y / 2;
 		coordMissile2.x = coordShooter.x - _skinSize.x - 1;
 		coordMissile2.y = coordShooter.y + skinShooter.y - _marging - _skinSize.y / 2 - 1;
 	}
@@ -89,9 +89,4 @@ AEntity::t_entityList	*WeapTwoMissSameSide::createMissile(AEntity &shooter, char
 	return (listMissile);
 }
 
-bool					WeapTwoMissSameSide::insideMap(t_coord coordEntity, t_coord sizeSkin)
-{
-	if (coordEntity.x < 1 || coordEntity.x + sizeSkin.x > (unsigned int)COLS || coordEntity.y < 1 || coordEntity.y + sizeSkin.y > (unsigned int)(LINES - BOT_WIN_H))
-		return false;
-	return true;
-}
+bool					WeapTwoMissSameSide::isSimpleWeapon() const { return (false); }

@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/18 16:00:23 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/18 17:35:14 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,10 @@ void            Game::_initGame()
     playerCoord1.x = (COLS / 3) - 1;
     playerCoord2.y = LINES - (6 + BOT_WIN_H);
     playerCoord2.x = 2 * (COLS / 3) - 1;
-    WeapTwoMissSameSide     weaponBoss = WeapTwoMissSameSide(2, 2, 50, "|", 500, 0);
-    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new WeapTwoMissSameSide(weaponBoss), playerCoord1, 119, 115, 97, 100, KEY_SPC));
-    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new WeapTwoMissSameSide(weaponBoss), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
+    Weapon      pioupiou = Weapon(1, 1, 50, "|" , 1000);    
+    //WeapTwoMissSameSide     weaponBoss = WeapTwoMissSameSide(2, 2, 50, "|", 500, 0);
+    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new Weapon(pioupiou)/*WeapTwoMissSameSide(weaponBoss)*/, playerCoord1, 119, 115, 97, 100, KEY_SPC));
+    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new Weapon(pioupiou)/*WeapTwoMissSameSide(weaponBoss)*/, playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
 }
 
 void            Game::_gameLoop()
@@ -121,6 +122,7 @@ void            Game::_gameLoop()
     int         i;
     int         key;
     bool        bossPop = false;
+    bool        bonusPop = false;
     std::string bkgd;
     std::string gameOver = _readSkin("env/gameover.env");
     std::string gameWin = _readSkin("env/gamewin.env");
@@ -141,10 +143,11 @@ void            Game::_gameLoop()
             pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), new WeapTwoMissSameSide(weaponBoss), (t_coord){30, 1}));
             bossPop = true;
         }
-        if (_timer == 100)
+        if (!bonusPop && _timer == 100)
         {
-            //pushInList(_bonusList, new Bonus("$", new Weapon(bonusWeap), (t_coord){15, 15}));
-            pushInList(_bonusList, new Bonus("$", new Weapon(bonusWeap), (t_coord){10, 10}));
+            pushInList(_bonusList, new Bonus("$", new Weapon(pioupiou)/*new WeapTwoMissSameSide(bonusWeap)*/, (t_coord){15, 15}));
+            pushInList(_bonusList, new Bonus("$", new Weapon(pioupiou)/*new WeapTwoMissSameSide(bonusWeap)*/, (t_coord){10, 10}));
+            bonusPop = true;
         }
         _gameCore(key);
         wrefresh(_mainWin);

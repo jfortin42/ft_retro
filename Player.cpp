@@ -6,13 +6,13 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/18 15:57:40 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/18 16:47:43 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Player.hpp"
 
-Player::Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, Weapon *weapon, t_coord coord, int keyUp, int keyDown, int keyLeft, int keyRight, int keyShoot) : AEntity(hp, damageDeal, speed, 0, skin, weapon, coord), _keyUp(keyUp), _keyDown(keyDown), _keyLeft(keyLeft), _keyRight(keyRight), _keyShoot(keyShoot) {}
+Player::Player(unsigned int hp, unsigned int damageDeal, unsigned int speed, std::string skin, Weapon *weapon, t_coord coord, int keyUp, int keyDown, int keyLeft, int keyRight, int keyShoot) : AEntity(hp, damageDeal, speed, 0, skin, weapon, coord, 'N'), _keyUp(keyUp), _keyDown(keyDown), _keyLeft(keyLeft), _keyRight(keyRight), _keyShoot(keyShoot) {}
 
 Player::Player(Player const &src) : AEntity(src) {}
 
@@ -52,7 +52,7 @@ AEntity::t_entityList    *Player::shoot(int key)
         AEntity::t_entityList   *listOfMissile = NULL;
         while (tmp)
         {
-            Game::pushInList(listOfMissile, tmp->weapon->createMissile(*this,'N'));
+            Game::pushInList(listOfMissile, tmp->weapon->createMissile(*this, tmp->direction));
             tmp = tmp->next;
         }
         return (listOfMissile);
@@ -64,8 +64,8 @@ unsigned int	        Player::takeDamage(AEntity &attacker, WINDOW *win)
 {
 	wattron(win, A_BLINK);
 	displaySkin(win, COL_BLUE);
-	//usleep(500000);
+	usleep(500000);
 	wattroff(win, A_BLINK);
-	_hp -= _hp < attacker.getDamageDeal() ? _hp : attacker.getDamageDeal();
+	_hp -= (_hp < attacker.getDamageDeal()) ? _hp : attacker.getDamageDeal();
 	return (_hp);
 }

@@ -6,7 +6,7 @@
 /*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2017/03/13 21:40:54 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/18 17:03:38 by fsidler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct          s_entityList
 	struct s_entityList *next;
 }                       t_entityList;
 
-	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord);
+	AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord, char direction);
 	AEntity(AEntity const &src);
 	virtual ~AEntity();
 
@@ -67,8 +67,8 @@ typedef struct          s_entityList
 
 	t_coord	const			_skinSize;
 
-	void					equipWeapon(Weapon *weapon);
-	void            		equipWeapon(t_weaponList *src);
+	void					equipWeapon(Weapon *weapon, char direction = 'D');
+	//void            		equipWeapon(t_weaponList *src);
 	void					copyWeaponList(t_weaponList *src);
 	
 protected:

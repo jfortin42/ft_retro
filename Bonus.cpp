@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Bonus.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:52:16 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/18 17:28:14 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/19 23:06:21 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bonus.hpp"
 #include "Weapon.hpp"
 
-Bonus::Bonus(std::string skin, Weapon *weapon, t_coord coord) : AEntity(1, 0, 20000, 20, skin, weapon, coord, 'D') {}
+Bonus::Bonus(std::string skin, Weapon *weapon, t_coord coord, unsigned int timePop) : AEntity(1, 0, timePop, 20, skin, weapon, coord, 'D') {}
 
 Bonus::Bonus(Bonus const &src) : AEntity(src) {}
 

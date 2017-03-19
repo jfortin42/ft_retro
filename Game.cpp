@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/18 17:35:14 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/19 23:22:53 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,43 +111,49 @@ void            Game::_initGame()
     playerCoord1.x = (COLS / 3) - 1;
     playerCoord2.y = LINES - (6 + BOT_WIN_H);
     playerCoord2.x = 2 * (COLS / 3) - 1;
-    Weapon      pioupiou = Weapon(1, 1, 50, "|" , 1000);    
-    //WeapTwoMissSameSide     weaponBoss = WeapTwoMissSameSide(2, 2, 50, "|", 500, 0);
-    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new Weapon(pioupiou)/*WeapTwoMissSameSide(weaponBoss)*/, playerCoord1, 119, 115, 97, 100, KEY_SPC));
-    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new Weapon(pioupiou)/*WeapTwoMissSameSide(weaponBoss)*/, playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
+    Weapon      pioupiou = Weapon(1, 1, 50, "|" , 1000);
+    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new Weapon(pioupiou), playerCoord1, 119, 115, 97, 100, KEY_SPC));
+    pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new Weapon(pioupiou), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
 }
 
 void            Game::_gameLoop()
 {
-    int         i;
-    int         key;
-    bool        bossPop = false;
-    bool        bonusPop = false;
-    std::string bkgd;
-    std::string gameOver = _readSkin("env/gameover.env");
-    std::string gameWin = _readSkin("env/gamewin.env");
-    Weapon      pioupiou = Weapon(1, 1, 50, "|" , 1000);
-    WeapTwoMissSameSide     bonusWeap = WeapTwoMissSameSide(2, 2, 70, "*", 400, 0);
-    WeapTwoMissSameSide     weaponBoss = WeapTwoMissSameSide(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
+    int                 i;
+    int                 key;
+    t_coord             coord;
+    bool                bossPop = false;
+    std::string         bkgd;
+    std::string         gameOver = _readSkin("env/gameover.env");
+    std::string         gameWin = _readSkin("env/gamewin.env");
+    Weapon              laser = Weapon(1, 1, 50, "|" , 1000);
+    Weapon              pioupiou = Weapon(1, 1, 50, "." , 1000);
+    WeapTwoMissSameSide bonusWeap = WeapTwoMissSameSide(2, 2, 70, "*", 400, 0);
+    WeapTwoMissSameSide weaponBoss = WeapTwoMissSameSide(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
 
-    _timer = 101;
+    _timer = 125;
     bkgd = _fillBackground();
     while ((key = wgetch(_mainWin)) != KEY_ESC && _playerList && _timer > 0 && (!bossPop || _bossList))
     {
         _refreshMainWin(bkgd);
-        i = rand();
-        if (i % 5000 < 1 && _timer > 100)
-            pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), new Weapon(pioupiou), (t_coord){i % (COLS - 10) + 1, 1}));
+        if ((i = rand()) % 5000 < 1 && _timer > 100)
+        {
+            coord.x = i % (COLS - AEntity::getSkinSize(_readSkin("env/enemy.env")).x) + 1;
+            coord.y = 1;
+            pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), new Weapon(laser), coord));
+        }
         else if (!bossPop && _timer <= 100)
         {
             pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), new WeapTwoMissSameSide(weaponBoss), (t_coord){30, 1}));
             bossPop = true;
         }
-        if (!bonusPop && _timer == 100)
+        if ((i = rand()) % 39769 < 1)
         {
-            pushInList(_bonusList, new Bonus("$", new Weapon(pioupiou)/*new WeapTwoMissSameSide(bonusWeap)*/, (t_coord){15, 15}));
-            pushInList(_bonusList, new Bonus("$", new Weapon(pioupiou)/*new WeapTwoMissSameSide(bonusWeap)*/, (t_coord){10, 10}));
-            bonusPop = true;
+            coord.x = i % COLS + 1;
+            coord.y = i % (LINES - BOT_WIN_H) + 1;
+            if (i % 2)
+                pushInList(_bonusList, new Bonus("$", new WeapTwoMissSameSide(bonusWeap), coord));
+            else
+                pushInList(_bonusList, new Bonus("$", new Weapon(pioupiou), coord));
         }
         _gameCore(key);
         wrefresh(_mainWin);
@@ -157,7 +163,7 @@ void            Game::_gameLoop()
     {
         werase(_mainWin);
         mvwprintw(_mainWin, 3, (COLS - 10) / 2, "FINAL SCORE:");
-        mvwprintw(_mainWin, 3, ((COLS - 3) / 2) + 14, "%i", _score);        
+        mvwprintw(_mainWin, 3, ((COLS - 3) / 2) + 14, "%i", _score);
         if (!_playerList || _timer == 0)
             mvwprintw(_mainWin, (LINES - BOT_WIN_H - 6) / 2, 1, gameOver.c_str());
         else if (key != KEY_ESC)
@@ -197,8 +203,8 @@ void            Game::_gameCore(int key)
     _moveInList(_missilePlayerList, key);
     _moveInList(_missileEnemyList, key);
     _moveInList(_missileBossList, key);
-    //_moveInList(_bonusList, key);
-    
+    _moveInList(_bonusList, key);
+
     _collision(_playerList, _enemyList);
     _collision(_playerList, _bossList);
     _collision(_playerList, _missileEnemyList);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AEntity.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/18 17:48:56 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/19 21:57:00 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,28 @@ void			AEntity::copyWeaponList(t_weaponList *src)
 {
 	while (src)
 	{
-		equipWeapon(src->weapon, src->direction);
+		equipWeapon(src->weapon, 'D');
 		src = src->next;
 	}
 }
 
-void            AEntity::equipWeapon(Weapon *weapon, char direction)
+void			AEntity::equipWeapon(Weapon *weapon, char direction)
 {
-    if (weapon)
-    {
-        t_weaponList    *tmp = _weaponList;
-        t_weaponList    *newWeapon = new t_weaponList();
+ 	if (weapon)
+	{
+		t_weaponList	*tmp = _weaponList;
+		t_weaponList	*newWeapon = new t_weaponList();
 
-        newWeapon->weapon = weapon;
-		char dir = 'N';
+		newWeapon->weapon = weapon;
+		char dir[] = {'N', 'W', 'E', 'S', 'D'};
+		int i = 0;
 		if (direction == 'D')
 		{
-			while (tmp && tmp->next)
+			while (tmp)
 			{
-				if (tmp->direction == dir && ((tmp->weapon->isSimpleWeapon() && weapon->isSimpleWeapon()) || (!tmp->weapon->isSimpleWeapon() && !weapon->isSimpleWeapon())))
+				if (tmp->direction == dir[i] && ((tmp->weapon->isSimpleWeapon() && weapon->isSimpleWeapon()) || (!tmp->weapon->isSimpleWeapon() && !weapon->isSimpleWeapon())))
 				{
-					dir++;
+					i++;
 					tmp = _weaponList;
 				}
 				else
@@ -81,26 +82,26 @@ void            AEntity::equipWeapon(Weapon *weapon, char direction)
 			}
 		}
 		else
-			dir = direction;
-		newWeapon->direction = dir;
+			dir[i] = direction;
+		newWeapon->direction = dir[i];
 		tmp = _weaponList;
-        newWeapon->next = NULL;
-        while (tmp && tmp->next)
-            tmp = tmp->next;
-        tmp ? tmp->next = newWeapon : _weaponList = newWeapon;
-    }
+		newWeapon->next = NULL;
+		while (tmp && tmp->next)
+			tmp = tmp->next;
+		tmp ? tmp->next = newWeapon : _weaponList = newWeapon;
+	}
 }
 
-/*void            AEntity::equipWeapon(t_weaponList *src)
+/*void			AEntity::equipWeapon(t_weaponList *src)
 {
-    if (src)
-    {
+	if (src)
+	{
 
-        t_weaponList *tmp = _weaponList;
-        while (tmp && tmp->next)
-            tmp = tmp->next;
-        tmp ? tmp->next = src : _weaponList = src;
-    }
+		t_weaponList *tmp = _weaponList;
+		while (tmp && tmp->next)
+			tmp = tmp->next;
+		tmp ? tmp->next = src : _weaponList = src;
+	}
 }*/
 
 unsigned int	AEntity::takeDamage(AEntity &attacker, WINDOW *win)
@@ -134,29 +135,29 @@ unsigned int	AEntity::getHp() const { return (_hp); }
 
 unsigned int	AEntity::getDamageDeal() const { return (_damageDeal); }
 
-unsigned int    AEntity::getScore() const { return (_score); }
+unsigned int	AEntity::getScore() const { return (_score); }
 
 t_coord			AEntity::getCoord() const { return (_coord); }
 
 t_coord			AEntity::getSkinSize(std::string skin)
 {
-    std::size_t index = 0;
+	std::size_t index = 0;
 	std::size_t	height = 0;
-    std::size_t lengthTmp = 0;
-    std::size_t lengthMax = 0;
+	std::size_t lengthTmp = 0;
+	std::size_t lengthMax = 0;
 
 	while (index < skin.length() - 1)
-    {
+	{
 		height++;
-        index += lengthTmp + 1;
+		index += lengthTmp + 1;
 		if ((lengthTmp = skin.find("\n", index + 1) - index) > skin.length())
-        {
-            lengthTmp = skin.length() - index;
-            lengthMax = (lengthMax < lengthTmp) ? lengthTmp : lengthMax;        
-            break ;
-        }
-        lengthMax = (lengthMax < lengthTmp) ? lengthTmp : lengthMax;
-    }
+		{
+			lengthTmp = skin.length() - index;
+			lengthMax = (lengthMax < lengthTmp) ? lengthTmp : lengthMax;		
+			break ;
+		}
+		lengthMax = (lengthMax < lengthTmp) ? lengthTmp : lengthMax;
+	}
 	return ((t_coord){lengthMax, height});
 }
 
@@ -168,8 +169,8 @@ AEntity::NoWeaponEquippedException::~NoWeaponEquippedException() throw() {}
 
 AEntity::NoWeaponEquippedException	&AEntity::NoWeaponEquippedException::operator=(AEntity::NoWeaponEquippedException const &rhs)
 {
-    (void)rhs;
-    return (*this);
+	(void)rhs;
+	return (*this);
 }
 
-char const                        	*AEntity::NoWeaponEquippedException::what(void) const throw() { return ("No Weapon Equipped"); }
+char const							*AEntity::NoWeaponEquippedException::what(void) const throw() { return ("No Weapon Equipped"); }

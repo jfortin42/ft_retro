@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fsidler <fsidler@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/18 17:49:25 by fsidler          ###   ########.fr       */
+/*   Updated: 2017/03/19 22:53:58 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_HPP
 # define GAME_HPP
-
-enum	dir {
-	N, W, E, S, D
-};
 
 # include "AEntity.hpp"
 # include "Weapon.hpp"

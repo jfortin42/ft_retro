@@ -6,14 +6,14 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/19 21:57:00 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/25 18:16:16 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AEntity.hpp"
 #include "Weapon.hpp"
 
-AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord, char direction) : _skinSize(getSkinSize(skin)), _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _lastMove(0), _skin(skin), _weaponList(NULL), _coord(coord)
+AEntity::AEntity(unsigned int hp, unsigned int damageDeal, unsigned int speed, unsigned int score, std::string skin, Weapon *weapon, t_coord coord, char direction) : _skinSize(getSkinSize(skin)), _hp(hp), _damageDeal(damageDeal), _speed(speed), _score(score), _lastMove(clock()), _skin(skin), _weaponList(NULL), _coord(coord)
 {
 	equipWeapon(weapon, direction);
 }
@@ -91,18 +91,6 @@ void			AEntity::equipWeapon(Weapon *weapon, char direction)
 		tmp ? tmp->next = newWeapon : _weaponList = newWeapon;
 	}
 }
-
-/*void			AEntity::equipWeapon(t_weaponList *src)
-{
-	if (src)
-	{
-
-		t_weaponList *tmp = _weaponList;
-		while (tmp && tmp->next)
-			tmp = tmp->next;
-		tmp ? tmp->next = src : _weaponList = src;
-	}
-}*/
 
 unsigned int	AEntity::takeDamage(AEntity &attacker, WINDOW *win)
 {

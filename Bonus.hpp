@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/14 13:35:21 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/19 23:06:45 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/25 18:29:38 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ class Bonus : public AEntity {
 
     public:
 
-        Bonus(std::string skin, Weapon *weapon, t_coord coord, unsigned int timePop = 20000);
+        Bonus(std::string skin, Weapon *weapon, t_coord coord, unsigned int timePop = 10000);
         Bonus(Bonus const &src);
         ~Bonus();
 

@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/19 22:53:58 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/25 17:30:03 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,17 @@ class                   Game {
 		
 		void            _gameCore(int key);
 		void            _displayEntities(AEntity::t_entityList *list, unsigned int colorNb) const;
-		void			_moveInList(AEntity::t_entityList *&begin, int key);
-		void            _shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile, int key);
+		void			_moveInList(AEntity::t_entityList *&begin, int key) const;
+		void            _shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile, int key) const;
 		bool            _hitbox(AEntity::t_entityList *entity1, AEntity::t_entityList *entity2) const;
 		void            _collision(AEntity::t_entityList *&list1, AEntity::t_entityList *&list2);
 
 		void            _refreshMainWin(std::string bkgd) const;
 		void            _refreshBottomWin(std::string bkgd);
 		
-		void            _lstdelone(AEntity::t_entityList *&begin, AEntity::t_entityList *&current, char command);
-		void            _freeEntityList(AEntity::t_entityList *&list);
-		void            _copyEntityList(AEntity::t_entityList *&dest, AEntity::t_entityList *src);
+		void            _lstdelone(AEntity::t_entityList *&begin, AEntity::t_entityList *&current, char command) const;
+		void            _freeEntityList(AEntity::t_entityList *&list) const;
+		void            _copyEntityList(AEntity::t_entityList *&dest, AEntity::t_entityList *src) const;
 
 		std::string		_fillBackground() const;
 		std::string		_readSkin(std::string nameOfFile) const;

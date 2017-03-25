@@ -6,14 +6,13 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/19 23:22:53 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/25 18:54:49 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.hpp"
-#include <stdio.h>
 
-Game::Game() : _mainWin(NULL), _bottomWin(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL), _bonusList(NULL), _lastTimer(0) {}
+Game::Game() : _mainWin(NULL), _bottomWin(NULL), _timer(120), _score(0), _playerList(NULL), _enemyList(NULL), _bossList(NULL), _missilePlayerList(NULL), _missileEnemyList(NULL), _missileBossList(NULL), _bonusList(NULL), _lastTimer(clock()) {}
 
 Game::Game(Game const &src) : _mainWin(NULL), _bottomWin(NULL), _timer(src._timer), _score(src._score), _playerList(NULL), _enemyList(NULL)
 {
@@ -137,7 +136,7 @@ void            Game::_gameLoop()
         _refreshMainWin(bkgd);
         if ((i = rand()) % 5000 < 1 && _timer > 100)
         {
-            coord.x = i % (COLS - AEntity::getSkinSize(_readSkin("env/enemy.env")).x) + 1;
+            coord.x = i % (COLS - AEntity::getSkinSize(_readSkin("env/enemy.env")).x - 1) + 1;
             coord.y = 1;
             pushInList(_enemyList, new Enemy(2, 3, 500, 250, _readSkin("env/enemy.env"), new Weapon(laser), coord));
         }
@@ -146,10 +145,10 @@ void            Game::_gameLoop()
             pushInList(_bossList, new Boss(50, 3, 100, 1000, _readSkin("env/shadow.env"), new WeapTwoMissSameSide(weaponBoss), (t_coord){30, 1}));
             bossPop = true;
         }
-        if ((i = rand()) % 39769 < 1)
+        if ((i = rand()) % 17321 < 1)
         {
-            coord.x = i % COLS + 1;
-            coord.y = i % (LINES - BOT_WIN_H) + 1;
+            coord.x = (i % (COLS - 2)) + 1;
+            coord.y = (i % (LINES - BOT_WIN_H - 2)) + 1;
             if (i % 2)
                 pushInList(_bonusList, new Bonus("$", new WeapTwoMissSameSide(bonusWeap), coord));
             else
@@ -224,7 +223,7 @@ void            Game::_displayEntities(AEntity::t_entityList *list, unsigned int
     }
 }
 
-void            Game::_moveInList(AEntity::t_entityList *&begin, int key)
+void            Game::_moveInList(AEntity::t_entityList *&begin, int key) const
 {
     AEntity::t_entityList    *entityTmp = begin;
 
@@ -238,7 +237,7 @@ void            Game::_moveInList(AEntity::t_entityList *&begin, int key)
     }
 }
 
-void            Game::_shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile, int key)
+void            Game::_shootInList(AEntity::t_entityList *list, AEntity::t_entityList *&listOfMissile, int key) const
 {
     while (list)
     {
@@ -441,7 +440,7 @@ void            Game::pushInList(AEntity::t_entityList *&dest, AEntity::t_entity
     }
 }
 
-void            Game::_lstdelone(AEntity::t_entityList *&begin, AEntity::t_entityList *&current, char command)
+void            Game::_lstdelone(AEntity::t_entityList *&begin, AEntity::t_entityList *&current, char command) const
 {
     AEntity::t_entityList    *tmp_next = NULL;
 
@@ -461,7 +460,7 @@ void            Game::_lstdelone(AEntity::t_entityList *&begin, AEntity::t_entit
     }
 }
 
-void            Game::_freeEntityList(AEntity::t_entityList *&list)
+void            Game::_freeEntityList(AEntity::t_entityList *&list) const
 {
     AEntity::t_entityList    *tmp;
 
@@ -475,7 +474,7 @@ void            Game::_freeEntityList(AEntity::t_entityList *&list)
     list = NULL;
 }
 
-void            Game::_copyEntityList(AEntity::t_entityList *&dest, AEntity::t_entityList *src)
+void            Game::_copyEntityList(AEntity::t_entityList *&dest, AEntity::t_entityList *src) const
 {
 	while (src)
 	{

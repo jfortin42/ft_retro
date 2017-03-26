@@ -6,13 +6,14 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/25 17:30:03 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/26 19:53:10 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_HPP
 # define GAME_HPP
 
+# include <stdlib.h>
 # include "AEntity.hpp"
 # include "Weapon.hpp"
 # include "Missile.hpp"

@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/25 18:54:49 by jfortin          ###   ########.fr       */
+/*   Updated: 2017/03/26 19:48:47 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,7 +406,7 @@ std::string     Game::_fillBackground() const
 
 std::string     Game::_readSkin(std::string nameOfFile) const
 {
-    std::ifstream       file(nameOfFile);
+    std::ifstream       file(nameOfFile.c_str());
     std::stringstream   read;
 
     read << file.rdbuf();

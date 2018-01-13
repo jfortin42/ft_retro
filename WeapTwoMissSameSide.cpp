@@ -78,9 +78,11 @@ AEntity::t_entityList	*WeapTwoMissSameSide::createMissile(AEntity &shooter, char
 		coordMissile2.x = coordShooter.x - _skinSize.x - 1;
 		coordMissile2.y = coordShooter.y + skinShooter.y - _marging - _skinSize.y / 2 - 1;
 	}
+    else
+        return NULL;
 	if (!Game::checkTime(_rateOfFire, _lastShoot))
 		return (NULL);
-	int rof = rand() % 255 + 245;
+    unsigned int rof = (unsigned int)rand() % 255 + 245;
 	Weapon pioupiou = Weapon(1, 1, 50, "-", rof);
 	if (insideMap(coordMissile1, _skinSize))
 		Game::pushInList(listMissile, new Missile(_hpMissile, _damageDeal, _speedMissile, 50, _skinMissile, new Weapon(pioupiou), coordMissile1, direction, direction2));

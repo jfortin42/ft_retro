@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/25 18:16:16 by jfortin          ###   ########.fr       */
+/*   Updated: 2018/02/11 22:24:50 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ t_coord			AEntity::getSkinSize(std::string skin)
 		}
 		lengthMax = (lengthMax < lengthTmp) ? lengthTmp : lengthMax;
 	}
-	return ((t_coord){lengthMax, height});
+	return ((t_coord){(unsigned int)lengthMax, (unsigned int) height});
 }
 
 AEntity::NoWeaponEquippedException::NoWeaponEquippedException() {}

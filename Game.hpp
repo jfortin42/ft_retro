@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:14:47 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/26 19:53:10 by jfortin          ###   ########.fr       */
+/*   Updated: 2018/02/11 22:27:05 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class                   Game {
 
 		Game            &operator=(Game const &rhs);
 		void            launch();
+		void			relaunch();
 		static void     pushInList(AEntity::t_entityList *&list, AEntity *entity);
 		static void     pushInList(AEntity::t_entityList *&dest, AEntity::t_entityList *src);
 		static bool     checkTime(unsigned int msecond, clock_t &last);
@@ -68,7 +69,8 @@ class                   Game {
 		void            _initGame();
 		void            _gameLoop();
 		void            _endGame();
-		
+		void			_displayInMiddle(WINDOW *win, const char *string, int y);
+
 		void            _gameCore(int key);
 		void            _displayEntities(AEntity::t_entityList *list, unsigned int colorNb) const;
 		void			_moveInList(AEntity::t_entityList *&begin, int key) const;

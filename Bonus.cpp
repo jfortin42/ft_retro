@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 18:52:16 by fsidler           #+#    #+#             */
-/*   Updated: 2017/03/19 23:06:21 by jfortin          ###   ########.fr       */
+/*   Updated: 2018/02/11 22:25:07 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ bool			        Bonus::move(unsigned int height, unsigned int width, int key)
     (void)width;
     (void)height;
     (void)key;
-    if (Game::checkTime(_speed, _lastMove))
-      return (false);
-    return (true);
+    return !Game::checkTime(_speed, _lastMove);
 }
 
 AEntity::t_entityList   *Bonus::shoot(int key)

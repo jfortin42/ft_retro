@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 18:51:42 by fsidler           #+#    #+#             */
-/*   Updated: 2018/02/11 22:24:50 by jfortin          ###   ########.fr       */
+/*   Created: 2018/01/13 14:06:31 by jfortin           #+#    #+#             */
+/*   Updated: 2018/02/11 22:39:36 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ AEntity::~AEntity()
 	while (_weaponList)
 	{
 		t_weaponList	*next = _weaponList->next;
+		delete _weaponList->weapon;
 		delete _weaponList;
 		_weaponList = next;
 	}

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/09 14:35:38 by fsidler           #+#    #+#             */
-/*   Updated: 2018/02/11 22:27:17 by jfortin          ###   ########.fr       */
+/*   Created: 2018/01/13 14:08:09 by jfortin           #+#    #+#             */
+/*   Updated: 2018/02/11 22:44:46 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ int main()
     Game    *play = new Game();
     try
     {
-        play->launch();
+        while (play->launch() == false)
+            {
+                delete play;
+                play = new Game();
+            }
     }
     catch (std::exception &e)
     {

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 16:25:43 by fsidler           #+#    #+#             */
-/*   Updated: 2018/02/11 22:30:38 by jfortin          ###   ########.fr       */
+/*   Created: 2018/01/13 14:07:56 by jfortin           #+#    #+#             */
+/*   Updated: 2018/02/11 22:44:59 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,14 @@ Game            &Game::operator=(Game const &rhs)
 	return (*this);
 }
 
-void            Game::launch()
+bool            Game::launch()
 {
+	bool	ret;
+	
 	_initGame();
-	_gameLoop();
+	ret = _gameLoop();
 	_endGame();
-}
-
-void			Game::relaunch()
-{
-	Game::~Game();
-	_initGame();
-	_gameLoop();
+	return (ret);
 }
 
 void            Game::_initGame()
@@ -122,7 +118,7 @@ void            Game::_initGame()
 	pushInList(_playerList, new Player(3, 3, 2, _readSkin("env/playership.env"), new Weapon(pioupiou), playerCoord2, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, 48));//92
 }
 
-void            Game::_gameLoop()
+bool            Game::_gameLoop()
 {
 	int                 i;
 	int                 key;
@@ -143,8 +139,8 @@ void            Game::_gameLoop()
 	{
 		if (key == KEY_RESIZE)
 		{
-			relaunch();
-			return ;
+			// relaunch();
+			return false;
 		}
 		_refreshMainWin();
 		if ((i = rand()) % 5000 < 1 && _timer > 100)
@@ -183,6 +179,7 @@ void            Game::_gameLoop()
 		wrefresh(_mainWin);
 		usleep(2000000);
 	}
+	return (true);
 }
 
 void	Game::_displayInMiddle(WINDOW *win, const char *str, int y)

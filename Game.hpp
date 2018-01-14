@@ -78,14 +78,15 @@ class                   Game {
 		bool            _hitbox(AEntity::t_entityList *entity1, AEntity::t_entityList *entity2) const;
 		void            _collision(AEntity::t_entityList *&list1, AEntity::t_entityList *&list2);
 
-		void            _refreshMainWin(std::string bkgd) const;
-		void            _refreshBottomWin(std::string bkgd);
+		void            _refreshMainWin(void);
+		void            _refreshBottomWin(void);
 		
 		void            _lstdelone(AEntity::t_entityList *&begin, AEntity::t_entityList *&current, char command) const;
 		void            _freeEntityList(AEntity::t_entityList *&list) const;
 		void            _copyEntityList(AEntity::t_entityList *&dest, AEntity::t_entityList *src) const;
 
-		std::string		_fillBackground() const;
+		void			_fillBackground(void);
+		void			_moveBackground(void);
 		std::string		_readSkin(std::string nameOfFile) const;
 
 		WINDOW          *_mainWin;
@@ -93,6 +94,8 @@ class                   Game {
 		
 		unsigned int    _timer;
 		unsigned int    _score;
+		
+		std::string    _bkgd;
 
 		AEntity::t_entityList	*_playerList;
 		AEntity::t_entityList	*_enemyList;

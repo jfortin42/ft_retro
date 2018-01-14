@@ -128,7 +128,6 @@ void            Game::_gameLoop()
 	int                 key;
 	t_coord             coord;
 	bool                bossPop = false;
-	std::string         bkgd;
 	std::string         gameOver = _readSkin("env/gameover.env");
 	std::string         gameWin = _readSkin("env/gamewin.env");
 	std::string         enemySkin = _readSkin("env/enemy.env");
@@ -139,7 +138,7 @@ void            Game::_gameLoop()
 	WeapTwoMissSameSide weaponBoss = WeapTwoMissSameSide(2, 2, 50, _readSkin("env/stinger.env"), 2000, 0);
 
 	_timer = 125;
-	bkgd = _fillBackground();
+	_fillBackground();
 	while ((key = wgetch(_mainWin)) != KEY_ESC && _playerList && _timer > 0 && (!bossPop || _bossList))
 	{
 		if (key == KEY_RESIZE)
@@ -147,7 +146,7 @@ void            Game::_gameLoop()
 			relaunch();
 			return ;
 		}
-		_refreshMainWin(bkgd);
+		_refreshMainWin();
 		if ((i = rand()) % 5000 < 1 && _timer > 100)
 		{
 			coord.x = i % (COLS - AEntity::getSkinSize(enemySkin).x - 1) + 1;
@@ -170,7 +169,7 @@ void            Game::_gameLoop()
 		}
 		_gameCore(key);
 		wrefresh(_mainWin);
-		_refreshBottomWin(bkgd);
+		_refreshBottomWin();
 	}
 	if (key != KEY_ESC)
 	{
@@ -381,18 +380,18 @@ bool            Game::checkTime(unsigned int msecond, clock_t  &last)
 	return (false);
 }
 
-void            Game::_refreshMainWin(std::string bkgd) const
+void            Game::_refreshMainWin()
 {
 	wattron(_mainWin, COLOR_PAIR(COL_YELLOW));
-	mvwprintw(_mainWin, 1, 1, bkgd.c_str());
+	mvwprintw(_mainWin, 1, 1, _bkgd.c_str());
 	wattroff(_mainWin, COLOR_PAIR(COL_YELLOW));
 	box(_mainWin, 0, 0);
 }
 
-void            Game::_refreshBottomWin(std::string bkgd)
+void            Game::_refreshBottomWin()
 {
 	wattron(_bottomWin, COLOR_PAIR(COL_YELLOW));
-	mvwprintw(_bottomWin, 1, 1, bkgd.c_str());
+	mvwprintw(_bottomWin, 1, 1, _bkgd.c_str());
 	wattroff(_bottomWin, COLOR_PAIR(COL_YELLOW));
 	box(_bottomWin, 0, 0);
 	mvwprintw(_bottomWin, 2, 3, "time:");
@@ -417,16 +416,39 @@ void            Game::_refreshBottomWin(std::string bkgd)
 	mvwvline(_bottomWin, 1, 39, ACS_VLINE, 3);
 	mvwvline(_bottomWin, 1, 60, ACS_VLINE, 3); 
 	if (checkTime(1000, _lastTimer))
+	{
 		_timer--;
+		if (_timer % 5 == 0)
+			_moveBackground();
+	}
 	wrefresh(_bottomWin);
 	werase(_bottomWin);
 }
 
-std::string     Game::_fillBackground() const
+void		Game::_moveBackground()
+{
+	std::stringstream   str;
+	int i;
+	int size = COLS;
+	unsigned int size2 = (unsigned int)(LINES - BOT_WIN_H) * COLS;
+	
+	while (size--) {
+		i = rand() % 100;
+		if (i < 2)
+			str << '+';
+		else if (i > 98)
+			str << '.';
+		else
+			str << ' ';
+	}
+	std::string s = str.str() + _bkgd;
+	_bkgd = s.substr(0, size2);
+}
+
+void     Game::_fillBackground()
 {
 	int                 i;
 	unsigned int        size = (unsigned int)(LINES - BOT_WIN_H) * COLS;
-	// unsigned int	size = 5000000;
 	std::stringstream   bkgd;
 
 	while (size--)
@@ -439,10 +461,7 @@ std::string     Game::_fillBackground() const
 		else
 			bkgd << ' ';
 	}
-	// std::string	str = bkgd.str();
-	// str = "salut" + str;
-	return (bkgd.str());
-	
+	_bkgd = bkgd.str();
 }
 
 std::string     Game::_readSkin(std::string nameOfFile) const

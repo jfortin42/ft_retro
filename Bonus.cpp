@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 18:52:16 by fsidler           #+#    #+#             */
-/*   Updated: 2018/02/11 22:25:07 by jfortin          ###   ########.fr       */
+/*   Created: 2018/01/13 14:07:22 by jfortin           #+#    #+#             */
+/*   Updated: 2018/02/11 22:46:55 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ AEntity::t_entityList   *Bonus::shoot(int key)
     return (listOfMissile);
 }
 
-unsigned int	        Bonus::takeDamage(AEntity &attacker, WINDOW *win)
+unsigned int	        Bonus::takeDamage(AEntity &attacker)
 {
-    (void)win;
     attacker.copyWeaponList(_weaponList);
+    _weaponList = NULL;
     _hp -= (_hp < attacker.getDamageDeal()) ? _hp : attacker.getDamageDeal();
 	return (_hp);
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/14 17:04:18 by fsidler           #+#    #+#             */
-/*   Updated: 2018/02/11 22:27:33 by jfortin          ###   ########.fr       */
+/*   Created: 2018/01/13 14:08:30 by jfortin           #+#    #+#             */
+/*   Updated: 2018/02/11 22:47:15 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,9 @@ AEntity::t_entityList    *Player::shoot(int key)
     return (NULL);
 }
 
-unsigned int	        Player::takeDamage(AEntity &attacker, WINDOW *win)
+unsigned int	        Player::takeDamage(AEntity &attacker)
 {
-	wattron(win, A_BLINK);
-	displaySkin(win, COL_BLUE);
 	usleep(500000);
-	wattroff(win, A_BLINK);
 	_hp -= (_hp < attacker.getDamageDeal()) ? _hp : attacker.getDamageDeal();
 	return (_hp);
 }

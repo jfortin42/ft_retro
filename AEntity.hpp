@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/12 17:02:23 by jfortin           #+#    #+#             */
-/*   Updated: 2018/02/11 22:24:55 by jfortin          ###   ########.fr       */
+/*   Created: 2018/01/13 14:07:17 by jfortin           #+#    #+#             */
+/*   Updated: 2018/02/11 22:46:51 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct          s_entityList
 	virtual bool			move(unsigned int height, unsigned int width, int key) = 0;
 	virtual t_entityList	*shoot(int key) = 0;
 
-	virtual unsigned int	takeDamage(AEntity &attacker, WINDOW *win);
+	virtual unsigned int	takeDamage(AEntity &attacker);
 
 	void					displaySkin(WINDOW *win, unsigned int colorNb) const;
 

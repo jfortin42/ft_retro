@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/14 16:56:48 by fsidler           #+#    #+#             */
-/*   Updated: 2018/02/11 22:27:39 by jfortin          ###   ########.fr       */
+/*   Created: 2018/01/13 14:08:35 by jfortin           #+#    #+#             */
+/*   Updated: 2018/02/11 22:47:20 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ class Player : public AEntity {
 
         bool                    move(unsigned int height, unsigned int width, int key);
         AEntity::t_entityList    *shoot(int key);
-        
-        unsigned int            takeDamage(AEntity &attacker, WINDOW *win);
-            
+
+        unsigned int            takeDamage(AEntity &attacker);
+
     private:
         Player();
 

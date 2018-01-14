@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:07:56 by jfortin           #+#    #+#             */
-/*   Updated: 2018/02/11 22:44:59 by jfortin          ###   ########.fr       */
+/*   Updated: 2018/02/11 22:47:04 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,15 @@ void            Game::_initGame()
 	t_coord playerCoord2;
 
 	initscr();
-	if (LINES < MAIN_WIN_HMIN || COLS < MAIN_WIN_WMIN)
+	_mainWin = newwin(LINES, COLS, 0, 0);
+	while (LINES < MAIN_WIN_HMIN || COLS < MAIN_WIN_WMIN)
 	{
-		endwin();
-		throw (Game::WindowDimensionsInvalidException());
+		werase(_mainWin);
+		_displayInMiddle(_mainWin, "Enlarge the window", LINES / 2);
+		wrefresh(_mainWin);
 	}
+		delwin(_mainWin);
+
 	_mainWin = newwin(LINES - BOT_WIN_H, COLS, 0, 0);
 	_bottomWin = newwin(BOT_WIN_H, COLS, LINES - BOT_WIN_H, 0);
 	noecho();
@@ -138,10 +142,7 @@ bool            Game::_gameLoop()
 	while ((key = wgetch(_mainWin)) != KEY_ESC && _playerList && _timer > 0 && (!bossPop || _bossList))
 	{
 		if (key == KEY_RESIZE)
-		{
-			// relaunch();
 			return false;
-		}
 		_refreshMainWin();
 		if ((i = rand()) % 5000 < 1 && _timer > 100)
 		{
@@ -301,8 +302,8 @@ void            Game::_collision(AEntity::t_entityList *&list1, AEntity::t_entit
 		{
 			if (tmp1->next && tmp2->next && _hitbox(tmp1->next, tmp2->next))
 			{
-				tmp1HP = tmp1->next->entity->takeDamage(*tmp2->next->entity, _mainWin);
-				tmp2HP = tmp2->next->entity->takeDamage(*tmp1->next->entity, _mainWin);
+				tmp1HP = tmp1->next->entity->takeDamage(*tmp2->next->entity);
+				tmp2HP = tmp2->next->entity->takeDamage(*tmp1->next->entity);
 				if (!tmp1HP)
 				{
 					_score += tmp1->entity->getScore();
@@ -316,8 +317,8 @@ void            Game::_collision(AEntity::t_entityList *&list1, AEntity::t_entit
 			}
 			else if (tmp1->next && _hitbox(tmp1->next, tmp2))
 			{
-				tmp1HP = tmp1->next->entity->takeDamage(*tmp2->entity, _mainWin);
-				tmp2HP = tmp2->entity->takeDamage(*tmp1->next->entity, _mainWin);
+				tmp1HP = tmp1->next->entity->takeDamage(*tmp2->entity);
+				tmp2HP = tmp2->entity->takeDamage(*tmp1->next->entity);
 				if (!tmp1HP)
 				{
 					_score += tmp1->entity->getScore();
@@ -331,8 +332,8 @@ void            Game::_collision(AEntity::t_entityList *&list1, AEntity::t_entit
 			}
 			else if (tmp2->next && _hitbox(tmp1, tmp2->next))
 			{
-				tmp1HP = tmp1->entity->takeDamage(*tmp2->next->entity, _mainWin);
-				tmp2HP = tmp2->next->entity->takeDamage(*tmp1->entity, _mainWin);
+				tmp1HP = tmp1->entity->takeDamage(*tmp2->next->entity);
+				tmp2HP = tmp2->next->entity->takeDamage(*tmp1->entity);
 				if (!tmp1HP)
 				{
 					_score += tmp1->entity->getScore();
@@ -346,8 +347,8 @@ void            Game::_collision(AEntity::t_entityList *&list1, AEntity::t_entit
 			}
 			else if (_hitbox(tmp1, tmp2))
 			{
-				tmp1HP = tmp1->entity->takeDamage(*tmp2->entity, _mainWin);
-				tmp2HP = tmp2->entity->takeDamage(*tmp1->entity, _mainWin);
+				tmp1HP = tmp1->entity->takeDamage(*tmp2->entity);
+				tmp2HP = tmp2->entity->takeDamage(*tmp1->entity);
 				if (!tmp1HP)
 				{
 					_score += tmp1->entity->getScore();

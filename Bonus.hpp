@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/14 13:35:21 by fsidler           #+#    #+#             */
-/*   Updated: 2018/02/11 22:25:12 by jfortin          ###   ########.fr       */
+/*   Created: 2018/01/13 14:07:28 by jfortin           #+#    #+#             */
+/*   Updated: 2018/02/11 22:47:00 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Bonus : public AEntity {
         bool			move(unsigned int height, unsigned int width, int key);
         t_entityList	*shoot(int key);
 
-        unsigned int	takeDamage(AEntity &attacker, WINDOW *win);
+        unsigned int	takeDamage(AEntity &attacker);
         
     private:
         Bonus();

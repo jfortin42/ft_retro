@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/13 14:06:31 by jfortin           #+#    #+#             */
-/*   Updated: 2018/02/11 22:46:45 by jfortin          ###   ########.fr       */
+/*   Updated: 2018/02/11 22:49:26 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,19 @@ void			AEntity::copyWeaponList(t_weaponList *src)
 {
 	while (src)
 	{
-		equipWeapon(src->weapon, src->direction);
+		equipWeapon(src->weapon, 'D');
 		src = src->next;
 	}
 }
 
 void			AEntity::equipWeapon(Weapon *weapon, char direction)
 {
-	if (weapon)
+ 	if (weapon)
 	{
 		t_weaponList	*tmp = _weaponList;
+		t_weaponList	*newWeapon = new t_weaponList();
+
+		newWeapon->weapon = weapon;
 		char dir[] = {'N', 'W', 'E', 'S', 'D'};
 		int i = 0;
 		if (direction == 'D')
@@ -74,20 +77,20 @@ void			AEntity::equipWeapon(Weapon *weapon, char direction)
 				if (tmp->direction == dir[i] && ((tmp->weapon->isSimpleWeapon() && weapon->isSimpleWeapon()) || (!tmp->weapon->isSimpleWeapon() && !weapon->isSimpleWeapon())))
 				{
 					i++;
-					if (i >= 4)
-						return ;
-					tmp = tmp->next;
+					tmp = _weaponList;
 				}
 				else
 					tmp = tmp->next;
 			}
 		}
-		t_weaponList	*newWeapon = new t_weaponList();
-
-		newWeapon->weapon = weapon;
-		newWeapon->next = _weaponList;
-		newWeapon->direction = direction == 'D' ? dir[i] : direction;
-		_weaponList = newWeapon;
+		else
+			dir[i] = direction;
+		newWeapon->direction = dir[i];
+		tmp = _weaponList;
+		newWeapon->next = NULL;
+		while (tmp && tmp->next)
+			tmp = tmp->next;
+		tmp ? tmp->next = newWeapon : _weaponList = newWeapon;
 	}
 }
 
